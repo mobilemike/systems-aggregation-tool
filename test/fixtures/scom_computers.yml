@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bme: MyString
+  fqdn: MyString
+  adsite: MyString
+  ip: MyString
+  ou: MyString
+  health: 1
+  lastmodified: 2009-05-10 00:58:30
+
+two:
+  bme: MyString
+  fqdn: MyString
+  adsite: MyString
+  ip: MyString
+  ou: MyString
+  health: 1
+  lastmodified: 2009-05-10 00:58:30
