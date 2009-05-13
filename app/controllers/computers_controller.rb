@@ -1,8 +1,8 @@
 class ComputersController < ApplicationController
   def index
     @computers = Computer.find(:all,
-                               :include => [ :scom_computer ],
-                               :order => "scom_computers.health DESC, computers.fqdn"
+                               :include => [ :scom_computer, :akorri_server_storage ],
+                               :order => "scom_computers.health DESC, akorri_server_storages.health DESC, computers.fqdn"
                                )
   end
   

@@ -2,13 +2,15 @@
 
 <table>
   <tr>
-    <th>Fqdn</th>
-    <th>Health</th>
+    <th>FQDN</th>
+    <th>SCOM</th>
+    <th>Akorri<br />Storage</th>
   </tr>
   <% for computer in @computers %>
     <tr>
       <td><%=h computer.fqdn %></td>
-      <td><%= food_icon(computer.scom_computer.health) %></td>
+      <td><%= food_icon(computer.scom_computer.health) if computer.scom_computer %></td>
+      <td><%= food_icon(computer.akorri_server_storage.health) if computer.akorri_server_storage %></td>
       <td><%= link_to "Show", computer %></td>
       <td><%= link_to "Edit", edit_computer_path(computer) %></td>
       <td><%= link_to "Destroy", computer, :confirm => 'Are you sure?', :method => :delete %></td>

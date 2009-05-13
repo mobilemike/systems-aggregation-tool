@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  health: 1
+  last_modified: 2009-05-12 21:06:11
+  historical_health: MyString
+  os_type: 1
+  os_version: MyString
+  server_type: 1
+  memory: 1
+  swap: 1
+  cpu_count: 1
+  cpu_speed: 1
+  fqdn: MyString
+
+two:
+  health: 1
+  last_modified: 2009-05-12 21:06:11
+  historical_health: MyString
+  os_type: 1
+  os_version: MyString
+  server_type: 1
+  memory: 1
+  swap: 1
+  cpu_count: 1
+  cpu_speed: 1
+  fqdn: MyString
