@@ -3,12 +3,14 @@
 <table>
   <tr>
     <th>FQDN</th>
+    <th>Overall</th>
     <th>SCOM</th>
     <th>Akorri<br />Storage</th>
   </tr>
   <% for computer in @computers %>
     <tr>
       <td><%=h computer.fqdn %></td>
+      <td><%= food_icon(computer.health) %></td>
       <td><%= food_icon(computer.scom_computer.health) if computer.scom_computer %></td>
       <td><%= food_icon(computer.akorri_server_storage.health) if computer.akorri_server_storage %></td>
       <td><%= link_to "Show", computer %></td>
