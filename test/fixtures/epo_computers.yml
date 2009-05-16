@@ -1,0 +1,43 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  fqdn: MyString
+  cpu_speed: 1
+  cpu_type: MyString
+  memory_free: 1
+  ip: MyString
+  mac: MyString
+  cpu_count: 1
+  os_version: 1.5
+  os_type: MyString
+  os_platform: MyString
+  os_sp: MyString
+  subnet: MyString
+  subnet_mask: MyString
+  memory: 1
+  last_user: MyString
+  last_update: 2009-05-15 21:51:27
+  dat_version: 1
+  dat_health: 1
+  update_health: 1
+
+two:
+  fqdn: MyString
+  cpu_speed: 1
+  cpu_type: MyString
+  memory_free: 1
+  ip: MyString
+  mac: MyString
+  cpu_count: 1
+  os_version: 1.5
+  os_type: MyString
+  os_platform: MyString
+  os_sp: MyString
+  subnet: MyString
+  subnet_mask: MyString
+  memory: 1
+  last_user: MyString
+  last_update: 2009-05-15 21:51:27
+  dat_version: 1
+  dat_health: 1
+  update_health: 1

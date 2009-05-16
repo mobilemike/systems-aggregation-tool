@@ -6,13 +6,17 @@
     <th>Overall</th>
     <th>SCOM</th>
     <th>Akorri<br />Storage</th>
+    <th>EPO<br />DAT</th>
+    <th>EPO<br />Update</th>
   </tr>
   <% for computer in @computers %>
     <tr>
       <td><%=h computer.fqdn %></td>
       <td><%= food_icon(computer.health) %></td>
-      <td><%= food_icon(computer.scom_computer.health) if computer.scom_computer %></td>
-      <td><%= food_icon(computer.akorri_server_storage.health) if computer.akorri_server_storage %></td>
+      <td><%= computer.scom_computer ? food_icon(computer.scom_computer.health) : food_icon(4) %></td>
+      <td><%= computer.akorri_server_storage ? food_icon(computer.akorri_server_storage.health) : food_icon(4) %></td>
+      <td><%= computer.epo_computer ? food_icon(computer.epo_computer.dat_health) : food_icon(4) %></td>
+      <td><%= computer.epo_computer ? food_icon(computer.epo_computer.update_health) : food_icon(4) %></td>
       <td><%= link_to "Show", computer %></td>
       <td><%= link_to "Edit", edit_computer_path(computer) %></td>
       <td><%= link_to "Destroy", computer, :confirm => 'Are you sure?', :method => :delete %></td>

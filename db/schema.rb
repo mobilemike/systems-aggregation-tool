@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090513011529) do
+ActiveRecord::Schema.define(:version => 20090516015127) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -30,6 +30,31 @@ ActiveRecord::Schema.define(:version => 20090513011529) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "epo_computers", :force => true do |t|
+    t.integer  "computer_id"
+    t.string   "fqdn"
+    t.integer  "cpu_speed"
+    t.string   "cpu_type"
+    t.integer  "memory_free"
+    t.string   "ip"
+    t.string   "mac"
+    t.integer  "cpu_count"
+    t.float    "os_version"
+    t.string   "os_type"
+    t.string   "os_platform"
+    t.string   "os_sp"
+    t.string   "subnet"
+    t.string   "subnet_mask"
+    t.integer  "memory"
+    t.string   "last_user"
+    t.datetime "last_update"
+    t.integer  "dat_version"
+    t.integer  "dat_health"
+    t.integer  "update_health"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
