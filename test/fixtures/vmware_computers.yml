@@ -1,0 +1,55 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  power: 1
+  os: MyString
+  os_family: MyString
+  memory: 1
+  cpu_count: 1
+  nic_count: 1
+  fqdn: MyString
+  ip: MyString
+  tools_status: 1
+  tools_version: 1
+  boot_time: 2009-05-20 01:46:25
+  memory_overhead: 1
+  description: MyString
+  host_computer_id: 1
+  type: 1
+  vmotion: 1
+  os_version: MyString
+  os_build: 1
+  vendor: MyString
+  model: MyString
+  cpu_type: MyString
+  cpu_speed: 1
+  hba_count: 1
+  maintenance_mode: 1
+
+two:
+  name: MyString
+  power: 1
+  os: MyString
+  os_family: MyString
+  memory: 1
+  cpu_count: 1
+  nic_count: 1
+  fqdn: MyString
+  ip: MyString
+  tools_status: 1
+  tools_version: 1
+  boot_time: 2009-05-20 01:46:25
+  memory_overhead: 1
+  description: MyString
+  host_computer_id: 1
+  type: 1
+  vmotion: 1
+  os_version: MyString
+  os_build: 1
+  vendor: MyString
+  model: MyString
+  cpu_type: MyString
+  cpu_speed: 1
+  hba_count: 1
+  maintenance_mode: 1

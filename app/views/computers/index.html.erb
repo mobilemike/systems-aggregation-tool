@@ -8,6 +8,8 @@
     <th>Akorri<br />Storage</th>
     <th>EPO<br />DAT</th>
     <th>EPO<br />Update</th>
+    <th>VMware<br />CPU</th>
+    <th>VMware<br />Memory</th>
   </tr>
   <% for computer in @computers %>
     <tr>
@@ -17,6 +19,8 @@
       <td class="health"><%= computer.akorri_server_storage ? food_icon(computer.akorri_server_storage.health) : food_icon(4) %></td>
       <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.dat_health) : food_icon(5) %></td>
       <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.update_health) : food_icon(5) %></td>
+      <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.cpu_health) : food_icon(4) %></td>
+      <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.memory_health) : food_icon(4) %></td>
     </tr>
   <% end %>
 </table>
