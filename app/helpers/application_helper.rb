@@ -11,6 +11,10 @@ module ApplicationHelper
       image_tag("onion_32.gif")
     when 3
       image_tag("tomato_32.gif")
+    when 4
+      image_tag("cabbage_light_32.gif")
+    when 5
+      image_tag("tomato_light_32.gif")
     end
   end
 end

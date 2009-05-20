@@ -79,3 +79,12 @@ a {
   font-size: 12px;
   list-style: disc;
 }
+
+td.health {
+  text-align: center;
+  width: 10%;
+}
+
+td img {
+  margin: auto;
+}
