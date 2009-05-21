@@ -15,7 +15,7 @@ class Computer < ActiveRecord::Base
     healths.max
   end
   
-  def self.find_all_sorted_by_health
+  def self.find_all_sorted_by_health(computer_filter='')
     computers = self.find(:all,
               :include => [ :scom_computer, :akorri_server_storage, :epo_computer, :vmware_computer ],
               :order => "scom_computers.health DESC,
@@ -24,8 +24,10 @@ class Computer < ActiveRecord::Base
                          epo_computers.update_health DESC,
                          vmware_computers.cpu_health DESC,
                          vmware_computers.memory_health DESC,
-                         computers.fqdn"
+                         computers.fqdn",
+              :conditions => ['computers.fqdn LIKE ?', '%' + computer_filter + '%' ]
               )
     computers.sort_by(&:health).reverse
   end
+
 end
