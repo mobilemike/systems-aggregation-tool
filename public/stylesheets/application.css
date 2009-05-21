@@ -88,3 +88,14 @@ td.health {
 td img {
   margin: auto;
 }
+
+#header {
+  float: left;
+}
+
+#filter {
+  margin-top: 1.5em;
+  display: block;
+  float: right;
+  width: 300px;
+}

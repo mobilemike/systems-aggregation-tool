@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090520054625) do
+ActiveRecord::Schema.define(:version => 20090521014506) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20090520054625) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
 
   create_table "epo_computers", :force => true do |t|
     t.integer  "computer_id"

@@ -1,26 +1,22 @@
 <% title "Computers" %>
+        
+<div id="filter">
+  Filter Results: <%= text_field_tag :computer_filter, params[:computer_filter] %>
+  <span><%= image_tag("spinner.gif",
+      :border => 0,
+      :id => "spinner",
+      :style =>"display: none;" ) %></span>
+</div>
 
-<table>
-  <tr>
-    <th>FQDN</th>
-    <th>Overall</th>
-    <th>SCOM</th>
-    <th>Akorri<br />Storage</th>
-    <th>EPO<br />DAT</th>
-    <th>EPO<br />Update</th>
-    <th>VMware<br />CPU</th>
-    <th>VMware<br />Memory</th>
-  </tr>
-  <% for computer in @computers %>
-    <tr>
-      <td><%= link_to computer.fqdn, computer %></td>
-      <td class="health"><%= food_icon(computer.health) %></td>
-      <td class="health"><%= computer.scom_computer ? food_icon(computer.scom_computer.health) : food_icon(4) %></td>
-      <td class="health"><%= computer.akorri_server_storage ? food_icon(computer.akorri_server_storage.health) : food_icon(4) %></td>
-      <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.dat_health) : food_icon(5) %></td>
-      <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.update_health) : food_icon(5) %></td>
-      <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.cpu_health) : food_icon(4) %></td>
-      <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.memory_health) : food_icon(4) %></td>
-    </tr>
-  <% end %>
-</table>
+<div style="clear:both;"></div>
+
+<div id="computers">
+<%= render :partial => "computers" %>
+</div>
+
+<%= observe_field :computer_filter, :frequency => 0.5,
+        :update => "computers",
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')",
+        :url => {:action => 'computer_filter'},
+        :with => "computer_filter" %>
