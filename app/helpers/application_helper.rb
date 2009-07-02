@@ -17,4 +17,14 @@ module ApplicationHelper
       image_tag("tomato_light_32.gif")
     end
   end
+  
+  def health_number(data, health)
+    span_class = case health
+      when 1 then "health_normal"
+      when 2 then "health_warning"
+      when 3 then "health_error"
+    end
+    content_tag(:span, data, :class => span_class)
+  end
+  
 end

@@ -3,6 +3,7 @@ class Computer < ActiveRecord::Base
   has_one :akorri_server_storage
   has_one :epo_computer
   has_one :vmware_computer
+  has_one :wsus_computer
   
   def health
     healths = [0]
@@ -12,12 +13,14 @@ class Computer < ActiveRecord::Base
     healths << self.epo_computer.update_health if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
+    healths << self.wsus_computer.update_health if self.wsus_computer
     healths.max
   end
   
   def self.find_all_sorted_by_health(computer_filter='')
     computers = self.find(:all,
-              :include => [ :scom_computer, :akorri_server_storage, :epo_computer, :vmware_computer ],
+              :include => [ :scom_computer, :akorri_server_storage, :epo_computer,
+                            :vmware_computer, :wsus_computer ],
               :order => "scom_computers.health DESC,
                          akorri_server_storages.health DESC,
                          epo_computers.dat_health DESC,

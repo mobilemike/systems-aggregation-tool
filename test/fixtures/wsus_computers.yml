@@ -1,0 +1,51 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  fqdn: MyString
+  last_sync: 2009-07-02 15:52:37
+  last_status: 2009-07-02 15:52:37
+  last_reboot: 2009-07-02 15:52:37
+  ip_address: MyString
+  os_major: 1
+  os_minor: 1
+  os_build: 1
+  os_sp: 1
+  make: MyString
+  model: MyString
+  bios_ver: MyString
+  bios_name: MyString
+  bios_date: 2009-07-02
+  processor_type: MyString
+  wsus_created_at: 2009-07-02 15:52:37
+  client_ver: MyString
+  updates_unknown: 1
+  updates_not_installed: 1
+  updates_downloaded: 1
+  updates_installed: 1
+  updates_failed: 
+  updates_pending_reboot: 1
+
+two:
+  fqdn: MyString
+  last_sync: 2009-07-02 15:52:37
+  last_status: 2009-07-02 15:52:37
+  last_reboot: 2009-07-02 15:52:37
+  ip_address: MyString
+  os_major: 1
+  os_minor: 1
+  os_build: 1
+  os_sp: 1
+  make: MyString
+  model: MyString
+  bios_ver: MyString
+  bios_name: MyString
+  bios_date: 2009-07-02
+  processor_type: MyString
+  wsus_created_at: 2009-07-02 15:52:37
+  client_ver: MyString
+  updates_unknown: 1
+  updates_not_installed: 1
+  updates_downloaded: 1
+  updates_installed: 1
+  updates_failed: 
+  updates_pending_reboot: 1

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090521014506) do
+ActiveRecord::Schema.define(:version => 20090702195237) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -103,6 +103,35 @@ ActiveRecord::Schema.define(:version => 20090521014506) do
     t.integer  "maintenance_mode"
     t.integer  "cpu_health"
     t.integer  "memory_health"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wsus_computers", :force => true do |t|
+    t.integer  "computer_id"
+    t.string   "fqdn"
+    t.datetime "last_sync"
+    t.datetime "last_status"
+    t.datetime "last_reboot"
+    t.string   "ip_address"
+    t.integer  "os_major"
+    t.integer  "os_minor"
+    t.integer  "os_build"
+    t.integer  "os_sp"
+    t.string   "make"
+    t.string   "model"
+    t.string   "bios_ver"
+    t.string   "bios_name"
+    t.date     "bios_date"
+    t.string   "processor_type"
+    t.datetime "wsus_created_at"
+    t.string   "client_ver"
+    t.integer  "updates_unknown"
+    t.integer  "updates_not_installed"
+    t.integer  "updates_downloaded"
+    t.integer  "updates_installed"
+    t.integer  "updates_failed"
+    t.integer  "updates_pending_reboot"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
