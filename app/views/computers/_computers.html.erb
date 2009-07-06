@@ -8,6 +8,7 @@
     <th>EPO<br />Update</th>
     <th>VMware<br />CPU</th>
     <th>VMware<br />Memory</th>
+    <th>Avamar</th>
     <th>WSUS<br />Updates</th>
   </tr>
   <% for computer in @computers %>
@@ -20,6 +21,7 @@
       <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.update_health) : food_icon(5) %></td>
       <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.cpu_health) : food_icon(4) %></td>
       <td class="health"><%= computer.vmware_computer ? food_icon(computer.vmware_computer.memory_health) : food_icon(4) %></td>
+      <td class="health"><%= computer.avamar_computer ? food_icon(computer.avamar_computer.health) : food_icon(5) %>
       <td class="health">
         <%= computer.wsus_computer ? health_number(computer.wsus_computer.updates_outstanding, computer.wsus_computer.update_health) : food_icon(5) %>
       </td>

@@ -51,6 +51,15 @@
 </ul>
 <% end %>
 
+<% if @computer.avamar_computer then %>
+<h3>WSUS</h3>
+<ul>
+  <% @computer.avamar_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
 
 <p>
   <%= link_to "Back to list", computers_path %>

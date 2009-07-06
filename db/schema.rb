@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090702195237) do
+ActiveRecord::Schema.define(:version => 20090705232338) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -26,6 +26,48 @@ ActiveRecord::Schema.define(:version => 20090702195237) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "computer_id"
+  end
+
+  create_table "avamar_computers", :force => true do |t|
+    t.integer  "computer_id"
+    t.string   "fqdn"
+    t.string   "avamar_domain"
+    t.string   "group_name"
+    t.string   "type"
+    t.string   "dataset"
+    t.boolean  "dataset_override"
+    t.string   "retention_policy"
+    t.date     "effective_expiration"
+    t.boolean  "retention_policy_override"
+    t.string   "schedule"
+    t.datetime "scheduled_start_at"
+    t.datetime "scheduled_end_at"
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.integer  "num_of_files"
+    t.float    "bytes_scanned"
+    t.float    "bytes_new"
+    t.float    "bytes_modified"
+    t.float    "bytes_modified_sent"
+    t.float    "bytes_modified_not_sent"
+    t.integer  "status_code"
+    t.integer  "error_code"
+    t.float    "bytes_excluded"
+    t.float    "bytes_skipped"
+    t.float    "num_files_skipped"
+    t.string   "client_os"
+    t.string   "client_ver"
+    t.float    "bytes_overhead"
+    t.string   "status_code_summary"
+    t.string   "error_code_summary"
+    t.string   "retention"
+    t.string   "ip"
+    t.date     "avamar_created_at"
+    t.boolean  "enabled"
+    t.boolean  "restore_only"
+    t.date     "modified_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "computers", :force => true do |t|
