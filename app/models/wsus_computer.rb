@@ -10,7 +10,7 @@ class WsusComputer < ActiveRecord::Base
   end
 
   def updates_outstanding
-    updates_not_installed + updates_pending_reboot + updates_failed
+    updates_approved + updates_pending_reboot + updates_failed
   end
 
 end

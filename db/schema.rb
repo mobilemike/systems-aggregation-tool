@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090705232338) do
+ActiveRecord::Schema.define(:version => 20090707011336) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -176,6 +176,8 @@ ActiveRecord::Schema.define(:version => 20090705232338) do
     t.integer  "updates_pending_reboot"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "computer_hash"
+    t.integer  "updates_approved"
   end
 
 end
