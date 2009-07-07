@@ -52,7 +52,7 @@
 <% end %>
 
 <% if @computer.avamar_computer then %>
-<h3>WSUS</h3>
+<h3>Avamar</h3>
 <ul>
   <% @computer.avamar_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
