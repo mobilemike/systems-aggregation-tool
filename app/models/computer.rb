@@ -33,5 +33,23 @@ class Computer < ActiveRecord::Base
               )
     computers.sort_by(&:health).reverse
   end
+  
+  def ip
+    return self.epo_computer.ip if self.epo_computer
+    return self.vmware_computer.ip if self.vmware_computer
+    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
+  end
+  
+  def name
+    self.fqdn.split(".")[0].upcase
+  end
+  
+  def domain
+    case self.fqdn.split(".")[1]
+    when "reitmr" then "RMR"
+    when "5sqc" then "FVE"
+    when "mis" then "MIS"
+    end
+  end
 
 end
