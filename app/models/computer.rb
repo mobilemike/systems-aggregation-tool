@@ -5,6 +5,7 @@ class Computer < ActiveRecord::Base
   has_one :vmware_computer
   has_one :wsus_computer
   has_one :avamar_computer
+  belongs_to :owner
   
   def health
     healths = [0]
@@ -21,7 +22,7 @@ class Computer < ActiveRecord::Base
   def self.find_all_sorted_by_health(computer_filter='')
     computers = self.find(:all,
               :include => [ :scom_computer, :akorri_server_storage, :epo_computer,
-                            :vmware_computer, :wsus_computer, :avamar_computer ],
+                            :vmware_computer, :wsus_computer, :avamar_computer, :owner ],
               :order => "scom_computers.health DESC,
                          akorri_server_storages.health DESC,
                          epo_computers.dat_health DESC,
