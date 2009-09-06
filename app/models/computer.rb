@@ -46,11 +46,7 @@ class Computer < ActiveRecord::Base
   end
   
   def domain
-    case self.fqdn.split(".")[1]
-    when "reitmr" then "RMR"
-    when "5sqc" then "FVE"
-    when "mis" then "MIS"
-    end
+    self.fqdn.split(".", 2)[1]
   end
-
+  
 end

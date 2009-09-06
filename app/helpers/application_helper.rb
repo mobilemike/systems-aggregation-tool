@@ -4,13 +4,13 @@ module ApplicationHelper
   def food_icon level
     case level
     when 0
-      image_tag("knob_message_32.gif")     
+      image_tag("knob_message_16.gif")     
     when 1
-      image_tag("cabbage_32.gif")
+      image_tag("cabbage_16.gif")
     when 2
-      image_tag("onion_32.gif")
+      image_tag("onion_16.gif")
     when 3
-      image_tag("tomato_32.gif")
+      image_tag("tomato_16.gif")
     when 4
       image_tag("cabbage_light_32.gif")
     when 5
