@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090707020216) do
+ActiveRecord::Schema.define(:version => 20090903192812) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20090707020216) do
     t.string   "fqdn"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_id"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"

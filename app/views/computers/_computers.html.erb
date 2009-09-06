@@ -16,7 +16,7 @@
     <tr>
       <td><%= link_to computer.fqdn, computer %></td>
       <td class="health"><%= food_icon(computer.health) %></td>
-      <td class="health"><%= computer.scom_computer ? computer.scom_computer.owner ? computer.scom_computer.owner.initials : "" : "" %>
+      <td class="health"><%= computer.owner ? computer.owner.initials : "" %>
       <td class="health"><%= computer.scom_computer ? food_icon(computer.scom_computer.health) : food_icon(4) %></td>
       <td class="health"><%= computer.akorri_server_storage ? food_icon(computer.akorri_server_storage.health) : food_icon(4) %></td>
       <td class="health"><%= computer.epo_computer ? food_icon(computer.epo_computer.dat_health) : food_icon(5) %></td>
