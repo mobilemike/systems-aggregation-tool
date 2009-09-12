@@ -1,0 +1,59 @@
+<h4><%= active_scaffold_config.show.label -%></h4>
+
+<% if @record.scom_computer then %>
+<h3>SCOM</h3>
+<ul>
+  <% @record.scom_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @record.akorri_server_storage then %>
+<h3>Akorri</h3>
+<ul>
+  <% @record.akorri_server_storage.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @record.epo_computer then %>
+<h3>EPO</h3>
+<ul>
+  <% @record.epo_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @record.vmware_computer then %>
+<h3>VMware</h3>
+<ul>
+  <% @record.vmware_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @record.wsus_computer then %>
+<h3>WSUS</h3>
+<ul>
+  <% @record.wsus_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @record.avamar_computer then %>
+<h3>Avamar</h3>
+<ul>
+  <% @record.avamar_computer.attributes.each do |a, v| %>
+    <li><strong><%=h a %>: </strong><%=h v %></li>
+  <% end %>
+</ul>
+<% end %>
+<p class="form-footer">
+  <%= link_to as_(:close), params_for(:controller => params[:parent_controller] ? params[:parent_controller] : params[:controller], :action => 'list'), :class => 'cancel' %>
+  <%= loading_indicator_tag(:action => :create, :id => params[:id]) %>
+</p>

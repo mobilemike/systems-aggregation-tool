@@ -10,12 +10,12 @@ class Computer < ActiveRecord::Base
   def health
     healths = [0]
     healths << self.scom_computer.health if self.scom_computer
-    healths << self.akorri_server_storage.health if self.akorri_server_storage
-    healths << self.epo_computer.dat_health if self.epo_computer
-    healths << self.epo_computer.update_health if self.epo_computer
+    healths << 2 if self.akorri_server_storage.health >= 2 if self.akorri_server_storage
+    healths << 2 if self.epo_computer.dat_health >= 2 if self.epo_computer
+    healths << 2 if self.epo_computer.update_health >= 2 if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
-    healths << self.wsus_computer.update_health if self.wsus_computer
+    healths << 2 if self.wsus_computer.update_health >= 2 if self.wsus_computer
     healths.max
   end
   

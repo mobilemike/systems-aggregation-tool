@@ -3,9 +3,4 @@ module ComputersHelper
       food_icon(computer.health)
     end
     
-    def owner_column computer
-      computer.owner.initials
-    end
-    
-    
 end
