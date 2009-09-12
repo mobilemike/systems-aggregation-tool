@@ -14,21 +14,7 @@ class ComputersController < ApplicationController
     c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0'
     c.columns[:wsus_computer].label = "Updates"
     
-    c.list.sorting = [{:health => :desc}, {:name => :asc}]
-    c.list.per_page = 25
+    c.list.sorting = [{:health => :desc}]
+    c.list.per_page = 20
   end
-  
-  
-  # def index
-  #    @computers = Computer.find_all_sorted_by_health
-  #  end
-  #  
-  #  def show
-  #    @computer = Computer.find(params[:id])
-  #  end
-  #       
-  #  def computer_filter
-  #    @computers = Computer.find_all_sorted_by_health(params[:computer_filter])
-  #    render :partial => "computers"
-  #  end
 end
