@@ -13,7 +13,6 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql
     c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0'
     c.columns[:wsus_computer].label = "Updates"
-    
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end

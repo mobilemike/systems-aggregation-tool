@@ -101,19 +101,19 @@ td img {
   width: 300px;
 }
 
-span.health_error {
+span.health-error {
   background-color: #FCC;
   border: solid 1px #C66;
   padding: 0 5px 0 5px;
 }
 
-span.health_warning {
+span.health-warning {
   background-color: #FF9;
   border: solid 1px #FF0;
   padding: 0 5px 0 5px;
 }
 
-span.health_normal {
+span.health-normal {
   background-color: #CFC;
   border: solid 1px #6C6;
   padding: 0 5px 0 5px;

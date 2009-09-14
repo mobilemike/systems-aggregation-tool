@@ -15,7 +15,6 @@ class Computer < ActiveRecord::Base
     healths << 2 if self.epo_computer.update_health >= 2 if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
-    healths << 2 if self.wsus_computer.update_health >= 2 if self.wsus_computer
     healths.max
   end
   
