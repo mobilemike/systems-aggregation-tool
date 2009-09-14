@@ -6,7 +6,7 @@ class ComputersController < ApplicationController
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
                                    :epo_computer, :vmware_computer]
-    c.columns[:health].label = '<img src="images/cabbage_16.gif" />'
+    c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:name].sort_by :method => 'name'
     c.columns[:domain].sort_by :method => 'domain || String.new'
     c.columns[:ip].label = "IP"
