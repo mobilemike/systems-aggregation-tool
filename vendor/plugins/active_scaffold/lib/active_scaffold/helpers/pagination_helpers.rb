@@ -5,7 +5,8 @@ module ActiveScaffold
         page_link = link_to_remote(page_number,
                   { :url => params.merge(:page => page_number),
                     :after => "$('#{loading_indicator_id(:action => :pagination)}').style.visibility = 'visible';",
-                    :complete => "$('#{loading_indicator_id(:action => :pagination)}').style.visibility = 'hidden';",
+                    :complete => "$('#{loading_indicator_id(:action => :pagination)}').style.visibility = 'hidden';
+                                  generateHealthTooltips();",
                     :update => active_scaffold_content_id,
                     :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",
                     :method => :get },

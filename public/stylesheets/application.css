@@ -82,9 +82,8 @@ a {
 
 td.health {
   text-align: center;
-  width: 10%;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 12px;
+  width: 50px;
 }
 
 td img {

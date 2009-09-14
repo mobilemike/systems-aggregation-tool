@@ -17,4 +17,9 @@ class ComputersController < ApplicationController
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end
+  
+  def health
+    @computer = Computer.find(params[:id])
+    render :partial => 'health'
+  end
 end

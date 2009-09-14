@@ -1,21 +1,27 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
-  def food_icon level
-    case level
-    when 0
-      image_tag("knob_message_16.gif")     
-    when 1
-      image_tag("cabbage_16.gif")
-    when 2
-      image_tag("onion_16.gif")
-    when 3
-      image_tag("tomato_16.gif")
-    when 4
-      image_tag("cabbage_light_32.gif")
-    when 5
-      image_tag("tomato_light_32.gif")
+  def food_icon(options = {})
+    options ||= {}
+    id = ''
+    health = case options
+      when Integer
+        options
+      else
+        id = options.id
+        options.health
     end
+           
+    image_source = case health
+      when 0 then "knob_message_16.gif"
+      when 1 then "cabbage_16.gif"
+      when 2 then "onion_16.gif"
+      when 3 then "tomato_16.gif"
+      when 4 then "cabbage_16.gif"
+      when 5 then "tomato_16.gif"
+    end
+    
+    image_tag(image_source, :alt => id, :class => 'health-icon')
   end
   
   def health_number(data, health)

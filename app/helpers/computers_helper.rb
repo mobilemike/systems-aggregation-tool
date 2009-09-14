@@ -1,5 +1,5 @@
 module ComputersHelper
     def health_column computer
-      food_icon(computer.health)
+      food_icon(computer)
     end
 end
