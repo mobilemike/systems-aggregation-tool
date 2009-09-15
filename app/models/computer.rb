@@ -10,9 +10,9 @@ class Computer < ActiveRecord::Base
   def health
     healths = [0]
     healths << self.scom_computer.health if self.scom_computer
-    healths << 2 if self.akorri_server_storage.health >= 2 if self.akorri_server_storage
-    healths << 2 if self.epo_computer.dat_health >= 2 if self.epo_computer
-    healths << 2 if self.epo_computer.update_health >= 2 if self.epo_computer
+    healths << self.akorri_server_storage.health if self.akorri_server_storage
+    healths << self.epo_computer.dat_health if self.epo_computer
+    healths << self.epo_computer.update_health if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
     healths.max
@@ -46,6 +46,24 @@ class Computer < ActiveRecord::Base
   
   def domain
     self.fqdn.split(".", 2)[1]
+  end
+  
+  def virtual?
+    virtual = false
+    
+    if self.wsus_computer
+      if self.wsus_computer.model == "VMware Virtual Platform"
+        virtual = true
+      end
+    end
+    
+    if self.vmware_computer
+      unless self.vmware_computer.os_family == "esx" || self.vmware_computer.os_family == "embeddesEsx"
+        virtual = true
+      end
+    end
+    
+    virtual
   end
   
 end

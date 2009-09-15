@@ -4,8 +4,8 @@ module ComputersHelper
     end
     
     def wsus_computer_column computer
-      updates = 0
-      span_class = "health-normal"
+      updates = "N/A"
+      span_class = "health-warning"
       if computer.wsus_computer
         span_class = case computer.wsus_computer.update_health
           when 1 then "health-normal"
@@ -15,5 +15,12 @@ module ComputersHelper
       end
       
       content_tag(:span, updates, :class => span_class)
+    end
+    
+    def virtual_column computer
+      case computer.virtual?
+      when true then "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
+      else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
+      end
     end
 end
