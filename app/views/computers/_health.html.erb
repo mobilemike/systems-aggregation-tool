@@ -5,6 +5,7 @@
     <%= content_tag(:td, 'EPO Update', :class => 'health') if @computer.epo_computer %>
     <%= content_tag(:td, 'VMware CPU', :class => 'health') if @computer.vmware_computer %>
     <%= content_tag(:td, 'VMware Memory', :class => 'health') if @computer.vmware_computer %>
+    <%= content_tag(:td, 'Akorri Storage', :class => 'health') if @computer.akorri_server_storage %>
     <%= content_tag(:td, 'Avamar', :class => 'health') if @computer.avamar_computer %>
   </tr>
   <tr>
@@ -13,6 +14,7 @@
     <%= content_tag(:td, food_icon(@computer.epo_computer.update_health), :class => 'health') if @computer.epo_computer %>
     <%= content_tag(:td, food_icon(@computer.vmware_computer.cpu_health), :class => 'health') if @computer.vmware_computer %>
     <%= content_tag(:td, food_icon(@computer.vmware_computer.memory_health), :class => 'health') if @computer.vmware_computer %>
+    <%= content_tag(:td, food_icon(@computer.akorri_server_storage.health), :class => 'health') if @computer.akorri_server_storage %>
     <%= content_tag(:td, food_icon(@computer.avamar_computer.health), :class => 'health') if @computer.avamar_computer %>
   </tr>
 </table>
