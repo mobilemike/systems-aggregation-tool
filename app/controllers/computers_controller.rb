@@ -1,7 +1,8 @@
 class ComputersController < ApplicationController
   active_scaffold :computer do |c|
     c.columns = [ :health, :wsus_computer, :name, :domain, :owner, :virtual?, :ip]
-    c.actions.exclude :create, :update, :delete
+    c.actions.exclude :create, :update, :delete, :nested
+    c.show.link.label = "Detail"
     
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
@@ -21,7 +22,7 @@ class ComputersController < ApplicationController
     c.columns[:virtual?].description = "Virtual or Physical"
     c.columns[:ip].label = "IP"
     c.columns[:ip].sort_by :sql
-    c.columns[:ip].description = "Primary IP"   
+    c.columns[:ip].description = "Primary IP"
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end

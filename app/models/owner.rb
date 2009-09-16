@@ -4,5 +4,4 @@ class Owner < ActiveRecord::Base
   def to_label
     self.initials
   end
-  
 end
