@@ -23,4 +23,5 @@ module ComputersHelper
       else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
       end
     end
+    
 end

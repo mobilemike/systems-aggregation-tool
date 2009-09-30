@@ -65,9 +65,4 @@ class Computer < ActiveRecord::Base
     virtual
   end
   
-  def site
-    return self.scom_computer.ad_site.upcase if self.scom_computer
-    "-"
-  end
-  
 end
