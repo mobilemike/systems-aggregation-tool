@@ -65,4 +65,11 @@ class Computer < ActiveRecord::Base
     virtual
   end
   
+  def os
+    return self.epo_computer.ip if self.epo_computer
+    return self.vmware_computer.ip if self.vmware_computer
+    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
+    return "-"
+  end
+  
 end

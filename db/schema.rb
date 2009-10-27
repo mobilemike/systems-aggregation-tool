@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090930190733) do
+ActiveRecord::Schema.define(:version => 20091010164056) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -135,6 +135,12 @@ ActiveRecord::Schema.define(:version => 20090930190733) do
     t.string   "domain"
     t.integer  "scom_cpu_perf_id"
     t.integer  "scom_memory_perf_id"
+    t.string   "os_version_number"
+    t.integer  "memory"
+    t.string   "os"
+    t.integer  "os_sp"
+    t.integer  "cores"
+    t.string   "server_2008_install_type"
   end
 
   create_table "vmware_computers", :force => true do |t|
