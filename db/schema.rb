@@ -123,7 +123,6 @@ ActiveRecord::Schema.define(:version => 20091010164056) do
     t.datetime "updated_at"
     t.integer  "computer_id"
     t.string   "owner_id"
-    t.string   "mamagement_version"
     t.boolean  "virtual"
     t.string   "model"
     t.string   "serial_number"
