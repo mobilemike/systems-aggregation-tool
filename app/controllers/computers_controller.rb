@@ -3,6 +3,8 @@ class ComputersController < ApplicationController
     c.columns = [ :health, :wsus_computer, :name, :domain, :owner, :virtual?, :ip]
     c.actions.exclude :create, :update, :delete, :nested
     c.show.link.label = "Detail"
+    c.formats << :csv
+    c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
     
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
@@ -40,7 +42,10 @@ class ComputersController < ApplicationController
         render :text => chart.render, :layout => false
       }
     end
-    
+  end
+  
+  def list_respond_to_csv
+    @computers = Computer.find_all_sorted_by_health
   end
   
 private

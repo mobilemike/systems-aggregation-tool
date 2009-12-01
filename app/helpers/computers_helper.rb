@@ -23,5 +23,37 @@ module ComputersHelper
       else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
       end
     end
+   
+   def csv_header
+     header = '"FQDN","Health","WSUS","Owner","Virtual","IP","Install Date","OU","Serial Number",'
+     header += '"Model","Avamar Dataset","Avamar Schedule","Avamar Retention Policy",'
+     header += '"Avamar MB Protected", "Avamar MB New"'
+   end
+   
+   def csv_row c
+     results = "\"#{c.fqdn}\""
+     results += case c.health
+                  when 1 then ',"Normal"'
+                  when 2 then ',"Warning"'
+                  when 3 then ',"Critical"'
+                  else ',"-"'
+                end
+     results += ",#{c.wsus_computer ? c.wsus_computer.updates_outstanding : '"-"'}"
+     results += ",\"#{c.owner ? c.owner.name : "-"}\""
+     results += ",\"#{c.virtual? ? "Virtual" : "Physical"}\""
+     results += ",\"#{c.ip}\""
+     results += ",\"#{c.scom_computer ? c.scom_computer.install_date.strftime("%m/%d/%Y %I:%M %p") : "-"}\""    
+     results += ",\"#{c.scom_computer ? c.scom_computer.ou : "-"}\""
+     results += ",\"#{c.scom_computer ? c.scom_computer.serial_number : "-"}\""
+     results += ",\"#{c.scom_computer ? c.scom_computer.model : "-"}\""
+     results += ",\"#{c.avamar_computer ? c.avamar_computer.dataset : "-"}\""
+     results += ",\"#{c.avamar_computer ? c.avamar_computer.schedule : "-"}\""
+     results += ",\"#{c.avamar_computer ? c.avamar_computer.retention_policy : "-"}\""
+     results += ",#{c.avamar_computer ? (c.avamar_computer.bytes_scanned / 10485.76).round.to_f / 100 : '"-"'}"
+     results += ",#{c.avamar_computer ? (c.avamar_computer.bytes_new / 10485.76).round.to_f / 100 : '"-"'}"
+     return results
+   end
+     
+   
     
 end
