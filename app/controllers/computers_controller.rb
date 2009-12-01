@@ -5,6 +5,7 @@ class ComputersController < ApplicationController
     c.show.link.label = "Detail"
     c.formats << :csv
     c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
+    c.action_links.add 'index', :controller => 'owners', :label => 'View by Owner', :page => true
     
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
