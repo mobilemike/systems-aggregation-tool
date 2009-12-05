@@ -17,18 +17,24 @@ module ComputersHelper
       content_tag(:span, updates, :class => span_class)
     end
     
-    def dispostion_column computer
-      @record = computer # active_scaffold_input_select needs @record 
-      column = active_scaffold_config.columns[:disposition] 
-      id_options = {:id => record.id.to_s, :action => 'update_column',
+    def state_column computer
+      @computer = computer
+      column = active_scaffold_config.columns[:state]
+      id_options = {:id => computer.id, :action => 'update_column',
                     :name => column.name} # update_column will replace html for this element 
-      script = remote_function(:method => 'POST', :url => {:controller => params_for[:controller],
-                                                           :action => "update_column", :id => record.id.to_s,
-                                                           :eid => params[:eid]},
-                               :with => "'column=#{column.name}&value='+this.value") 
-      content_tag :span, (record.team.try(:to_label) || 'select one') + 
-        active_scaffold_input_select(column, active_scaffold_input_options(corlumn).merge({:onchange => script})), :id => 
-      element_cell_id(id_options) 
+      script = remote_function(:method => 'POST',
+                               :url => {:controller => params_for[:controller],
+                                        :action => 'update_column',
+                                        :id => computer.id,
+                                        :eid => params[:eid]},
+                               :with => "'column=#{column.name}&value='+value")
+      content_tag(:span,
+                  select("computer",
+                         "state",
+                         Computer.aasm_states_for_select.map {|k,v| k.capitalize},
+                         {},
+                         :onchange => script),
+                  :id => element_cell_id(id_options))
     end 
 
     

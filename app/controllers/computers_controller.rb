@@ -1,7 +1,7 @@
 class ComputersController < ApplicationController
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :disposition, :name, :domain, :owner, :ip, :virtual?, :avamar]
-    c.actions.exclude :create, :update, :delete, :nested
+    c.columns = [ :health, :wsus_computer, :state, :name, :domain, :owner, :ip, :virtual?, :avamar]
+    c.actions.exclude :create, :delete, :nested
     c.show.link.label = "Detail"
     c.formats << :csv
     c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
@@ -15,7 +15,9 @@ class ComputersController < ApplicationController
     c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0.1'
     c.columns[:wsus_computer].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:wsus_computer].description = "Outstanding WSUS patches"    
-    c.columns[:disposition].description = "Server disposition"
+    c.columns[:state].description = "Server disposition"
+    c.columns[:state].form_ui = :select
+    c.columns[:state].inplace_edit = true
     c.columns[:name].sort_by :method => 'name'
     c.columns[:name].description = "DNS name"
     c.columns[:owner].description = "Assigned owner's intials"   

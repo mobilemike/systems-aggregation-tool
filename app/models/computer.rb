@@ -9,7 +9,7 @@ class Computer < ActiveRecord::Base
   has_one :avamar_computer
   belongs_to :owner
 
-  aasm_column :state
+  aasm_column :disposition
   aasm_initial_state :unknown
   aasm_state :unknown
   aasm_state :lab
@@ -17,6 +17,14 @@ class Computer < ActiveRecord::Base
   aasm_state :production
   aasm_state :decomissioned
   aasm_state :archived
+  
+  def state
+    self.disposition.capitalize
+  end
+  
+  def state=(disposition)
+    self.disposition = disposition.downcase
+  end
   
   def health
     healths = [0]

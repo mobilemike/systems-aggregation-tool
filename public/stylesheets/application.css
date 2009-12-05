@@ -119,3 +119,8 @@ span.health-empty {
 .active-scaffold th img {
   margin-top: 2px;
 }
+
+.active-scaffold tr.record td select {
+  font-size: 12px;
+  font-weight: normal;
+}
