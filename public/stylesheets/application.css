@@ -114,4 +114,8 @@ span.health-empty {
 
 .active-scaffold tr.record td, .active-scaffold th {
   text-align: center;
-} 
+}
+
+.active-scaffold th img {
+  margin-top: 2px;
+}
