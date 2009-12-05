@@ -1,6 +1,6 @@
 class ComputersController < ApplicationController
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :disposition, :name, :domain, :owner, :virtual?, :ip]
+    c.columns = [ :health, :wsus_computer, :disposition, :name, :domain, :owner, :ip, :virtual?, :avamar]
     c.actions.exclude :create, :update, :delete, :nested
     c.show.link.label = "Detail"
     c.formats << :csv
@@ -20,13 +20,16 @@ class ComputersController < ApplicationController
     c.columns[:name].description = "DNS name"
     c.columns[:owner].description = "Assigned owner's intials"   
     c.columns[:domain].sort_by :method => 'domain || String.new'
-    c.columns[:domain].description = "DNS domain"   
-    c.columns[:virtual?].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:virtual?].sort_by :method => 'virtual? ? 1 : 0'
-    c.columns[:virtual?].description = "Virtual or Physical"
+    c.columns[:domain].description = "DNS domain"
     c.columns[:ip].label = "IP"
     c.columns[:ip].sort_by :sql
     c.columns[:ip].description = "Primary IP"
+    c.columns[:virtual?].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
+    c.columns[:virtual?].sort_by :method => 'virtual? ? 1 : 0'
+    c.columns[:virtual?].description = "Virtual or Physical"
+    c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/safe.png\" />"
+    c.columns[:avamar].sort_by :method => 'avamar_computer ? avamar_computer.bytes_scanned : -1'
+    c.columns[:avamar].description = "Avamar Protection"
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end
