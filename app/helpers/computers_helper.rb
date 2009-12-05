@@ -43,10 +43,10 @@ module ComputersHelper
       bytes_protected = "-"
       span_class = "health-empty"
       if computer.avamar_computer
-        span_class = case computer.avamar_computer.status_code_summary
-          when /failed/ then "health-error"
-          when /successfully/ then "health-normal"
-          else "health-warning"
+        span_class = case computer.avamar_computer.health
+          when 1 then "health-normal"
+          when 2 then "health-warning"
+          when 3 then "health-error"
         end
         bytes_protected = number_to_human_size(computer.avamar_computer.bytes_scanned)
       end
