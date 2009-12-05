@@ -15,6 +15,7 @@ class Computer < ActiveRecord::Base
     healths << self.epo_computer.update_health if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
+    healths << self.avamar_computer.health if self.avamar_computer
     healths.max
   end
   
