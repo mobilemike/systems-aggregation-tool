@@ -1,6 +1,6 @@
 class ComputersController < ApplicationController
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :name, :domain, :owner, :virtual?, :ip]
+    c.columns = [ :health, :wsus_computer, :disposition, :name, :domain, :owner, :virtual?, :ip]
     c.actions.exclude :create, :update, :delete, :nested
     c.show.link.label = "Detail"
     c.formats << :csv
@@ -15,6 +15,7 @@ class ComputersController < ApplicationController
     c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0.1'
     c.columns[:wsus_computer].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:wsus_computer].description = "Outstanding WSUS patches"    
+    c.columns[:disposition].description = "Server disposition"
     c.columns[:name].sort_by :method => 'name'
     c.columns[:name].description = "DNS name"
     c.columns[:owner].description = "Assigned owner's intials"   

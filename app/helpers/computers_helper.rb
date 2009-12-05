@@ -17,6 +17,21 @@ module ComputersHelper
       content_tag(:span, updates, :class => span_class)
     end
     
+    def dispostion_column computer
+      @record = computer # active_scaffold_input_select needs @record 
+      column = active_scaffold_config.columns[:disposition] 
+      id_options = {:id => record.id.to_s, :action => 'update_column',
+                    :name => column.name} # update_column will replace html for this element 
+      script = remote_function(:method => 'POST', :url => {:controller => params_for[:controller],
+                                                           :action => "update_column", :id => record.id.to_s,
+                                                           :eid => params[:eid]},
+                               :with => "'column=#{column.name}&value='+this.value") 
+      content_tag :span, (record.team.try(:to_label) || 'select one') + 
+        active_scaffold_input_select(column, active_scaffold_input_options(corlumn).merge({:onchange => script})), :id => 
+      element_cell_id(id_options) 
+    end 
+
+    
     def virtual_column computer
       case computer.virtual?
       when true then "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"

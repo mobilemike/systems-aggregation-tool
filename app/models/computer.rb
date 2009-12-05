@@ -1,4 +1,6 @@
 class Computer < ActiveRecord::Base
+  include AASM
+
   has_one :scom_computer
   has_one :akorri_server_storage
   has_one :epo_computer
@@ -6,6 +8,15 @@ class Computer < ActiveRecord::Base
   has_one :wsus_computer
   has_one :avamar_computer
   belongs_to :owner
+
+  aasm_column :state
+  aasm_initial_state :unknown
+  aasm_state :unknown
+  aasm_state :lab
+  aasm_state :preproduction
+  aasm_state :production
+  aasm_state :decomissioned
+  aasm_state :archived
   
   def health
     healths = [0]
