@@ -26,7 +26,7 @@ class ComputersController < ApplicationController
     c.columns[:virtual?].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:virtual?].sort_by :method => 'virtual? ? 1 : 0'
     c.columns[:virtual?].description = "Virtual or Physical"
-    c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/safe.png\" />"
+    c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:avamar].sort_by :method => 'avamar_computer ? avamar_computer.bytes_scanned : -1'
     c.columns[:avamar].description = "Avamar Protection"
     c.list.sorting = [{:health => :desc}]
