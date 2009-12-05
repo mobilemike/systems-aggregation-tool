@@ -23,6 +23,21 @@ module ComputersHelper
       else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
       end
     end
+    
+    def avamar_column computer
+      bytes_protected = "-"
+      span_class = "health-empty"
+      if computer.avamar_computer
+        span_class = case computer.avamar_computer.status_code_summary
+          when /failed/ then "health-error"
+          when /successfully/ then "health-normal"
+          else "health-warning"
+        end
+        bytes_protected = number_to_human_size(computer.avamar_computer.bytes_scanned)
+      end
+      
+      content_tag(:span, bytes_protected, :class => span_class)
+    end
    
    def csv_header
      header = '"FQDN","Health","WSUS","Owner","Virtual","IP","Install Date","OU","Serial Number",'
@@ -53,7 +68,5 @@ module ComputersHelper
      results += ",#{c.avamar_computer ? (c.avamar_computer.bytes_new / 10485.76).round.to_f / 100 : '"-"'}"
      return results
    end
-     
-   
     
 end

@@ -75,17 +75,6 @@ a {
   margin: 2px 24px;
 }
 
-#errorExplanation ul li {
-  font-size: 12px;
-  list-style: disc;
-}
-
-td.health {
-  text-align: center;
-  font-size: 12px;
-  width: 50px;
-}
-
 td img {
   margin: auto;
 }
@@ -118,3 +107,11 @@ span.health-normal {
   border: solid 1px #6C6;
   padding: 0 5px 0 5px;
 }
+
+span.health-empty {
+  color: #999;
+}
+
+.active-scaffold tr.record td, .active-scaffold th {
+  text-align: center;
+} 
