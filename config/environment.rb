@@ -21,7 +21,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'dbi', :version => '0.4.1'
   config.gem 'dbd-odbc', :version => '0.2.4', :lib => 'dbd/ODBC'
-  config.gem 'aasm'
+  config.gem 'aasm', :version => '2.1.3'
 
 
   # Only load the plugins named here, in the order given (default is alphabetical).
