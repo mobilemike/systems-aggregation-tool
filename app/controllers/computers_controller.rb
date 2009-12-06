@@ -10,7 +10,7 @@ class ComputersController < ApplicationController
     
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
-                                   :epo_computer, :vmware_computer]
+                                   :epo_computer, :vmware_computer, :avamar_computer]
     c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health].description = "Overall system health"
     c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0.1'
