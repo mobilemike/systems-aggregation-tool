@@ -17,25 +17,32 @@ module ComputersHelper
       content_tag(:span, updates, :class => span_class)
     end
     
-    def state_column computer
-      @computer = computer
-      column = active_scaffold_config.columns[:state]
-      id_options = {:id => computer.id, :action => 'update_column',
-                    :name => column.name} # update_column will replace html for this element 
-      script = remote_function(:method => 'POST',
-                               :url => {:controller => params_for[:controller],
-                                        :action => 'update_column',
-                                        :id => computer.id,
-                                        :eid => params[:eid]},
-                               :with => "'column=#{column.name}&value='+value")
-      content_tag(:span,
-                  select("computer",
-                         "state",
-                         Computer.aasm_states_for_select.map {|k,v| k.capitalize},
-                         {},
-                         :onchange => script),
-                  :id => element_cell_id(id_options))
-    end 
+    def status_column computer
+      record = computer
+      column = active_scaffold_config.columns[:status]
+      collection = Computer.aasm_states_for_select.map {|k,v| [k, v.capitalize]}.inspect
+      active_scaffold_inplace_collection_edit(record, column, collection)
+    end
+    
+    def active_scaffold_inplace_collection_edit(record, column, collection)
+      formatted_column = record.send(column.name)
+      id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}
+      tag_options = {:tag => "span", :id => element_cell_id(id_options), :class => "in_place_editor_field"}
+      in_place_collection_editor_options = {:url => {:controller => params_for[:controller],
+                                                     :action => "update_column",
+                                                     :column => column.name,
+                                                     :id => record.id.to_s},
+                                            :with => params[:eid] ? "Form.serialize(form) + '&eid=#{params[:eid]}'" : nil,
+                                            :collection => collection,
+                                            :click_to_edit_text => as_(:click_to_edit),
+                                            :cancel_text => as_(:cancel),
+                                            :loading_text => as_(:loading),
+                                            :save_text => as_(:update),
+                                            :saving_text => as_(:saving),
+                                            :options => "{method: 'post'}",
+                                            :script => true}.merge(column.options)
+      content_tag(:span, formatted_column, tag_options) + in_place_collection_editor(tag_options[:id], in_place_collection_editor_options)
+    end
 
     
     def virtual_column computer

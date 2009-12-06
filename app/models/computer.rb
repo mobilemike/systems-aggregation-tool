@@ -18,11 +18,11 @@ class Computer < ActiveRecord::Base
   aasm_state :decomissioned
   aasm_state :archived
   
-  def state
-    self.disposition.capitalize
+  def status
+    self.disposition ? self.disposition.capitalize : "-"
   end
   
-  def state=(disposition)
+  def status=(disposition)
     self.disposition = disposition.downcase
   end
   
@@ -62,11 +62,11 @@ class Computer < ActiveRecord::Base
   end
   
   def name
-    self.fqdn.split(".")[0].upcase
+    self.fqdn.split(".")[0].upcase if self.fqdn
   end
   
   def domain
-    self.fqdn.split(".", 2)[1]
+    self.fqdn.split(".", 2)[1] if self.fqdn
   end
   
   def virtual?
