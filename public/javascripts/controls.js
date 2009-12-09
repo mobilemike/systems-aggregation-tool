@@ -835,7 +835,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
     var textFound = this._collection.any(function(entry) {
       return entry[0] == marker;
     }.bind(this));
-    this._controls.editor.update('');
+    $($(this._controls).editor).update('');
     var option;
     this._collection.each(function(entry, index) {
       option = document.createElement('option');
