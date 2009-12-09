@@ -12,8 +12,7 @@ class Computer < ActiveRecord::Base
   aasm_column :disposition
   aasm_initial_state :unknown
   aasm_state :unknown
-  aasm_state :lab
-  aasm_state :preproduction
+  aasm_state :nonproduction
   aasm_state :production
   aasm_state :decomissioned
   aasm_state :archived
