@@ -31,7 +31,7 @@ class Computer < ActiveRecord::Base
     healths << self.scom_computer.health if self.scom_computer
     healths << self.akorri_server_storage.health if self.akorri_server_storage
     healths << self.epo_computer.dat_health if self.epo_computer
-    healths << self.epo_computer.update_health if self.epo_computer
+    # healths << self.epo_computer.update_health if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
     healths << self.avamar_computer.health if self.avamar_computer
