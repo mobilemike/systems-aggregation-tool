@@ -1,4 +1,6 @@
-class ComputersController < ApplicationController
+class ComputersController < ApplicationController 
+  before_filter :update_table_config
+  
   active_scaffold :computer do |c|
     c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar]
     c.actions.exclude :create, :delete, :nested
@@ -58,25 +60,36 @@ class ComputersController < ApplicationController
   
 private
 
-    def chart_maker(*args)
-      options = {
-        :title => "Performance"
-      }
-      options.update(args.extract_options!)
-      
-      values = case options[:type]
-      when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
-      when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
-      end
-        
-      OFC::OpenFlashChart.new do |c|
-        c.elements = []
-        c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
-                                           :color => "#DB1750",
-                                           :width => 3,
-                                           :values => values)
-        c.title = OFC::Title.new(:text => options[:title])
-      end
+  def conditions_for_collection
+    ["disposition = ?", params[:status]] if params[:status]
+  end
+
+  def update_table_config
+    if params[:status]
+      active_scaffold_config.label = "Computers in #{params[:status].capitalize} Status"
+      active_scaffold_config.columns.exclude :status
     end
+  end
+
+  def chart_maker(*args)
+    options = {
+      :title => "Performance"
+    }
+    options.update(args.extract_options!)
+    
+    values = case options[:type]
+    when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
+    when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
+    end
+      
+    OFC::OpenFlashChart.new do |c|
+      c.elements = []
+      c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
+                                         :color => "#DB1750",
+                                         :width => 3,
+                                         :values => values)
+      c.title = OFC::Title.new(:text => options[:title])
+    end
+  end
   
 end
