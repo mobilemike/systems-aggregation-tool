@@ -8,7 +8,6 @@ class ComputersController < ApplicationController
     c.update.link = false
     c.formats << :csv
     c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
-    c.action_links.add 'index', :controller => 'owners', :label => 'View by Owner', :page => true
     
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
@@ -61,14 +60,26 @@ class ComputersController < ApplicationController
 private
 
   def conditions_for_collection
-    ["disposition = ?", params[:status]] if params[:status]
+    conditions = []
+    conditions << ["computers.disposition = ?", params[:status]] if params[:status]
+    conditions << ["computers.owner_id = ?", @owner.id] if params[:owner_initials]
+    Computer.merge_conditions(*conditions)
   end
 
   def update_table_config
+    custom_label = "Computers"
+    excludes = []
     if params[:status]
-      active_scaffold_config.label = "Computers in #{params[:status].capitalize} Status"
-      active_scaffold_config.columns.exclude :status
+      custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
+      excludes << :status
     end
+    if params[:owner_initials]
+      @owner = Owner.find_by_initials(params[:owner_initials])
+      custom_label = "#{@owner.name}'s #{custom_label}"
+      excludes << :owner
+    end
+    active_scaffold_config.columns.exclude(*excludes)
+    active_scaffold_config.label = custom_label
   end
 
   def chart_maker(*args)

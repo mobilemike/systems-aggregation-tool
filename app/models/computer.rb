@@ -25,6 +25,10 @@ class Computer < ActiveRecord::Base
     self.disposition = disposition.downcase
   end
   
+  def self.states
+    self.aasm_states.map {|s| s.display_name}
+  end
+  
   def health
     healths = [0]
     healths << self.scom_computer.health if self.scom_computer
