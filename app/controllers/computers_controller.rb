@@ -75,7 +75,7 @@ private
       excludes << :status
     end
     if params[:owner_initials]
-      @owner = Owner.find_by_initials(params[:owner_initials])
+      @owner = Owner.find_by_initials(params[:owner_initials].upcase)
       custom_label = "#{@owner.name}'s #{custom_label}"
       excludes << :owner
     end
