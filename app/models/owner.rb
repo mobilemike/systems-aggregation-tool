@@ -9,4 +9,8 @@ class Owner < ActiveRecord::Base
   def to_label
     self.initials
   end
+  
+  def self.all_sorted_by_name
+    self.find(:all, :order => :name)
+  end
 end

@@ -10,20 +10,6 @@ body {
 	background:#fff;
 }
 
-a img {
-  border: none;
-}
-
-a {
-  color: #0000FF;
-}
-
-.clear {
-  clear: both;
-  height: 0;
-  overflow: hidden;
-}
-
 #flash_notice, #flash_error {
   padding: 5px 8px;
   margin: 10px 0;
@@ -74,18 +60,7 @@ a {
 
 td img {
   margin: auto;
-}
-
-#header {
-  float: left;
-}
-
-#filter {
-  margin-top: 1.5em;
-  display: block;
-  float: right;
-  width: 300px;
-}
+} 
 
 span.health-error {
   background-color: #FCC;

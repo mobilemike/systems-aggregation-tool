@@ -243,24 +243,24 @@ ul.section li.current > a.active:hover {
 
 /* table
 ----------------------------------------------- */
-table {
+table.salad {
 	width:100%;
 	border:1px solid #bbb;
 	margin-bottom:10px;
 }
-col.colC {
+table.salad col.colC {
 	width:8em;
 }
-th, td {
+table.salad th, table.salad td {
 	padding:.2em 1em;
 	text-align:left;
 }
-thead th {
+table.salad thead th {
 	border-bottom:2px solid #888;
 	background:#bbb;
 	padding:.4em 1em .2em;
 }
-thead th.table-head {
+table.salad thead th.table-head {
 	font-size:1em;
 	font-weight:normal;
 	text-transform:uppercase;
@@ -268,30 +268,30 @@ thead th.table-head {
 	background:#555;
 	border:1px solid #555;
 }
-tbody th,
-tbody td {
+table.salad tbody th,
+table.salad tbody td {
 	border-top:1px solid #bbb;
 	border-bottom:1px solid #bbb;
 	background:#eee;
 }
-tbody tr.odd th,
-tbody tr.odd td {
+table.salad tbody tr.odd th,
+table.salad tbody tr.odd td {
 	background:#fff;
 }
-tfoot th,
-tfoot td {
+table.salad tfoot th,
+table.salad tfoot td {
 	border-top:2px solid #666;
 	background:#eee;
 }
-tfoot tr.total th,
-tfoot tr.total td {
+table.salad tfoot tr.total th,
+table.salad tfoot tr.total td {
 	border-top:6px double #666;
 }
-tfoot tr.total th {
+table.salad tfoot tr.total th {
 	text-transform:uppercase;
 }
-th.currency,
-td.currency {
+table.salad th.currency,
+table.salad td.currency {
 	text-align:right;
 }
 
