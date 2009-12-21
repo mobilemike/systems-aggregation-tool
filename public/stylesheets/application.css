@@ -8,6 +8,7 @@ body {
 
 .container_16 {
 	background:#fff;
+	min-width: 675px;
 }
 
 #flash_notice, #flash_error {

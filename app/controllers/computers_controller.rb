@@ -7,8 +7,7 @@ class ComputersController < ApplicationController
     c.show.link.label = "Detail"
     c.update.link = false
     c.formats << :csv
-    c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
-    
+   
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
                                    :epo_computer, :vmware_computer, :avamar_computer]
@@ -55,7 +54,7 @@ class ComputersController < ApplicationController
   end
   
   def list_respond_to_csv
-    @computers = Computer.find_all_sorted_by_health
+    @computers = Computer.find_all_sorted_by_health(conditions_for_collection)
   end
   
 private
@@ -76,7 +75,7 @@ private
     end
     if params[:owner_initials]
       @owner = Owner.find_by_initials(params[:owner_initials].upcase)
-      custom_label = "#{@owner.name}'s #{custom_label}"
+      custom_label = "#{@owner.first_name}'s #{custom_label}"
       excludes << :owner
     end
     active_scaffold_config.columns.exclude(*excludes)

@@ -10,6 +10,10 @@ class Owner < ActiveRecord::Base
     self.initials
   end
   
+  def first_name
+    self.name.split[0]
+  end
+  
   def self.all_sorted_by_name
     self.find(:all, :order => :name)
   end
