@@ -77,6 +77,7 @@ private
       custom_label = "#{@owner.first_name}'s #{custom_label}"
       excludes << :owner
     end
+    params[:page] ||= 1
     active_scaffold_config.columns.exclude(*excludes)
     active_scaffold_config.label = custom_label
   end
