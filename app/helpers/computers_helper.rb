@@ -27,7 +27,7 @@ module ComputersHelper
     def active_scaffold_inplace_collection_edit(record, column, collection)
       formatted_column = record.send(column.name)
       id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}
-      tag_options = {:tag => "span", :id => element_cell_id(id_options), :class => "in_place_editor_field"}
+      tag_options = {:id => element_cell_id(id_options), :class => "in_place_editor_field"}
       in_place_collection_editor_options = {:url => {:controller => params_for[:controller],
                                                      :action => "update_column",
                                                      :column => column.name,

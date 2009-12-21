@@ -35,7 +35,6 @@ class ComputersController < ApplicationController
     c.columns[:avamar].description = "Avamar Protection"
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
-    c.list.always_show_search = true
   end
   
   def health
