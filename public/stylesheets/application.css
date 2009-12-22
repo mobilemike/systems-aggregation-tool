@@ -3,8 +3,8 @@ body {
 }
 
 .container_16 {
-	background:#fff;
-	min-width: 725px;
+  background:#fff;
+  min-width: 750px;
 }
 
 span.health-error {
@@ -39,6 +39,8 @@ span.health-empty {
 
 .active-scaffold tr.record td, .active-scaffold th {
   text-align: center;
+  vertical-align: middle;
+  line-height: 1.2em;
 }
 
 .active-scaffold th img {
@@ -50,8 +52,9 @@ span.health-empty {
 }
 
 .active-scaffold tr.record td select {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
+  letter-spacing: 0;
 }
 
 span.in_place_editor_field {
@@ -61,6 +64,7 @@ span.in_place_editor_field {
 input.search.text {
 	width:46%;
 }
+
 input.search.button, a.search.link {
 	width:24%;
 	margin-left:2%;
