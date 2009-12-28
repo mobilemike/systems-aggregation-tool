@@ -68,13 +68,14 @@ module ComputersHelper
     end
    
    def csv_header
-     header = '"FQDN","Health","WSUS","Owner","Virtual","IP","Install Date","OU","Serial Number",'
+     header = '"FQDN","Status","Health","WSUS","Owner","Virtual","IP","OS","Install Date","OU","Serial Number",'
      header += '"Model","Avamar Dataset","Avamar Schedule","Avamar Retention Policy",'
      header += '"Avamar MB Protected", "Avamar MB New"'
    end
    
    def csv_row c
      results = "\"#{c.fqdn}\""
+     results += ",\"#{c.status}\""
      results += case c.health
                   when 1 then ',"Normal"'
                   when 2 then ',"Warning"'
@@ -85,7 +86,8 @@ module ComputersHelper
      results += ",\"#{c.owner ? c.owner.name : "-"}\""
      results += ",\"#{c.virtual? ? "Virtual" : "Physical"}\""
      results += ",\"#{c.ip}\""
-     results += ",\"#{c.scom_computer ? c.scom_computer.install_date.strftime("%m/%d/%Y %I:%M %p") : "-"}\""    
+     results += ",\"#{c.os}\""
+     results += ",\"#{c.scom_computer ? c.scom_computer.install_date ? c.scom_computer.install_date.strftime("%m/%d/%Y %I:%M %p") : "-" : "-"}\""    
      results += ",\"#{c.scom_computer ? c.scom_computer.ou : "-"}\""
      results += ",\"#{c.scom_computer ? c.scom_computer.serial_number : "-"}\""
      results += ",\"#{c.scom_computer ? c.scom_computer.model : "-"}\""

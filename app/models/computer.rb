@@ -90,9 +90,8 @@ class Computer < ActiveRecord::Base
   end
   
   def os
-    return self.epo_computer.ip if self.epo_computer
-    return self.vmware_computer.ip if self.vmware_computer
-    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
+    return self.scom_computer.os if self.scom_computer
+    return self.akorri_server_storage.os_version if self.akorri_server_storage
     return "-"
   end
   
