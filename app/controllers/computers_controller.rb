@@ -68,6 +68,7 @@ private
   def update_table_config
     custom_label = "Computers"
     excludes = []
+    params[:search] = nil if params[:search] == ""
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
       excludes << :status
@@ -76,6 +77,9 @@ private
       @owner = Owner.find_by_initials(params[:owner_initials].upcase)
       custom_label = "#{@owner.first_name}'s #{custom_label}"
       excludes << :owner
+    end
+    if params[:search]
+      custom_label = "#{custom_label} (#{params[:search]})"
     end
     params[:page] ||= 1
     active_scaffold_config.columns.exclude(*excludes)
