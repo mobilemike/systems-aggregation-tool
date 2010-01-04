@@ -2,7 +2,7 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar]
+    c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar, :retention]
     c.actions.exclude :create, :delete, :nested
     c.show.link.label = "Detail"
     c.update.link = false
@@ -33,6 +33,9 @@ class ComputersController < ApplicationController
     c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:avamar].sort_by :method => 'avamar_computer ? avamar_computer.bytes_scanned : -1'
     c.columns[:avamar].description = "Avamar Protection"
+    c.columns[:retention].label = "Retention"
+    c.columns[:retention].sort_by :method => 'avamar_computer ? avamar_computer.retention_policy : ""'
+    c.columns[:retention].description = "Retention"
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end

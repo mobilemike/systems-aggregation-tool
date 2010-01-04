@@ -66,6 +66,10 @@ module ComputersHelper
       
       content_tag(:span, bytes_protected, :class => span_class)
     end
+    
+    def retention_column computer
+      computer.avamar_computer ? computer.avamar_computer.retention_policy.split[0] : "-"
+    end
    
    def csv_header
      header = '"FQDN","Status","Health","WSUS","Owner","Virtual","IP","OS","Install Date","OU","Serial Number",'
