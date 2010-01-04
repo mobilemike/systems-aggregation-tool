@@ -1,12 +1,12 @@
 class Computer < ActiveRecord::Base
   include AASM
 
-  has_one :scom_computer
-  has_one :akorri_server_storage
-  has_one :epo_computer
-  has_one :vmware_computer
-  has_one :wsus_computer
-  has_one :avamar_computer
+  has_one :scom_computer, :dependent => :destroy
+  has_one :akorri_server_storage, :dependent => :destroy
+  has_one :epo_computer, :dependent => :destroy
+  has_one :vmware_computer, :dependent => :destroy
+  has_one :wsus_computer, :dependent => :destroy
+  has_one :avamar_computer, :dependent => :destroy
   belongs_to :owner
 
   aasm_column :disposition
@@ -16,6 +16,7 @@ class Computer < ActiveRecord::Base
   aasm_state :production
   aasm_state :decomissioned
   aasm_state :archived
+  aasm_state :delete
   
   def status
     self.disposition ? self.disposition.capitalize : "-"
