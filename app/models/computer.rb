@@ -16,7 +16,7 @@ class Computer < ActiveRecord::Base
   aasm_state :production
   aasm_state :decomissioned
   aasm_state :archived
-  aasm_state :delete
+  aasm_state :remove
   
   def status
     self.disposition ? self.disposition.capitalize : "-"
