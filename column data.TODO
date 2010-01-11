@@ -1,53 +1,56 @@
 General:
 fqdn
-IP (how to deal with multiple?)
-MAC (same about multiple)
-subnet_mask
-is_virtual?
+ip
+mac
+subnet
+virtual
 serial_number
 model
 install_date
-cores/cpus  -they seem to match
-os - name, version number, build, sp, 08 install type, how to deal with all this?
-memory
-mem_used/free
+cpus
+os_vendor
+os_type
+os_name
+os_version
+os_sp
+mem_total
+mem_free
 ilo_ip
-hp_sim_mgmt_version
-bios_version
+hp_mgmt_ver
+bios_ver
 cpu_speed
 cpu_type
-swap_size
+mem_swap
 last_logged_on
 bios_name
 
 VMware:
-host_computer_id
-tools_ver
-tools_stat
-memory - is it more useful to ask from outside?
-power
-boot_time?
-mem_overhead?
+vm_host_computer_id
+vm_tools_ver
+vm_tools_stat
+vm_mem
+vm_power
+vm_boot_time
+vm_mem_overhead
 
 SCOM:
-bme?
-mem_perf_id
-cpu_perf_id
+sc_mem_perf_id
+sc_cpu_perf_id
 
 EPO:
-update_time
-platform designation? (i.e. Server)
-data version
+ep_update_time
+ep_group
+ep_dat_ver
 
 WSUS:
-last_sync
-client_version
-approved
-pending_reboot
-not_installed
-installed
-failed
-downloaded
+ws_last_sync
+ws_client_version
+ws_approved
+ws_pending_reboot
+ws_not_installed
+ws_installed
+ws_failed
+ws_downloaded
 
 Avamar:
 error_code_summary
@@ -55,6 +58,10 @@ error_code
 status_code_summary
 status_code
 ...
+
+Akorri:
+
+
 
 Health: (computed on the fly??)
 
