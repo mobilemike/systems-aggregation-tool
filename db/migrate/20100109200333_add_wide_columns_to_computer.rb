@@ -16,7 +16,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :ip, :integer, :limit => 8
     add_column :computers, :last_logged_on, :string
     add_column :computers, :mac, :string
-    add_column :computers, :mem_baloon, :integer
+    add_column :computers, :mem_balloon, :integer
     add_column :computers, :mem_free, :integer
     add_column :computers, :mem_reservation, :integer
     add_column :computers, :mem_swap, :integer
@@ -49,7 +49,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :ip
     remove_column :computers, :last_logged_on
     remove_column :computers, :mac
-    remove_column :computers, :mem_baloon
+    remove_column :computers, :mem_balloon
     remove_column :computers, :mem_free
     remove_column :computers, :mem_reservation
     remove_column :computers, :mem_swap

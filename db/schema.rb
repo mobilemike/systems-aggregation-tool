@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100109200333) do
+ActiveRecord::Schema.define(:version => 20100114023216) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -75,8 +75,9 @@ ActiveRecord::Schema.define(:version => 20100109200333) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
-    t.float    "cpu_reaady"
+    t.float    "cpu_ready"
     t.string   "disposition"
+    t.integer  "mem_baloon"
     t.string   "bios_name"
     t.string   "bios_ver"
     t.integer  "cpu_count"
@@ -88,12 +89,12 @@ ActiveRecord::Schema.define(:version => 20100109200333) do
     t.boolean  "host"
     t.integer  "host_computer_id"
     t.string   "hp_mgmt_ver"
-    t.integer  "ilo_ip",           :limit => 8
+    t.integer  "ilo_ip",                   :limit => 8
     t.datetime "install_date"
-    t.integer  "ip",               :limit => 8
+    t.integer  "ip",                       :limit => 8
     t.string   "last_logged_on"
     t.string   "mac"
-    t.integer  "mem_baloon"
+    t.integer  "mem_balloon"
     t.integer  "mem_free"
     t.integer  "mem_reservation"
     t.integer  "mem_swap"
@@ -104,9 +105,15 @@ ActiveRecord::Schema.define(:version => 20100109200333) do
     t.string   "os_vendor"
     t.string   "os_version"
     t.string   "serial_number"
-    t.integer  "subnet_mask",      :limit => 8
+    t.integer  "subnet_mask",              :limit => 8
     t.float    "vcpu_efficiency"
     t.float    "vcpu_used"
+    t.integer  "health_ak_cpu"
+    t.datetime "ak_cpu_last_modified"
+    t.integer  "health_ak_storage"
+    t.datetime "ak_storage_last_modified"
+    t.integer  "health_ak_mem"
+    t.datetime "ak_mem_last_modified"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
