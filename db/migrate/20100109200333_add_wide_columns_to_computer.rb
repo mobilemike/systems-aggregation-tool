@@ -7,6 +7,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :cpu_ready, :float
     add_column :computers, :cpu_reservation, :integer
     add_column :computers, :cpu_speed, :integer
+    add_column :computers, :description, :text
     add_column :computers, :guest, :boolean
     add_column :computers, :host, :boolean
     add_column :computers, :host_computer_id, :integer
@@ -22,8 +23,11 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :mem_swap, :integer
     add_column :computers, :mem_total, :integer
     add_column :computers, :model, :string
+    add_column :computers, :os_64, :boolean
+    add_column :computers, :os_edition, :string
     add_column :computers, :os_kernel_ver, :string
-    add_column :computers, :os_type, :string
+    add_column :computers, :os_name, :string
+    add_column :computers, :os_sp, :integer
     add_column :computers, :os_vendor, :string
     add_column :computers, :os_version, :string
     add_column :computers, :serial_number, :string
@@ -33,6 +37,10 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
   end
 
   def self.down
+    remove_column :computers, :os_64
+    remove_column :computers, :description
+    remove_column :computers, :os_sp
+    remove_column :computers, :os_edition
     remove_column :computers, :bios_name
     remove_column :computers, :bios_ver
     remove_column :computers, :cpu_count
@@ -56,7 +64,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :mem_total
     remove_column :computers, :model
     remove_column :computers, :os_kernel_ver
-    remove_column :computers, :os_type
+    remove_column :computers, :os_name
     remove_column :computers, :os_vendor
     remove_column :computers, :os_version
     remove_column :computers, :serial_number

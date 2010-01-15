@@ -9,6 +9,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: computers
@@ -18,15 +20,15 @@ end
 #  created_at               :datetime
 #  updated_at               :datetime
 #  owner_id                 :integer
-#  cpu_ready                :float
 #  disposition              :string(255)
-#  mem_baloon               :integer
 #  bios_name                :string(255)
 #  bios_ver                 :string(255)
 #  cpu_count                :integer
 #  cpu_name                 :string(255)
+#  cpu_ready                :float
 #  cpu_reservation          :integer
 #  cpu_speed                :integer
+#  description              :text
 #  guest                    :boolean
 #  host                     :boolean
 #  host_computer_id         :integer
@@ -42,8 +44,11 @@ end
 #  mem_swap                 :integer
 #  mem_total                :integer
 #  model                    :string(255)
+#  os_64                    :boolean
+#  os_edition               :string(255)
 #  os_kernel_ver            :string(255)
-#  os_type                  :string(255)
+#  os_name                  :string(255)
+#  os_sp                    :integer
 #  os_vendor                :string(255)
 #  os_version               :string(255)
 #  serial_number            :string(255)
