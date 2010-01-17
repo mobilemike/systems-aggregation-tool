@@ -8,7 +8,7 @@ function generateHealthTooltips()
     $j(this).qtip(
     {
       content: {text: 'Loading...',
-                url: 'cmdb/computers/' + $j(this).children('img').attr('alt') + '/health',
+                url: '/cmdb/computers/' + $j(this).children('img').attr('alt') + '/health',
                 prerender: true},
       position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35}},
       style: {name: 'light', width: 400,

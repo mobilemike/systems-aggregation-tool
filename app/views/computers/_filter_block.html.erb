@@ -1,0 +1,28 @@
+<ul class="nav main">
+  <li>
+    <%= link_to("Status", :controller => :computers, :owner_initials => params[:owner_initials],
+                :status => nil)%>
+    <ul>
+      <%= content_tag(:li, link_to("All", :controller => :computers, :owner_initials => params[:owner_initials],
+                                   :status => nil))%>
+      <% Computer.aasm_states_for_select.each do |s| %>
+        <%= content_tag(:li, link_to(s[0], :controller => :computers, :owner_initials => params[:owner_initials],
+                                     :status => s[1])) %>
+      <% end %>
+    </ul>
+  </li>
+  <li>
+    <%= link_to("Owner", :controller => :computers, :owner_initials => nil, :status => params[:status])%>
+    <ul>
+      <%= content_tag(:li, link_to("All", :controller => :computers, :owner_initials => nil, :status => params[:status]))%>
+      <% Owner.all_sorted_by_name.each do |owner| %>
+        <%= content_tag(:li, link_to(owner.name, :controller => :computers, :owner_initials => owner.initials, 
+                                     :status => params[:status]))%>
+      <% end %>
+    </ul>
+  </li>
+  <li class="secondary">
+    <%= link_to("Download CSV", :controller => :computers, :owner_initials => params[:owner_initials],
+                 :status =>  params[:status], :format => :csv)%>
+  </li>
+</ul>

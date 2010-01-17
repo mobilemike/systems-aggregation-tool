@@ -1,22 +1,22 @@
 class Computer < ActiveRecord::Base
   include AASM
 
-  has_one :scom_computer
-  has_one :akorri_server_storage
-  has_one :epo_computer
-  has_one :vmware_computer
-  has_one :wsus_computer
-  has_one :avamar_computer
+  has_one :scom_computer, :dependent => :destroy
+  has_one :akorri_server_storage, :dependent => :destroy
+  has_one :epo_computer, :dependent => :destroy
+  has_one :vmware_computer, :dependent => :destroy
+  has_one :wsus_computer, :dependent => :destroy
+  has_one :avamar_computer, :dependent => :destroy
   belongs_to :owner
 
   aasm_column :disposition
   aasm_initial_state :unknown
   aasm_state :unknown
-  aasm_state :lab
-  aasm_state :preproduction
+  aasm_state :nonproduction
   aasm_state :production
   aasm_state :decomissioned
   aasm_state :archived
+  aasm_state :remove
   
   def status
     self.disposition ? self.disposition.capitalize : "-"
@@ -26,19 +26,23 @@ class Computer < ActiveRecord::Base
     self.disposition = disposition.downcase
   end
   
+  def self.states
+    self.aasm_states.map {|s| s.display_name}
+  end
+  
   def health
     healths = [0]
     healths << self.scom_computer.health if self.scom_computer
     healths << self.akorri_server_storage.health if self.akorri_server_storage
     healths << self.epo_computer.dat_health if self.epo_computer
-    healths << self.epo_computer.update_health if self.epo_computer
+    # healths << self.epo_computer.update_health if self.epo_computer
     healths << self.vmware_computer.cpu_health if self.vmware_computer
     healths << self.vmware_computer.memory_health if self.vmware_computer
     healths << self.avamar_computer.health if self.avamar_computer
     healths.max
   end
   
-  def self.find_all_sorted_by_health(computer_filter='')
+  def self.find_all_sorted_by_health(conditions=[])
     computers = self.find(:all,
               :include => [ :scom_computer, :akorri_server_storage, :epo_computer,
                             :vmware_computer, :wsus_computer, :avamar_computer, :owner ],
@@ -49,7 +53,7 @@ class Computer < ActiveRecord::Base
                          vmware_computers.cpu_health DESC,
                          vmware_computers.memory_health DESC,
                          computers.fqdn",
-              :conditions => ['computers.fqdn LIKE ?', '%' + computer_filter + '%' ]
+              :conditions => conditions
               )
     computers.sort_by(&:health).reverse
   end
@@ -87,9 +91,8 @@ class Computer < ActiveRecord::Base
   end
   
   def os
-    return self.epo_computer.ip if self.epo_computer
-    return self.vmware_computer.ip if self.vmware_computer
-    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
+    return self.scom_computer.os if self.scom_computer
+    return self.akorri_server_storage.os_version if self.akorri_server_storage
     return "-"
   end
   

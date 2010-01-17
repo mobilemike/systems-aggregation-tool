@@ -1,13 +1,13 @@
-class ComputersController < ApplicationController
+class ComputersController < ApplicationController 
+  before_filter :update_table_config
+  
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar]
+    c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar, :retention]
     c.actions.exclude :create, :delete, :nested
     c.show.link.label = "Detail"
     c.update.link = false
     c.formats << :csv
-    c.action_links.add 'index', :parameters => {:format => 'csv'}, :label => 'Download CSV', :page => true
-    c.action_links.add 'index', :controller => 'owners', :label => 'View by Owner', :page => true
-    
+   
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
                                    :epo_computer, :vmware_computer, :avamar_computer]
@@ -33,6 +33,9 @@ class ComputersController < ApplicationController
     c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:avamar].sort_by :method => 'avamar_computer ? avamar_computer.bytes_scanned : -1'
     c.columns[:avamar].description = "Avamar Protection"
+    c.columns[:retention].label = "Retention"
+    c.columns[:retention].sort_by :method => 'avamar_computer ? avamar_computer.retention_policy : ""'
+    c.columns[:retention].description = "Retention"
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
   end
@@ -53,30 +56,58 @@ class ComputersController < ApplicationController
   end
   
   def list_respond_to_csv
-    @computers = Computer.find_all_sorted_by_health
+    @computers = Computer.find_all_sorted_by_health(conditions_for_collection)
   end
   
 private
 
-    def chart_maker(*args)
-      options = {
-        :title => "Performance"
-      }
-      options.update(args.extract_options!)
-      
-      values = case options[:type]
-      when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
-      when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
-      end
-        
-      OFC::OpenFlashChart.new do |c|
-        c.elements = []
-        c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
-                                           :color => "#DB1750",
-                                           :width => 3,
-                                           :values => values)
-        c.title = OFC::Title.new(:text => options[:title])
-      end
+  def conditions_for_collection
+    conditions = []
+    conditions << ["computers.disposition = ?", params[:status]] if params[:status]
+    conditions << ["computers.owner_id = ?", @owner.id] if params[:owner_initials]
+    Computer.merge_conditions(*conditions)
+  end
+
+  def update_table_config
+    custom_label = "Computers"
+    excludes = []
+    params[:search] = nil if params[:search] == ""
+    if params[:status]
+      custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
+      excludes << :status
     end
+    if params[:owner_initials]
+      @owner = Owner.find_by_initials(params[:owner_initials].upcase)
+      custom_label = "#{@owner.first_name}'s #{custom_label}"
+      excludes << :owner
+    end
+    if params[:search]
+      custom_label = "#{custom_label} (#{params[:search]})"
+    end
+    params[:page] ||= 1
+    active_scaffold_config.columns.exclude(*excludes)
+    active_scaffold_config.label = custom_label
+  end
+
+  def chart_maker(*args)
+    options = {
+      :title => "Performance"
+    }
+    options.update(args.extract_options!)
+    
+    values = case options[:type]
+    when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
+    when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
+    end
+      
+    OFC::OpenFlashChart.new do |c|
+      c.elements = []
+      c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
+                                         :color => "#DB1750",
+                                         :width => 3,
+                                         :values => values)
+      c.title = OFC::Title.new(:text => options[:title])
+    end
+  end
   
 end

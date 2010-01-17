@@ -1,93 +1,10 @@
 body {
-  background-color: #4B7399;
-  font-family: Verdana, Helvetica, Arial;
-  font-size: 14px;
+  background-color: #363F59;
 }
 
-a img {
-  border: none;
-}
-
-a {
-  color: #0000FF;
-}
-
-.clear {
-  clear: both;
-  height: 0;
-  overflow: hidden;
-}
-
-#container {
-  width: 75%;
-  margin: 0 auto;
-  background-color: #FFF;
-  padding: 20px 40px;
-  border: solid 1px black;
-  margin-top: 20px;
-}
-
-#flash_notice, #flash_error {
-  padding: 5px 8px;
-  margin: 10px 0;
-}
-
-#flash_notice {
-  background-color: #CFC;
-  border: solid 1px #6C6;
-}
-
-#flash_error {
-  background-color: #FCC;
-  border: solid 1px #C66;
-}
-
-.fieldWithErrors {
-  display: inline;
-}
-
-#errorExplanation {
-  width: 400px;
-  border: 2px solid #CF0000;
-  padding: 0px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-}
-
-#errorExplanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: 0;
-  background-color: #c00;
-  color: #fff;
-}
-
-#errorExplanation p {
-  color: #333;
-  margin-bottom: 0;
-  padding: 8px;
-}
-
-#errorExplanation ul {
-  margin: 2px 24px;
-}
-
-td img {
-  margin: auto;
-}
-
-#header {
-  float: left;
-}
-
-#filter {
-  margin-top: 1.5em;
-  display: block;
-  float: right;
-  width: 300px;
+.container_16 {
+  background:#fff;
+  min-width: 750px;
 }
 
 span.health-error {
@@ -112,15 +29,43 @@ span.health-empty {
   color: #999;
 }
 
+#as-content-box {
+  padding: 0;
+}
+
+.active-scaffold td img {
+  margin: auto;
+}
+
 .active-scaffold tr.record td, .active-scaffold th {
   text-align: center;
+  vertical-align: middle;
+  line-height: 1.2em;
 }
 
 .active-scaffold th img {
   margin-top: 2px;
 }
 
+.active-scaffold th a {
+  padding: 2px 15px 2px 15px;
+}
+
 .active-scaffold tr.record td select {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
+  letter-spacing: 0;
+}
+
+span.in_place_editor_field {
+  cursor: pointer;
+}
+
+input.search.text {
+	width:46%;
+}
+
+input.search.button, a.search.link {
+	width:24%;
+	margin-left:2%;
 }

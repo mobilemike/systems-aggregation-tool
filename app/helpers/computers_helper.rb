@@ -27,7 +27,7 @@ module ComputersHelper
     def active_scaffold_inplace_collection_edit(record, column, collection)
       formatted_column = record.send(column.name)
       id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}
-      tag_options = {:tag => "span", :id => element_cell_id(id_options), :class => "in_place_editor_field"}
+      tag_options = {:id => element_cell_id(id_options), :class => "in_place_editor_field"}
       in_place_collection_editor_options = {:url => {:controller => params_for[:controller],
                                                      :action => "update_column",
                                                      :column => column.name,
@@ -66,15 +66,20 @@ module ComputersHelper
       
       content_tag(:span, bytes_protected, :class => span_class)
     end
+    
+    def retention_column computer
+      computer.avamar_computer ? computer.avamar_computer.retention_policy.split[0] : "-"
+    end
    
    def csv_header
-     header = '"FQDN","Health","WSUS","Owner","Virtual","IP","Install Date","OU","Serial Number",'
+     header = '"FQDN","Status","Health","WSUS","Owner","Virtual","IP","OS","Install Date","OU","Serial Number",'
      header += '"Model","Avamar Dataset","Avamar Schedule","Avamar Retention Policy",'
      header += '"Avamar MB Protected", "Avamar MB New"'
    end
    
    def csv_row c
      results = "\"#{c.fqdn}\""
+     results += ",\"#{c.status}\""
      results += case c.health
                   when 1 then ',"Normal"'
                   when 2 then ',"Warning"'
@@ -85,7 +90,8 @@ module ComputersHelper
      results += ",\"#{c.owner ? c.owner.name : "-"}\""
      results += ",\"#{c.virtual? ? "Virtual" : "Physical"}\""
      results += ",\"#{c.ip}\""
-     results += ",\"#{c.scom_computer ? c.scom_computer.install_date.strftime("%m/%d/%Y %I:%M %p") : "-"}\""    
+     results += ",\"#{c.os}\""
+     results += ",\"#{c.scom_computer ? c.scom_computer.install_date ? c.scom_computer.install_date.strftime("%m/%d/%Y %I:%M %p") : "-" : "-"}\""    
      results += ",\"#{c.scom_computer ? c.scom_computer.ou : "-"}\""
      results += ",\"#{c.scom_computer ? c.scom_computer.serial_number : "-"}\""
      results += ",\"#{c.scom_computer ? c.scom_computer.model : "-"}\""

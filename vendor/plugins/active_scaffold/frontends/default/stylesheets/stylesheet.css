@@ -10,14 +10,9 @@
 .active-scaffold form,
 .active-scaffold table,
 .active-scaffold p,
-.active-scaffold div,
 .active-scaffold fieldset {
 margin: 0;
 padding: 0;
-}
-
-.active-scaffold {
-margin: 5px 0;
 }
 
 .active-scaffold table {

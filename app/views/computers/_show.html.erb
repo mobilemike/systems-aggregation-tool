@@ -1,7 +1,7 @@
-<h4><%= active_scaffold_config.show.label -%></h4>
+<h3><%= "Details for " + @record.name -%></h3>
 
 <% if @record.scom_computer then %>
-<h3>SCOM</h3>
+<h4>SCOM</h4>
 <ul>
   <% @record.scom_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
@@ -10,7 +10,7 @@
 <% end %>
 
 <% if @record.akorri_server_storage then %>
-<h3>Akorri</h3>
+<h4>Akorri</h4>
 <ul>
   <% @record.akorri_server_storage.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
@@ -19,7 +19,7 @@
 <% end %>
 
 <% if @record.epo_computer then %>
-<h3>EPO</h3>
+<h4>EPO</h4>
 <ul>
   <% @record.epo_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
@@ -28,7 +28,7 @@
 <% end %>
 
 <% if @record.vmware_computer then %>
-<h3>VMware</h3>
+<h4>VMware</h4>
 <ul>
   <% @record.vmware_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
@@ -37,7 +37,7 @@
 <% end %>
 
 <% if @record.wsus_computer then %>
-<h3>WSUS</h3>
+<h4>WSUS</h4>
 <ul>
   <% @record.wsus_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
@@ -46,7 +46,7 @@
 <% end %>
 
 <% if @record.avamar_computer then %>
-<h3>Avamar</h3>
+<h4>Avamar</h4>
 <ul>
   <% @record.avamar_computer.attributes.each do |a, v| %>
     <li><strong><%=h a %>: </strong><%=h v %></li>
