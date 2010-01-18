@@ -2,6 +2,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
   def self.up
     add_column :computers, :bios_name, :string
     add_column :computers, :bios_ver, :string
+    add_column :computers, :boot_time, :datetime
     add_column :computers, :cpu_count, :integer
     add_column :computers, :cpu_name, :string
     add_column :computers, :cpu_ready, :float
@@ -30,8 +31,10 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :os_sp, :integer
     add_column :computers, :os_vendor, :string
     add_column :computers, :os_version, :string
+    add_column :computers, :power, :boolean
     add_column :computers, :serial_number, :string
     add_column :computers, :subnet_mask_int, :integer
+    add_column :computers, :vtools_ver, :integer
     add_column :computers, :vcpu_efficiency, :float
     add_column :computers, :vcpu_used, :float
   end
@@ -71,5 +74,9 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :subnet_mask
     remove_column :computers, :vcpu_efficiency
     remove_column :computers, :vcpu_used
+    remove_column :computers, :boot_time
+    remove_column :computers, :vtools_ver
+    remove_column :computers, :power
+    
   end
 end

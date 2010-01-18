@@ -78,16 +78,14 @@ class Computer < ActiveRecord::Base
 private
   
   def i_to_ip(int)
-    IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s
+    IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
   end
   
   def ip_to_i(str)
-    IPAddr.new(str).to_i - IP_PAD
+    IPAddr.new(str).to_i - IP_PAD unless str.nil?
   end
 
 end
-
-
 
 # == Schema Information
 #
@@ -101,6 +99,7 @@ end
 #  disposition              :string(255)
 #  bios_name                :string(255)
 #  bios_ver                 :string(255)
+#  boot_time                :datetime
 #  cpu_count                :integer
 #  cpu_name                 :string(255)
 #  cpu_ready                :float
@@ -129,8 +128,10 @@ end
 #  os_sp                    :integer
 #  os_vendor                :string(255)
 #  os_version               :string(255)
+#  power                    :boolean
 #  serial_number            :string(255)
 #  subnet_mask_int          :integer
+#  vtools_ver               :integer
 #  vcpu_efficiency          :float
 #  vcpu_used                :float
 #  health_ak_cpu            :integer
@@ -142,5 +143,7 @@ end
 #  health_sc_state          :integer
 #  sc_cpu_perf_id           :integer
 #  sc_mem_perf_id           :integer
+#  ep_last_update           :datetime
+#  ep_dat_version           :integer
+#  health_vm_tools          :integer
 #
-

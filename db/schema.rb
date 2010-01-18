@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100118151411) do
+ActiveRecord::Schema.define(:version => 20100118171021) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20100118151411) do
     t.string   "disposition"
     t.string   "bios_name"
     t.string   "bios_ver"
+    t.datetime "boot_time"
     t.integer  "cpu_count"
     t.string   "cpu_name"
     t.float    "cpu_ready"
@@ -106,8 +107,10 @@ ActiveRecord::Schema.define(:version => 20100118151411) do
     t.integer  "os_sp"
     t.string   "os_vendor"
     t.string   "os_version"
+    t.boolean  "power"
     t.string   "serial_number"
     t.integer  "subnet_mask_int"
+    t.integer  "vtools_ver"
     t.float    "vcpu_efficiency"
     t.float    "vcpu_used"
     t.integer  "health_ak_cpu"
@@ -121,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20100118151411) do
     t.integer  "sc_mem_perf_id"
     t.datetime "ep_last_update"
     t.integer  "ep_dat_version"
+    t.integer  "health_vm_vtools"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
