@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100118171021) do
+ActiveRecord::Schema.define(:version => 20100118195339) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -125,6 +125,20 @@ ActiveRecord::Schema.define(:version => 20100118171021) do
     t.datetime "ep_last_update"
     t.integer  "ep_dat_version"
     t.integer  "health_vm_vtools"
+    t.string   "av_dataset"
+    t.string   "av_retention"
+    t.string   "av_schedule"
+    t.datetime "av_started_at"
+    t.datetime "av_completed_at"
+    t.integer  "av_file_count"
+    t.float    "av_scanned"
+    t.float    "av_new"
+    t.float    "av_modified"
+    t.float    "av_excluded"
+    t.float    "av_skipped"
+    t.integer  "av_file_skipped_count"
+    t.string   "av_status"
+    t.string   "av_error"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
