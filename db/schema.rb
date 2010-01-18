@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100117224028) do
+ActiveRecord::Schema.define(:version => 20100118151411) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -119,6 +119,8 @@ ActiveRecord::Schema.define(:version => 20100117224028) do
     t.integer  "health_sc_state"
     t.integer  "sc_cpu_perf_id"
     t.integer  "sc_mem_perf_id"
+    t.datetime "ep_last_update"
+    t.integer  "ep_dat_version"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
