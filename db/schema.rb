@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100114023216) do
+ActiveRecord::Schema.define(:version => 20100117224028) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -88,16 +88,16 @@ ActiveRecord::Schema.define(:version => 20100114023216) do
     t.boolean  "host"
     t.integer  "host_computer_id"
     t.string   "hp_mgmt_ver"
-    t.integer  "ilo_ip",                   :limit => 8
+    t.integer  "ilo_ip_int"
     t.datetime "install_date"
-    t.integer  "ip",                       :limit => 8
+    t.integer  "ip_int"
     t.string   "last_logged_on"
     t.string   "mac"
     t.integer  "mem_balloon"
-    t.integer  "mem_free"
     t.integer  "mem_reservation"
     t.integer  "mem_swap"
     t.integer  "mem_total"
+    t.integer  "mem_used"
     t.string   "model"
     t.boolean  "os_64"
     t.string   "os_edition"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(:version => 20100114023216) do
     t.string   "os_vendor"
     t.string   "os_version"
     t.string   "serial_number"
-    t.integer  "subnet_mask",              :limit => 8
+    t.integer  "subnet_mask_int"
     t.float    "vcpu_efficiency"
     t.float    "vcpu_used"
     t.integer  "health_ak_cpu"
@@ -116,6 +116,9 @@ ActiveRecord::Schema.define(:version => 20100114023216) do
     t.datetime "ak_storage_last_modified"
     t.integer  "health_ak_mem"
     t.datetime "ak_mem_last_modified"
+    t.integer  "health_sc_state"
+    t.integer  "sc_cpu_perf_id"
+    t.integer  "sc_mem_perf_id"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"

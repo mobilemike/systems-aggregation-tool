@@ -12,16 +12,16 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :host, :boolean
     add_column :computers, :host_computer_id, :integer
     add_column :computers, :hp_mgmt_ver, :string
-    add_column :computers, :ilo_ip, :integer, :limit => 8
+    add_column :computers, :ilo_ip_int, :integer
     add_column :computers, :install_date, :datetime
-    add_column :computers, :ip, :integer, :limit => 8
+    add_column :computers, :ip_int, :integer
     add_column :computers, :last_logged_on, :string
     add_column :computers, :mac, :string
     add_column :computers, :mem_balloon, :integer
-    add_column :computers, :mem_free, :integer
     add_column :computers, :mem_reservation, :integer
     add_column :computers, :mem_swap, :integer
     add_column :computers, :mem_total, :integer
+    add_column :computers, :mem_used, :integer
     add_column :computers, :model, :string
     add_column :computers, :os_64, :boolean
     add_column :computers, :os_edition, :string
@@ -31,16 +31,12 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :os_vendor, :string
     add_column :computers, :os_version, :string
     add_column :computers, :serial_number, :string
-    add_column :computers, :subnet_mask, :integer, :limit => 8
+    add_column :computers, :subnet_mask_int, :integer
     add_column :computers, :vcpu_efficiency, :float
     add_column :computers, :vcpu_used, :float
   end
 
   def self.down
-    remove_column :computers, :os_64
-    remove_column :computers, :description
-    remove_column :computers, :os_sp
-    remove_column :computers, :os_edition
     remove_column :computers, :bios_name
     remove_column :computers, :bios_ver
     remove_column :computers, :cpu_count
@@ -48,6 +44,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :cpu_ready
     remove_column :computers, :cpu_reservation
     remove_column :computers, :cpu_speed
+    remove_column :computers, :description
     remove_column :computers, :guest
     remove_column :computers, :host
     remove_column :computers, :host_computer_id
@@ -63,8 +60,11 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :mem_swap
     remove_column :computers, :mem_total
     remove_column :computers, :model
+    remove_column :computers, :os_64
+    remove_column :computers, :os_edition
     remove_column :computers, :os_kernel_ver
     remove_column :computers, :os_name
+    remove_column :computers, :os_sp
     remove_column :computers, :os_vendor
     remove_column :computers, :os_version
     remove_column :computers, :serial_number

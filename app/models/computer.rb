@@ -1,5 +1,8 @@
+require 'ipaddr'
+
 class Computer < ActiveRecord::Base
   include AASM
+  IP_PAD = 2147483648
 
   has_one :scom_computer, :dependent => :destroy
   has_one :akorri_server_storage, :dependent => :destroy
@@ -44,25 +47,8 @@ class Computer < ActiveRecord::Base
   
   def self.find_all_sorted_by_health(conditions=[])
     computers = self.find(:all,
-              :include => [ :scom_computer, :akorri_server_storage, :epo_computer,
-                            :vmware_computer, :wsus_computer, :avamar_computer, :owner ],
-              :order => "scom_computers.health DESC,
-                         akorri_server_storages.health DESC,
-                         epo_computers.dat_health DESC,
-                         epo_computers.update_health DESC,
-                         vmware_computers.cpu_health DESC,
-                         vmware_computers.memory_health DESC,
-                         computers.fqdn",
-              :conditions => conditions
-              )
-    computers.sort_by(&:health).reverse
-  end
-  
-  def ip
-    return self.epo_computer.ip if self.epo_computer
-    return self.vmware_computer.ip if self.vmware_computer
-    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
-    return "-"
+                          :order => "computers.fqdn",
+                          :conditions => conditions)
   end
   
   def name
@@ -73,30 +59,35 @@ class Computer < ActiveRecord::Base
     self.fqdn.split(".", 2)[1] if self.fqdn
   end
   
-  def virtual?
-    virtual = false
-    
-    if self.wsus_computer
-      if self.wsus_computer.model == "VMware Virtual Platform"
-        virtual = true
-      end
-    end
-    
-    if self.vmware_computer
-      unless self.vmware_computer.os_family == "esx" || self.vmware_computer.os_family == "embeddesEsx"
-        virtual = true
-      end
-    end
-    virtual
+  def ip=(ip_str)
+    self.ip_int = ip_to_i(ip_str)
   end
   
-  def os
-    return self.scom_computer.os if self.scom_computer
-    return self.akorri_server_storage.os_version if self.akorri_server_storage
-    return "-"
+  def ip
+    i_to_ip(self.ip_int)
   end
   
+  def ilo_ip=(ip_str)
+    self.ilo_ip_int = ip_to_i(ip_str)
+  end
+
+  def ilo_ip
+    i_to_ip(self.ilo_ip_int)
+  end
+  
+private
+  
+  def i_to_ip(int)
+    IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s
+  end
+  
+  def ip_to_i(str)
+    IPAddr.new(str).to_i - IP_PAD
+  end
+
 end
+
+
 
 # == Schema Information
 #
@@ -120,16 +111,16 @@ end
 #  host                     :boolean
 #  host_computer_id         :integer
 #  hp_mgmt_ver              :string(255)
-#  ilo_ip                   :integer(8)
+#  ilo_ip_int               :integer
 #  install_date             :datetime
-#  ip                       :integer(8)
+#  ip_int                   :integer
 #  last_logged_on           :string(255)
 #  mac                      :string(255)
 #  mem_balloon              :integer
-#  mem_free                 :integer
 #  mem_reservation          :integer
 #  mem_swap                 :integer
 #  mem_total                :integer
+#  mem_used                 :integer
 #  model                    :string(255)
 #  os_64                    :boolean
 #  os_edition               :string(255)
@@ -139,7 +130,7 @@ end
 #  os_vendor                :string(255)
 #  os_version               :string(255)
 #  serial_number            :string(255)
-#  subnet_mask              :integer(8)
+#  subnet_mask_int          :integer
 #  vcpu_efficiency          :float
 #  vcpu_used                :float
 #  health_ak_cpu            :integer
@@ -148,4 +139,8 @@ end
 #  ak_storage_last_modified :datetime
 #  health_ak_mem            :integer
 #  ak_mem_last_modified     :datetime
+#  health_sc_state          :integer
+#  sc_cpu_perf_id           :integer
+#  sc_mem_perf_id           :integer
 #
+
