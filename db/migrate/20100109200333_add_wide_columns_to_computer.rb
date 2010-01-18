@@ -1,5 +1,6 @@
 class AddWideColumnsToComputer < ActiveRecord::Migration
   def self.up
+    add_column :computers, :bios_date, :date
     add_column :computers, :bios_name, :string
     add_column :computers, :bios_ver, :string
     add_column :computers, :boot_time, :datetime
@@ -18,6 +19,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :ip_int, :integer
     add_column :computers, :last_logged_on, :string
     add_column :computers, :mac, :string
+    add_column :computers, :make, :string
     add_column :computers, :mem_balloon, :integer
     add_column :computers, :mem_reservation, :integer
     add_column :computers, :mem_swap, :integer
@@ -40,6 +42,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
   end
 
   def self.down
+    remove_column :computers, :bios_date
     remove_column :computers, :bios_name
     remove_column :computers, :bios_ver
     remove_column :computers, :cpu_count
@@ -57,6 +60,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :ip
     remove_column :computers, :last_logged_on
     remove_column :computers, :mac
+    remove_column :computers, :make
     remove_column :computers, :mem_balloon
     remove_column :computers, :mem_free
     remove_column :computers, :mem_reservation

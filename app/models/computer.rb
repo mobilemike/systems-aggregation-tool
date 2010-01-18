@@ -87,6 +87,7 @@ private
 
 end
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -97,6 +98,7 @@ end
 #  updated_at               :datetime
 #  owner_id                 :integer
 #  disposition              :string(255)
+#  bios_date                :date
 #  bios_name                :string(255)
 #  bios_ver                 :string(255)
 #  boot_time                :datetime
@@ -115,6 +117,7 @@ end
 #  ip_int                   :integer
 #  last_logged_on           :string(255)
 #  mac                      :string(255)
+#  make                     :string(255)
 #  mem_balloon              :integer
 #  mem_reservation          :integer
 #  mem_swap                 :integer
@@ -145,5 +148,20 @@ end
 #  sc_mem_perf_id           :integer
 #  ep_last_update           :datetime
 #  ep_dat_version           :integer
-#  health_vm_tools          :integer
+#  health_vm_vtools         :integer
+#  av_dataset               :string(255)
+#  av_retention             :string(255)
+#  av_schedule              :string(255)
+#  av_started_at            :datetime
+#  av_completed_at          :datetime
+#  av_file_count            :integer
+#  av_scanned               :float
+#  av_new                   :float
+#  av_modified              :float
+#  av_excluded              :float
+#  av_skipped               :float
+#  av_file_skipped_count    :integer
+#  av_status                :string(255)
+#  av_error                 :string(255)
 #
+
