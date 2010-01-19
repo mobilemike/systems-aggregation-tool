@@ -4,13 +4,9 @@ class Computer < ActiveRecord::Base
   include AASM
   IP_PAD = 2147483648
 
-  has_one :scom_computer, :dependent => :destroy
-  has_one :akorri_server_storage, :dependent => :destroy
-  has_one :epo_computer, :dependent => :destroy
-  has_one :vmware_computer, :dependent => :destroy
-  has_one :wsus_computer, :dependent => :destroy
-  has_one :avamar_computer, :dependent => :destroy
   belongs_to :owner
+  has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
+          :primary_key => "scom_cpu_perf_id"
 
   aasm_column :disposition
   aasm_initial_state :unknown
@@ -34,15 +30,26 @@ class Computer < ActiveRecord::Base
   end
   
   def health
-    healths = [0]
-    healths << self.scom_computer.health if self.scom_computer
-    healths << self.akorri_server_storage.health if self.akorri_server_storage
-    healths << self.epo_computer.dat_health if self.epo_computer
-    # healths << self.epo_computer.update_health if self.epo_computer
-    healths << self.vmware_computer.cpu_health if self.vmware_computer
-    healths << self.vmware_computer.memory_health if self.vmware_computer
-    healths << self.avamar_computer.health if self.avamar_computer
-    healths.max
+    1
+  end
+  
+  def av_health
+    case self.av_status
+      when /failed/ then 3
+      when /successfully/ then 1
+      else 2
+    end
+  end
+  
+  def us_health
+    case us_outstanding
+      when 0 then 1
+      when 1..(1.0/0) then 3
+    end
+  end
+
+  def us_outstanding
+    updates_approved + updates_pending_reboot + updates_failed
   end
   
   def self.find_all_sorted_by_health(conditions=[])
@@ -73,6 +80,10 @@ class Computer < ActiveRecord::Base
 
   def ilo_ip
     i_to_ip(self.ilo_ip_int)
+  end
+  
+  def os_long
+    [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
   end
   
 private

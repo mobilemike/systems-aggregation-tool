@@ -1,18 +1,18 @@
 <table>
   <tr>
-    <%= content_tag(:td, 'SCOM', :class => 'health') if @computer.scom_computer %>
-    <%= content_tag(:td, 'Virus DAT', :class => 'health') if @computer.epo_computer %>
-    <%= content_tag(:td, 'VMware CPU', :class => 'health') if @computer.vmware_computer %>
-    <%= content_tag(:td, 'VMware Memory', :class => 'health') if @computer.vmware_computer %>
-    <%= content_tag(:td, 'Akorri Storage', :class => 'health') if @computer.akorri_server_storage %>
-    <%= content_tag(:td, 'Avamar', :class => 'health') if @computer.avamar_computer %>
+    <%= content_tag(:td, 'SCOM', :class => 'health') if @computer.health_sc_state %>
+    <%=# content_tag(:td, 'Virus DAT', :class => 'health') if @computer.epo_computer %>
+    <%= content_tag(:td, 'CPU', :class => 'health') if @computer.health_ak_cpu %>
+    <%= content_tag(:td, 'Memory', :class => 'health') if @computer.healt_ak_mem %>
+    <%= content_tag(:td, 'Storage', :class => 'health') if @computer.healt_ak_storage %>
+    <%= content_tag(:td, 'Avamar', :class => 'health') if @computer.av_status %>
   </tr>
   <tr>
-    <%= content_tag(:td, food_icon(@computer.scom_computer.health), :class => 'health') if @computer.scom_computer %>
-    <%= content_tag(:td, food_icon(@computer.epo_computer.dat_health), :class => 'health') if @computer.epo_computer %>
-    <%= content_tag(:td, food_icon(@computer.vmware_computer.cpu_health), :class => 'health') if @computer.vmware_computer %>
-    <%= content_tag(:td, food_icon(@computer.vmware_computer.memory_health), :class => 'health') if @computer.vmware_computer %>
-    <%= content_tag(:td, food_icon(@computer.akorri_server_storage.health), :class => 'health') if @computer.akorri_server_storage %>
-    <%= content_tag(:td, food_icon(@computer.avamar_computer.health), :class => 'health') if @computer.avamar_computer %>
+    <%= content_tag(:td, food_icon(@computer.health_sc_state), :class => 'health') if @computer.health_sc_state %>
+    <%=# content_tag(:td, food_icon(@computer.epo_computer.dat_health), :class => 'health') if @computer.epo_computer %>
+    <%= content_tag(:td, food_icon(@computer.health_ak_cpu), :class => 'health') if @computer.health_ak_cpu %>
+    <%= content_tag(:td, food_icon(@computer.health_ak_mem), :class => 'health') if @computer.health_ak_mem %>
+    <%= content_tag(:td, food_icon(@computer.health_ak_storage), :class => 'health') if @computer.health_ak_storage %>
+    <%= content_tag(:td, food_icon(@computer.av_health), :class => 'health') if @computer.av_status %>
   </tr>
 </table>
