@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100118195339) do
+ActiveRecord::Schema.define(:version => 20100119013145) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -141,6 +141,14 @@ ActiveRecord::Schema.define(:version => 20100118195339) do
     t.integer  "av_file_skipped_count"
     t.string   "av_status"
     t.string   "av_error"
+    t.datetime "us_last_sync"
+    t.integer  "us_unknown"
+    t.integer  "us_not_installed"
+    t.integer  "us_downloaded"
+    t.integer  "us_installed"
+    t.integer  "us_failed"
+    t.integer  "us_pending_reboot"
+    t.integer  "us_approved"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
