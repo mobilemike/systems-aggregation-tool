@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091203025341) do
+ActiveRecord::Schema.define(:version => 20100119013145) do
 
   create_table "akorri_server_storages", :force => true do |t|
     t.integer  "health"
@@ -76,6 +76,79 @@ ActiveRecord::Schema.define(:version => 20091203025341) do
     t.datetime "updated_at"
     t.integer  "owner_id"
     t.string   "disposition"
+    t.date     "bios_date"
+    t.string   "bios_name"
+    t.string   "bios_ver"
+    t.datetime "boot_time"
+    t.integer  "cpu_count"
+    t.string   "cpu_name"
+    t.float    "cpu_ready"
+    t.integer  "cpu_reservation"
+    t.integer  "cpu_speed"
+    t.text     "description"
+    t.boolean  "guest"
+    t.boolean  "host"
+    t.integer  "host_computer_id"
+    t.string   "hp_mgmt_ver"
+    t.integer  "ilo_ip_int"
+    t.datetime "install_date"
+    t.integer  "ip_int"
+    t.string   "last_logged_on"
+    t.string   "mac"
+    t.string   "make"
+    t.integer  "mem_balloon"
+    t.integer  "mem_reservation"
+    t.integer  "mem_swap"
+    t.integer  "mem_total"
+    t.integer  "mem_used"
+    t.string   "model"
+    t.boolean  "os_64"
+    t.string   "os_edition"
+    t.string   "os_kernel_ver"
+    t.string   "os_name"
+    t.integer  "os_sp"
+    t.string   "os_vendor"
+    t.string   "os_version"
+    t.boolean  "power"
+    t.string   "serial_number"
+    t.integer  "subnet_mask_int"
+    t.integer  "vtools_ver"
+    t.float    "vcpu_efficiency"
+    t.float    "vcpu_used"
+    t.integer  "health_ak_cpu"
+    t.datetime "ak_cpu_last_modified"
+    t.integer  "health_ak_storage"
+    t.datetime "ak_storage_last_modified"
+    t.integer  "health_ak_mem"
+    t.datetime "ak_mem_last_modified"
+    t.integer  "health_sc_state"
+    t.integer  "sc_cpu_perf_id"
+    t.integer  "sc_mem_perf_id"
+    t.datetime "ep_last_update"
+    t.integer  "ep_dat_version"
+    t.integer  "health_vm_vtools"
+    t.string   "av_dataset"
+    t.string   "av_retention"
+    t.string   "av_schedule"
+    t.datetime "av_started_at"
+    t.datetime "av_completed_at"
+    t.integer  "av_file_count"
+    t.float    "av_scanned"
+    t.float    "av_new"
+    t.float    "av_modified"
+    t.float    "av_excluded"
+    t.float    "av_skipped"
+    t.integer  "av_file_skipped_count"
+    t.string   "av_status"
+    t.string   "av_error"
+    t.datetime "us_last_sync"
+    t.integer  "us_unknown",               :default => 0
+    t.integer  "us_not_installed",         :default => 0
+    t.integer  "us_downloaded",            :default => 0
+    t.integer  "us_installed",             :default => 0
+    t.integer  "us_failed",                :default => 0
+    t.integer  "us_pending_reboot",        :default => 0
+    t.integer  "us_approved",              :default => 0
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
