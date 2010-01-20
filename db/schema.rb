@@ -142,13 +142,13 @@ ActiveRecord::Schema.define(:version => 20100119013145) do
     t.string   "av_status"
     t.string   "av_error"
     t.datetime "us_last_sync"
-    t.integer  "us_unknown"
-    t.integer  "us_not_installed"
-    t.integer  "us_downloaded"
-    t.integer  "us_installed"
-    t.integer  "us_failed"
-    t.integer  "us_pending_reboot"
-    t.integer  "us_approved"
+    t.integer  "us_unknown",               :default => 0
+    t.integer  "us_not_installed",         :default => 0
+    t.integer  "us_downloaded",            :default => 0
+    t.integer  "us_installed",             :default => 0
+    t.integer  "us_failed",                :default => 0
+    t.integer  "us_pending_reboot",        :default => 0
+    t.integer  "us_approved",              :default => 0
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"

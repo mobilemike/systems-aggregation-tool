@@ -8,11 +8,13 @@ module ComputersHelper
     updates = "N/A"
     span_class = "health-warning"
     
-    span_class = case computer.us_health
-    when 1 then "health-normal"
-    when 3 then "health-error"
+    if computer.us_last_sync
+      span_class = case computer.us_health
+      when 1 then "health-normal"
+      when 3 then "health-error"
+      end
+      updates = computer.us_outstanding
     end
-    updates = computer.us_outstanding
     
     content_tag(:span, updates, :class => span_class)
   end
@@ -45,8 +47,8 @@ module ComputersHelper
   end
  
   
-  def virtual_column computer
-    case computer.virtual
+  def guest_column computer
+    case computer.guest
     when true then "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
     end
@@ -55,13 +57,16 @@ module ComputersHelper
   def av_scanned_column computer
     bytes_protected = "-"
     span_class = "health-empty"
-    span_class = case computer.av_health
-      when 1 then "health-normal"
-      when 2 then "health-warning"
-      when 3 then "health-error"
+    
+    if computer.av_status
+      span_class = case computer.av_health
+        when 1 then "health-normal"
+        when 2 then "health-warning"
+        when 3 then "health-error"
+      end
+      bytes_protected = number_to_human_size(computer.av_scanned)
     end
-    bytes_protected = number_to_human_size(computer.av_scanned)
-   
+    
     content_tag(:span, bytes_protected, :class => span_class)
   end
   
@@ -82,17 +87,17 @@ module ComputersHelper
                  else ',""'
                end
     results += ",#{c.us_outstanding}"
-    results += ",\"#{c.owner ? c.owner.name}\""
+    results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.virtual ? "Virtual" : "Physical"}\""
     results += ",\"#{c.ip}\""
     results += ",\"#{c.os_long}\""
-    results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p")}\""    
+    results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
     results += ",\"#{c.serial_number}\""
     results += ",\"#{c.make}\""    
     results += ",\"#{c.model}\""
     results += ",\"#{c.av_dataset}\""
     results += ",\"#{c.av_schedule}\""
-    results += ",\"#{c.av_retention\}\""
+    results += ",\"#{c.av_retention}\""
     results += ",#{c.av_scanned}"
     results += ",#{c.av_new}"
     return results

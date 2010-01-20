@@ -2,7 +2,7 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [ :health, :us_outstanding, :status, :name, :domain, :owner, :ip, :virtual, :av_scanned]
+    c.columns = [ :health, :us_outstanding, :status, :name, :domain, :owner, :ip, :guest, :av_scanned]
     c.actions.exclude :create, :delete, :nested
     c.show.link.label = "Detail"
     c.update.link = false
@@ -11,8 +11,10 @@ class ComputersController < ApplicationController
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health].description = "Overall system health"
+    c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
     c.columns[:us_outstanding].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
-    c.columns[:us_outstanding].description = "Outstanding WSUS patches"    
+    c.columns[:us_outstanding].description = "Outstanding WSUS patches"
+    c.columns[:status].sort_by :sql => 'disposition'
     c.columns[:status].description = "Current server status"
     c.columns[:status].inplace_edit = true
     c.columns[:name].sort_by :method => 'name'
@@ -20,10 +22,13 @@ class ComputersController < ApplicationController
     c.columns[:owner].description = "Assigned owner's intials"   
     c.columns[:domain].sort_by :method => 'domain || String.new'
     c.columns[:domain].description = "DNS domain"
+    c.columns[:ip].sort_by :sql => 'ip_int'
     c.columns[:ip].label = "IP"
     c.columns[:ip].description = "Primary IP"
-    c.columns[:virtual].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:virtual].description = "Virtual or Physical"
+    c.columns[:guest].sort_by :sql
+    c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
+    c.columns[:guest].description = "Virtual or Physical"
+    c.columns[:av_scanned].sort_by :sql
     c.columns[:av_scanned].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:av_scanned].description = "Avamar Protection"
     c.list.sorting = [{:health => :desc}]

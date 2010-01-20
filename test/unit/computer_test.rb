@@ -18,6 +18,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -93,5 +94,13 @@ end
 #  av_file_skipped_count    :integer
 #  av_status                :string(255)
 #  av_error                 :string(255)
+#  us_last_sync             :datetime
+#  us_unknown               :integer
+#  us_not_installed         :integer
+#  us_downloaded            :integer
+#  us_installed             :integer
+#  us_failed                :integer
+#  us_pending_reboot        :integer
+#  us_approved              :integer
 #
 

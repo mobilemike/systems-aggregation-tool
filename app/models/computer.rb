@@ -49,7 +49,7 @@ class Computer < ActiveRecord::Base
   end
 
   def us_outstanding
-    updates_approved + updates_pending_reboot + updates_failed
+    us_approved + us_pending_reboot + us_failed
   end
   
   def self.find_all_sorted_by_health(conditions=[])
@@ -97,6 +97,7 @@ private
   end
 
 end
+
 
 
 # == Schema Information
@@ -174,5 +175,13 @@ end
 #  av_file_skipped_count    :integer
 #  av_status                :string(255)
 #  av_error                 :string(255)
+#  us_last_sync             :datetime
+#  us_unknown               :integer
+#  us_not_installed         :integer
+#  us_downloaded            :integer
+#  us_installed             :integer
+#  us_failed                :integer
+#  us_pending_reboot        :integer
+#  us_approved              :integer
 #
 
