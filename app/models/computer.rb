@@ -1,13 +1,12 @@
+require 'ipaddr'
+
 class Computer < ActiveRecord::Base
   include AASM
+  IP_PAD = 2147483648
 
-  has_one :scom_computer, :dependent => :destroy
-  has_one :akorri_server_storage, :dependent => :destroy
-  has_one :epo_computer, :dependent => :destroy
-  has_one :vmware_computer, :dependent => :destroy
-  has_one :wsus_computer, :dependent => :destroy
-  has_one :avamar_computer, :dependent => :destroy
   belongs_to :owner
+  has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
+          :primary_key => "scom_cpu_perf_id"
 
   aasm_column :disposition
   aasm_initial_state :unknown
@@ -31,38 +30,32 @@ class Computer < ActiveRecord::Base
   end
   
   def health
-    healths = [0]
-    healths << self.scom_computer.health if self.scom_computer
-    healths << self.akorri_server_storage.health if self.akorri_server_storage
-    healths << self.epo_computer.dat_health if self.epo_computer
-    # healths << self.epo_computer.update_health if self.epo_computer
-    healths << self.vmware_computer.cpu_health if self.vmware_computer
-    healths << self.vmware_computer.memory_health if self.vmware_computer
-    healths << self.avamar_computer.health if self.avamar_computer
-    healths.max
+    1
+  end
+  
+  def av_health
+    case self.av_status
+      when /failed/ then 3
+      when /successfully/ then 1
+      else 2
+    end
+  end
+  
+  def us_health
+    case us_outstanding
+      when 0 then 1
+      when 1..(1.0/0) then 3
+    end
+  end
+
+  def us_outstanding
+    us_approved + us_pending_reboot + us_failed
   end
   
   def self.find_all_sorted_by_health(conditions=[])
     computers = self.find(:all,
-              :include => [ :scom_computer, :akorri_server_storage, :epo_computer,
-                            :vmware_computer, :wsus_computer, :avamar_computer, :owner ],
-              :order => "scom_computers.health DESC,
-                         akorri_server_storages.health DESC,
-                         epo_computers.dat_health DESC,
-                         epo_computers.update_health DESC,
-                         vmware_computers.cpu_health DESC,
-                         vmware_computers.memory_health DESC,
-                         computers.fqdn",
-              :conditions => conditions
-              )
-    computers.sort_by(&:health).reverse
-  end
-  
-  def ip
-    return self.epo_computer.ip if self.epo_computer
-    return self.vmware_computer.ip if self.vmware_computer
-    return self.scom_computer.ip.split(", ")[0] if self.scom_computer
-    return "-"
+                          :order => "computers.fqdn",
+                          :conditions => conditions)
   end
   
   def name
@@ -73,27 +66,122 @@ class Computer < ActiveRecord::Base
     self.fqdn.split(".", 2)[1] if self.fqdn
   end
   
-  def virtual?
-    virtual = false
-    
-    if self.wsus_computer
-      if self.wsus_computer.model == "VMware Virtual Platform"
-        virtual = true
-      end
-    end
-    
-    if self.vmware_computer
-      unless self.vmware_computer.os_family == "esx" || self.vmware_computer.os_family == "embeddesEsx"
-        virtual = true
-      end
-    end
-    virtual
+  def ip=(ip_str)
+    self.ip_int = ip_to_i(ip_str)
   end
   
-  def os
-    return self.scom_computer.os if self.scom_computer
-    return self.akorri_server_storage.os_version if self.akorri_server_storage
-    return "-"
+  def ip
+    i_to_ip(self.ip_int)
   end
   
+  def ilo_ip=(ip_str)
+    self.ilo_ip_int = ip_to_i(ip_str)
+  end
+
+  def ilo_ip
+    i_to_ip(self.ilo_ip_int)
+  end
+  
+  def os_long
+    [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
+  end
+  
+private
+  
+  def i_to_ip(int)
+    IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
+  end
+  
+  def ip_to_i(str)
+    IPAddr.new(str).to_i - IP_PAD unless str.nil?
+  end
+
 end
+
+
+
+# == Schema Information
+#
+# Table name: computers
+#
+#  id                       :integer         not null, primary key
+#  fqdn                     :string(255)
+#  created_at               :datetime
+#  updated_at               :datetime
+#  owner_id                 :integer
+#  disposition              :string(255)
+#  bios_date                :date
+#  bios_name                :string(255)
+#  bios_ver                 :string(255)
+#  boot_time                :datetime
+#  cpu_count                :integer
+#  cpu_name                 :string(255)
+#  cpu_ready                :float
+#  cpu_reservation          :integer
+#  cpu_speed                :integer
+#  description              :text
+#  guest                    :boolean
+#  host                     :boolean
+#  host_computer_id         :integer
+#  hp_mgmt_ver              :string(255)
+#  ilo_ip_int               :integer
+#  install_date             :datetime
+#  ip_int                   :integer
+#  last_logged_on           :string(255)
+#  mac                      :string(255)
+#  make                     :string(255)
+#  mem_balloon              :integer
+#  mem_reservation          :integer
+#  mem_swap                 :integer
+#  mem_total                :integer
+#  mem_used                 :integer
+#  model                    :string(255)
+#  os_64                    :boolean
+#  os_edition               :string(255)
+#  os_kernel_ver            :string(255)
+#  os_name                  :string(255)
+#  os_sp                    :integer
+#  os_vendor                :string(255)
+#  os_version               :string(255)
+#  power                    :boolean
+#  serial_number            :string(255)
+#  subnet_mask_int          :integer
+#  vtools_ver               :integer
+#  vcpu_efficiency          :float
+#  vcpu_used                :float
+#  health_ak_cpu            :integer
+#  ak_cpu_last_modified     :datetime
+#  health_ak_storage        :integer
+#  ak_storage_last_modified :datetime
+#  health_ak_mem            :integer
+#  ak_mem_last_modified     :datetime
+#  health_sc_state          :integer
+#  sc_cpu_perf_id           :integer
+#  sc_mem_perf_id           :integer
+#  ep_last_update           :datetime
+#  ep_dat_version           :integer
+#  health_vm_vtools         :integer
+#  av_dataset               :string(255)
+#  av_retention             :string(255)
+#  av_schedule              :string(255)
+#  av_started_at            :datetime
+#  av_completed_at          :datetime
+#  av_file_count            :integer
+#  av_scanned               :float
+#  av_new                   :float
+#  av_modified              :float
+#  av_excluded              :float
+#  av_skipped               :float
+#  av_file_skipped_count    :integer
+#  av_status                :string(255)
+#  av_error                 :string(255)
+#  us_last_sync             :datetime
+#  us_unknown               :integer
+#  us_not_installed         :integer
+#  us_downloaded            :integer
+#  us_installed             :integer
+#  us_failed                :integer
+#  us_pending_reboot        :integer
+#  us_approved              :integer
+#
+
