@@ -55,14 +55,14 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :host
     remove_column :computers, :host_computer_id
     remove_column :computers, :hp_mgmt_ver
-    remove_column :computers, :ilo_ip
+    remove_column :computers, :ilo_ip_int
     remove_column :computers, :install_date
-    remove_column :computers, :ip
+    remove_column :computers, :ip_int
     remove_column :computers, :last_logged_on
     remove_column :computers, :mac
     remove_column :computers, :make
     remove_column :computers, :mem_balloon
-    remove_column :computers, :mem_free
+    remove_column :computers, :mem_used
     remove_column :computers, :mem_reservation
     remove_column :computers, :mem_swap
     remove_column :computers, :mem_total
@@ -75,7 +75,7 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     remove_column :computers, :os_vendor
     remove_column :computers, :os_version
     remove_column :computers, :serial_number
-    remove_column :computers, :subnet_mask
+    remove_column :computers, :subnet_mask_int
     remove_column :computers, :vcpu_efficiency
     remove_column :computers, :vcpu_used
     remove_column :computers, :boot_time

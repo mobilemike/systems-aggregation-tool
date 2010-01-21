@@ -12,7 +12,7 @@ class AddWsusToComputer < ActiveRecord::Migration
 
   def self.down
     remove_column :computers, :us_installed
-    remove_column :computers, :us_aproved
+    remove_column :computers, :us_approved
     remove_column :computers, :us_pending_reboot
     remove_column :computers, :us_failed
     remove_column :computers, :us_downloaded

@@ -3,11 +3,7 @@ class ComputersController < ApplicationController
   
   active_scaffold :computer do |c|
     c.columns = [ :health, :us_outstanding, :status, :name, :domain, :owner, :ip, :guest, :av_scanned]
-    c.actions.exclude :create, :delete, :nested
-    c.show.link.label = "Detail"
-    c.update.link = false
-    c.formats << :csv
-   
+    
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health].description = "Overall system health"
@@ -31,8 +27,18 @@ class ComputersController < ApplicationController
     c.columns[:av_scanned].sort_by :sql
     c.columns[:av_scanned].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:av_scanned].description = "Avamar Protection"
+    
+    c.actions.exclude :create, :delete, :nested
+    
+    c.update.link = false
+    
+    c.show.link.label = "Detail"
+    c.show.link.position = :after
+    
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
+    
+    c.formats << :csv
   end
   
   def health
