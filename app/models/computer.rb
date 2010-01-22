@@ -28,28 +28,47 @@ class Computer < ActiveRecord::Base
   def self.states
     self.aasm_states.map {|s| s.display_name}
   end
-  
+
   def health
-    1
+    healths = [0]
+    healths << self.health_sc_state if self.health_sc_state
+    healths << self.health_ak_cpu if self.health_ak_cpu
+    healths << self.health_ak_mem if self.health_ak_mem
+    healths << self.health_ak_storage if self.health_ak_storage  
+    healths << self.health_av_last if self.av_status
+    healths << self.health_ep_dat if self.ep_dat_outdated
+    healths.max
   end
   
-  def av_health
+  def health_av_last
     case self.av_status
-      when /failed/ then 3
-      when /successfully/ then 1
+      when /failed/i then 3
+      when /successfully/i then 1
       else 2
     end
   end
   
-  def us_health
-    case us_outstanding
+  def health_us_outstanding
+    case self.us_outstanding
       when 0 then 1
       when 1..(1.0/0) then 3
     end
   end
 
   def us_outstanding
-    us_approved + us_pending_reboot + us_failed
+    if self.us_approved == nil or self.us_pending_reboot == nil or self.us_failed == nil
+      -1
+    else
+      self.us_approved + self.us_pending_reboot + self.us_failed
+    end
+  end
+  
+  def health_ep_dat
+    case ep_dat_outdated
+      when -(1.0/0)..2 then 1
+      when 3..5 then 2
+      when 6..(1.0/0) then 3
+    end
   end
   
   def self.find_all_sorted_by_health(conditions=[])

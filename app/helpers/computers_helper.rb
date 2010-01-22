@@ -9,7 +9,7 @@ module ComputersHelper
     span_class = "health-warning"
     
     if computer.us_last_sync
-      span_class = case computer.us_health
+      span_class = case computer.health_us_outstanding
       when 1 then "health-normal"
       when 3 then "health-error"
       end
@@ -59,7 +59,7 @@ module ComputersHelper
     span_class = "health-empty"
     
     if computer.av_status
-      span_class = case computer.av_health
+      span_class = case computer.health_av_last
         when 1 then "health-normal"
         when 2 then "health-warning"
         when 3 then "health-error"
