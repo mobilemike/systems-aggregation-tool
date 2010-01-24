@@ -4,7 +4,8 @@ class ComputersController < ApplicationController
   active_scaffold :computer do |c|
     c.columns = [:health, :fqdn, :description, :owner, :status, :ip, :guest, :us_outstanding,
                  :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
-                 :av_message, :health_av_last]
+                 :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
+                 :hp_mgmt_ver, :ilo_ip]
     
     c.columns[:fqdn].label = 'Computer'
     c.columns[:fqdn].description = 'Computer FQDN'
@@ -24,7 +25,7 @@ class ComputersController < ApplicationController
     c.columns[:ip].description = "Primary IP"
     c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:guest].description = "Virtual or Physical"
-    c.columns[:av_overview].sort_by :sql
+    c.columns[:av_overview].sort_by :sql => 'av_scanned'
     c.columns[:av_overview].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
     c.columns[:av_overview].description = "Avamar protection and health"
     c.columns[:av_dataset].label = 'Dataset'
@@ -39,7 +40,11 @@ class ComputersController < ApplicationController
     c.columns[:health_av_last].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health_av_last].sort_by :method => 'health_av_last || 0'
     c.columns[:health_av_last].description = 'Avamar last backup health'
-    
+    c.columns[:bios_ver].label = "BIOS Ver"
+    c.columns[:bios_date].label = "BIOS Date"
+    c.columns[:serial_number].label = "Serial Number"
+    c.columns[:hp_mgmt_ver].label = "HP Agents"
+    c.columns[:ilo_ip].label = "iLO IP"
     
     c.actions.exclude :create, :delete, :nested
     
@@ -102,6 +107,9 @@ private
       col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned, :av_message]
       con = ['computers.av_status IS NOT NULL']
       sort = [{:health_av_last => :desc}]
+    when 'physical'
+      col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
+      con = {:guest => false}
     else
       col = [:health] + base + [:description, :ip, :guest, :us_outstanding, :av_overview]
     end

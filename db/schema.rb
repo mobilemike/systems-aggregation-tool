@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20100121025807) do
     t.integer  "cpu_reservation"
     t.integer  "cpu_speed"
     t.text     "description"
-    t.boolean  "guest"
-    t.boolean  "host"
+    t.boolean  "guest",                    :default => false
+    t.boolean  "host",                     :default => false
     t.integer  "host_computer_id"
     t.string   "hp_mgmt_ver"
     t.integer  "ilo_ip_int"

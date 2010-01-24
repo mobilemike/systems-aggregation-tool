@@ -35,6 +35,14 @@ module ComputersHelper
     end
   end
   
+  def ilo_ip_column computer
+    if computer.ilo_ip
+      link_to(computer.ilo_ip, "https:/#{computer.ilo_ip}", :popup => true)
+    else
+      "-"
+    end
+  end
+  
   def status_column computer
     record = computer
     column = active_scaffold_config.columns[:status]

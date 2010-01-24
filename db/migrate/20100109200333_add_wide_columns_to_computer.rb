@@ -10,8 +10,8 @@ class AddWideColumnsToComputer < ActiveRecord::Migration
     add_column :computers, :cpu_reservation, :integer
     add_column :computers, :cpu_speed, :integer
     add_column :computers, :description, :text
-    add_column :computers, :guest, :boolean
-    add_column :computers, :host, :boolean
+    add_column :computers, :guest, :boolean, :default => false
+    add_column :computers, :host, :boolean, :default => false
     add_column :computers, :host_computer_id, :integer
     add_column :computers, :hp_mgmt_ver, :string
     add_column :computers, :ilo_ip_int, :integer
