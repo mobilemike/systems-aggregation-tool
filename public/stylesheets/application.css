@@ -4,7 +4,7 @@ body {
 
 .container_16 {
   background:#fff;
-  min-width: 750px;
+  min-width: 875px;
 }
 
 span.health-error {
@@ -27,6 +27,14 @@ span.health-normal {
 
 span.health-empty {
   color: #999;
+}
+
+span.domain {
+  color: #888;
+}
+
+td.av_overview-column, td.fqdn-column, td.av_scanned-column, td.av_new-column {
+  white-space:nowrap;
 }
 
 #as-content-box {

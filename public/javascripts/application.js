@@ -17,18 +17,20 @@ function generateHealthTooltips()
       hide: {fixed: true, delay: 250, effect: {length: 75}}
     });
   });
-  $j('#as_computers-content th').each(function()
+  $j('#as_computers-content th, span.truncate-with-tip').each(function()
   {
-    $j(this).qtip(
-      {
-        content: {text: $j(this).attr('title')},
-        position: {corner: {target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {x: 20}},
-        style: {name: 'blue', tip: 'bottomLeft'}
-      });
-    $j(this).attr(
-      {
-        title: ""
-      });
+    if($j(this).attr('title')) {
+      $j(this).qtip(
+        {
+          content: {text: $j(this).attr('title')},
+          position: {corner: {target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {x: 20}},
+          style: {name: 'blue', tip: 'bottomLeft'}
+        });
+      $j(this).attr(
+        {
+          title: ""
+        });
+      };
   });
 }
 

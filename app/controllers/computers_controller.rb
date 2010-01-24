@@ -2,8 +2,12 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [ :health, :us_outstanding, :status, :name, :domain, :owner, :ip, :guest, :av_scanned]
+    c.columns = [:health, :fqdn, :description, :owner, :status, :ip, :guest, :us_outstanding,
+                 :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
+                 :av_message, :health_av_last]
     
+    c.columns[:fqdn].label = 'Computer'
+    c.columns[:fqdn].description = 'Computer FQDN'
     c.columns[:health].sort_by :method => 'health'
     c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health].description = "Overall system health"
@@ -13,20 +17,29 @@ class ComputersController < ApplicationController
     c.columns[:status].sort_by :sql => 'disposition'
     c.columns[:status].description = "Current server status"
     c.columns[:status].inplace_edit = true
-    c.columns[:name].sort_by :method => 'name'
-    c.columns[:name].description = "DNS name"
-    c.columns[:owner].description = "Assigned owner's intials"   
-    c.columns[:domain].sort_by :method => 'domain || String.new'
-    c.columns[:domain].description = "DNS domain"
+    c.columns[:owner].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:owner].description = "Assigned owner"   
     c.columns[:ip].sort_by :sql => 'ip_int'
     c.columns[:ip].label = "IP"
     c.columns[:ip].description = "Primary IP"
-    c.columns[:guest].sort_by :sql
     c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:guest].description = "Virtual or Physical"
-    c.columns[:av_scanned].sort_by :sql
-    c.columns[:av_scanned].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
-    c.columns[:av_scanned].description = "Avamar Protection"
+    c.columns[:av_overview].sort_by :sql
+    c.columns[:av_overview].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
+    c.columns[:av_overview].description = "Avamar protection and health"
+    c.columns[:av_dataset].label = 'Dataset'
+    c.columns[:av_retention].label = 'Retention'
+    c.columns[:av_schedule].label = 'Schedule'
+    c.columns[:av_new].label = 'New'
+    c.columns[:av_new].description = 'Deduped and compressed data from last backup'
+    c.columns[:av_scanned].label = 'Protected'
+    c.columns[:av_scanned].description = 'Total protected data from last backup'
+    c.columns[:av_message].label = 'Avamar Status'
+    c.columns[:av_message].sort_by :method => 'av_message || String.new'
+    c.columns[:health_av_last].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+    c.columns[:health_av_last].sort_by :method => 'health_av_last || 0'
+    c.columns[:health_av_last].description = 'Avamar last backup health'
+    
     
     c.actions.exclude :create, :delete, :nested
     
@@ -57,36 +70,65 @@ class ComputersController < ApplicationController
   end
   
   def list_respond_to_csv
-    @computers = Computer.find_all_sorted_by_health(conditions_for_collection)
+    @computers = Computer.find_all_sorted_by_fqdn(conditions_for_collection)
   end
   
 private
 
   def conditions_for_collection
     conditions = []
+    conditions << @column_conditions
     conditions << ["computers.disposition = ?", params[:status]] if params[:status]
     conditions << ["computers.owner_id = ?", @owner.id] if params[:owner_initials]
     Computer.merge_conditions(*conditions)
   end
 
   def update_table_config
+    update_table_columns
+    update_page_display
+  end
+  
+  def update_table_columns
+    base = [:fqdn, :owner, :status]
+    
+    col = nil
+    con = nil
+    sort = nil
+    
+    case params[:view]
+    when 'all'
+      col = active_scaffold_config.list.columns
+    when 'avamar'
+      col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned, :av_message]
+      con = ['computers.av_status IS NOT NULL']
+      sort = [{:health_av_last => :desc}]
+    else
+      col = [:health] + base + [:description, :ip, :guest, :us_outstanding, :av_overview]
+    end
+    
+    active_scaffold_config.list.sorting = sort unless sort.nil?
+    @column_conditions = con unless con.nil?
+    unless col.nil?
+      active_scaffold_config.list.columns = col
+      active_scaffold_config.list.columns.set_columns(active_scaffold_config.columns)
+    end
+    
+  end
+
+  def update_page_display
     custom_label = "Computers"
-    excludes = []
     params[:search] = nil if params[:search] == ""
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
-      excludes << :status
     end
     if params[:owner_initials]
       @owner = Owner.find_by_initials(params[:owner_initials].upcase)
       custom_label = "#{@owner.first_name}'s #{custom_label}"
-      excludes << :owner
     end
     if params[:search]
       custom_label = "#{custom_label} (#{params[:search]})"
     end
     params[:page] ||= 1
-    active_scaffold_config.columns.exclude(*excludes)
     active_scaffold_config.label = custom_label
   end
 

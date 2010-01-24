@@ -17,6 +17,12 @@ class Computer < ActiveRecord::Base
   aasm_state :archived
   aasm_state :remove
   
+  def self.find_all_sorted_by_fqdn(conditions=[])
+    computers = self.find(:all,
+                          :order => "computers.fqdn",
+                          :conditions => conditions)
+  end
+  
   def status
     self.disposition ? self.disposition.capitalize : "-"
   end
@@ -48,6 +54,14 @@ class Computer < ActiveRecord::Base
     end
   end
   
+  def av_message
+    if health_av_last > 1
+      self.av_error
+    else
+      self.av_status
+    end
+  end
+  
   def health_us_outstanding
     case self.us_outstanding
       when 0 then 1
@@ -69,12 +83,6 @@ class Computer < ActiveRecord::Base
       when 3..5 then 2
       when 6..(1.0/0) then 3
     end
-  end
-  
-  def self.find_all_sorted_by_health(conditions=[])
-    computers = self.find(:all,
-                          :order => "computers.fqdn",
-                          :conditions => conditions)
   end
   
   def name
