@@ -117,13 +117,15 @@ private
 
   def update_page_display
     custom_label = "Computers"
-    params[:search] = nil if params[:search] == ""
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
     end
     if params[:owner_initials]
       @owner = Owner.find_by_initials(params[:owner_initials].upcase)
       custom_label = "#{@owner.first_name}'s #{custom_label}"
+    end
+    if params[:view]
+      custom_label = "#{custom_label}, #{params[:view].capitalize} View"
     end
     if params[:search]
       custom_label = "#{custom_label} (#{params[:search]})"
