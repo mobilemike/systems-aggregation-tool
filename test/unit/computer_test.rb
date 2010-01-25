@@ -19,6 +19,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -39,8 +40,8 @@ end
 #  cpu_reservation          :integer
 #  cpu_speed                :integer
 #  description              :text
-#  guest                    :boolean
-#  host                     :boolean
+#  guest                    :boolean         default(FALSE)
+#  host                     :boolean         default(FALSE)
 #  host_computer_id         :integer
 #  hp_mgmt_ver              :string(255)
 #  ilo_ip_int               :integer
@@ -95,12 +96,13 @@ end
 #  av_status                :string(255)
 #  av_error                 :string(255)
 #  us_last_sync             :datetime
-#  us_unknown               :integer
-#  us_not_installed         :integer
-#  us_downloaded            :integer
-#  us_installed             :integer
-#  us_failed                :integer
-#  us_pending_reboot        :integer
-#  us_approved              :integer
+#  us_unknown               :integer         default(0)
+#  us_not_installed         :integer         default(0)
+#  us_downloaded            :integer         default(0)
+#  us_installed             :integer         default(0)
+#  us_failed                :integer         default(0)
+#  us_pending_reboot        :integer         default(0)
+#  us_approved              :integer         default(0)
+#  ep_dat_outdated          :integer
 #
 

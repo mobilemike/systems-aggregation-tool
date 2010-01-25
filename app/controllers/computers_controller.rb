@@ -2,49 +2,57 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [:health, :fqdn, :description, :owner, :status, :ip, :guest, :us_outstanding,
+    c.columns = [:health, :fqdn, :owner, :status,  :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
-                 :hp_mgmt_ver, :ilo_ip]
+                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+                 :cpu_reservation, :cpu_ready]
     
-    c.columns[:fqdn].label = 'Computer'
-    c.columns[:fqdn].description = 'Computer FQDN'
-    c.columns[:health].sort_by :method => 'health'
-    c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
-    c.columns[:health].description = "Overall system health"
-    c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
-    c.columns[:us_outstanding].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
-    c.columns[:us_outstanding].description = "Outstanding WSUS patches"
-    c.columns[:status].sort_by :sql => 'disposition'
-    c.columns[:status].description = "Current server status"
-    c.columns[:status].inplace_edit = true
-    c.columns[:owner].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
-    c.columns[:owner].description = "Assigned owner"   
-    c.columns[:ip].sort_by :sql => 'ip_int'
-    c.columns[:ip].label = "IP"
-    c.columns[:ip].description = "Primary IP"
-    c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:guest].description = "Virtual or Physical"
-    c.columns[:av_overview].sort_by :sql => 'av_scanned'
-    c.columns[:av_overview].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
-    c.columns[:av_overview].description = "Avamar protection and health"
     c.columns[:av_dataset].label = 'Dataset'
-    c.columns[:av_retention].label = 'Retention'
-    c.columns[:av_schedule].label = 'Schedule'
-    c.columns[:av_new].label = 'New'
-    c.columns[:av_new].description = 'Deduped and compressed data from last backup'
-    c.columns[:av_scanned].label = 'Protected'
-    c.columns[:av_scanned].description = 'Total protected data from last backup'
     c.columns[:av_message].label = 'Avamar Status'
     c.columns[:av_message].sort_by :method => 'av_message || String.new'
+    c.columns[:av_new].description = 'Deduped and compressed data from last backup'
+    c.columns[:av_new].label = 'New'
+    c.columns[:av_overview].description = "Avamar protection and health"
+    c.columns[:av_overview].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
+    c.columns[:av_overview].sort_by :sql => 'av_scanned'
+    c.columns[:av_retention].label = 'Retention'
+    c.columns[:av_scanned].description = 'Total protected data from last backup'
+    c.columns[:av_scanned].label = 'Protected'
+    c.columns[:av_schedule].label = 'Schedule'
+    c.columns[:bios_date].label = "BIOS Date"
+    c.columns[:bios_ver].label = "BIOS Ver"
+    c.columns[:cpu_ready].label = "CPU Ready"
+    c.columns[:cpu_reservation].label = 'CPU Reservation'
+    c.columns[:fqdn].label = 'Computer'
+    c.columns[:guest].description = "Virtual or Physical"
+    c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
+    c.columns[:health].description = "Overall system health"
+    c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+    c.columns[:health].sort_by :method => 'health'
+    c.columns[:health_av_last].description = 'Avamar last backup health'
     c.columns[:health_av_last].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health_av_last].sort_by :method => 'health_av_last || 0'
-    c.columns[:health_av_last].description = 'Avamar last backup health'
-    c.columns[:bios_ver].label = "BIOS Ver"
-    c.columns[:bios_date].label = "BIOS Date"
-    c.columns[:serial_number].label = "Serial Number"
+    c.columns[:host_computer].label = 'Host'
     c.columns[:hp_mgmt_ver].label = "HP Agents"
     c.columns[:ilo_ip].label = "iLO IP"
+    c.columns[:ilo_ip].sort_by :sql => 'ilo_ip_int'
+    c.columns[:ip].label = "IP"
+    c.columns[:ip].sort_by :sql => 'ip_int'
+    c.columns[:mem_balloon].label = 'Memory Ballooned'
+    c.columns[:mem_reservation].label = 'Memory Reservation'
+    c.columns[:owner].description = "Assigned owner"   
+    c.columns[:owner].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:serial_number].label = "Serial Number"
+    c.columns[:status].description = "Current server status"
+    c.columns[:status].inplace_edit = true
+    c.columns[:status].sort_by :sql => 'disposition'
+    c.columns[:us_outstanding].description = "Outstanding WSUS patches"
+    c.columns[:us_outstanding].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
+    c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
+    c.columns[:vtools_ver].label = 'VM Tools'
+
+    
     
     c.actions.exclude :create, :delete, :nested
     
@@ -110,6 +118,9 @@ private
     when 'physical'
       col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
       con = {:guest => false}
+    when 'virtual'
+      col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
+      con = {:guest => true}
     else
       col = [:health] + base + [:description, :ip, :guest, :us_outstanding, :av_overview]
     end

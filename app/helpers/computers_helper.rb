@@ -1,55 +1,6 @@
 module ComputersHelper
   
-  def health_column computer
-    food_icon(computer)
-  end
   
-  def health_av_last_column computer
-    food_icon(computer.health_av_last)
-  end
-  
-  def us_outstanding_column computer
-    updates = "N/A"
-    span_class = "health-warning"
-    
-    if computer.us_last_sync
-      span_class = case computer.health_us_outstanding
-      when 1 then "health-normal"
-      when 3 then "health-error"
-      end
-      updates = computer.us_outstanding
-    end
-    
-    content_tag(:span, updates, :class => span_class)
-  end
-  
-  def fqdn_column computer
-    computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
-  end
-  
-  def description_column computer
-    if computer.description
-      truncate_with_tip(computer.description)
-    else
-      "-"
-    end
-  end
-  
-  def ilo_ip_column computer
-    if computer.ilo_ip
-      link_to(computer.ilo_ip, "https:/#{computer.ilo_ip}", :popup => true)
-    else
-      "-"
-    end
-  end
-  
-  def status_column computer
-    record = computer
-    column = active_scaffold_config.columns[:status]
-    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.capitalize]}.inspect
-    active_scaffold_inplace_collection_edit(record, column, collection)
-  end
- 
   def av_overview_column computer
     av_protected = "-"
     span_class = "health-empty"
@@ -67,15 +18,31 @@ module ComputersHelper
   end
   
   def av_new_column computer
-    mb_to_human_size(computer.av_new) unless computer.av_new.nil?
+    computer.av_new ? mb_to_human_size(computer.av_new) : '-'
   end
   
   def av_scanned_column computer
-    mb_to_human_size(computer.av_scanned) unless computer.av_scanned.nil?
+    computer.av_scanned ? mb_to_human_size(computer.av_scanned) : '-'
   end
   
   def av_message_column computer
-    truncate_with_tip(computer.av_message) unless computer.av_message.nil?
+    computer.av_message ? truncate_with_tip(computer.av_message) : "-"
+  end
+  
+  def cpu_ready_column computer
+    computer.cpu_ready ? number_with_precision(computer.cpu_ready, 2) + "%" : "-"
+  end
+    
+  def cpu_reservation_column computer
+    computer.cpu_reservation ? computer.cpu_reservation.to_s + " Mhz" : "-"
+  end
+  
+  def description_column computer
+    computer.description ? truncate_with_tip(computer.description) : "-"
+  end
+  
+  def fqdn_column computer
+    computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end
   
   def guest_column computer
@@ -84,6 +51,50 @@ module ComputersHelper
     else "<img src=\"#{ActionController::Base.relative_url_root}/images/server.png\" />"
     end
   end
+  
+  def health_av_last_column computer
+    food_icon(computer.health_av_last)
+  end
+  
+  def health_column computer
+    food_icon(computer)
+  end
+  
+  def ilo_ip_column computer
+    computer.ilo_ip_int ? link_to(computer.ilo_ip, "https:/#{computer.ilo_ip}", :popup => true) : "-"
+  end
+  
+  def mem_reservation_column computer
+    computer.mem_reservation ? mb_to_human_size(computer.mem_reservation) : "-"
+  end
+  
+  def mem_balloon_column computer
+    computer.mem_balloon ? mb_to_human_size(computer.mem_balloon) : "-"
+  end
+  
+  def status_column computer
+    record = computer
+    column = active_scaffold_config.columns[:status]
+    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.capitalize]}.inspect
+    active_scaffold_inplace_collection_edit(record, column, collection)
+  end
+  
+  def us_outstanding_column computer
+    updates = "N/A"
+    span_class = "health-warning"
+    
+    if computer.us_last_sync
+      span_class = case computer.health_us_outstanding
+      when 1 then "health-normal"
+      when 3 then "health-error"
+      end
+      updates = computer.us_outstanding
+    end
+    
+    content_tag(:span, updates, :class => span_class)
+  end
+  
+  
   
   def active_scaffold_inplace_collection_edit(record, column, collection)
     formatted_column = record.send(column.name)
