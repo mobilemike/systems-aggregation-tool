@@ -2,12 +2,11 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
+     @all_columns = c.columns = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
                  :cpu_reservation, :cpu_ready]
-    @all_columns = c.columns
     
     c.columns[:av_dataset].label = 'Dataset'
     c.columns[:av_message].label = 'Avamar Status'
