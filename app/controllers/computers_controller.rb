@@ -2,11 +2,12 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [:health, :fqdn, :owner, :status,  :description, :ip, :guest, :us_outstanding,
+    c.columns = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
                  :cpu_reservation, :cpu_ready]
+    @all_columns = c.columns
     
     c.columns[:av_dataset].label = 'Dataset'
     c.columns[:av_message].label = 'Avamar Status'
@@ -44,14 +45,13 @@ class ComputersController < ApplicationController
     c.columns[:owner].description = "Assigned owner"   
     c.columns[:owner].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:serial_number].label = "Serial Number"
-    c.columns[:status].description = "Current server status"
+    c.columns[:status].description = "Production status"
     c.columns[:status].inplace_edit = true
     c.columns[:status].sort_by :sql => 'disposition'
     c.columns[:us_outstanding].description = "Outstanding WSUS patches"
     c.columns[:us_outstanding].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
     c.columns[:vtools_ver].label = 'VM Tools'
-
     
     
     c.actions.exclude :create, :delete, :nested
@@ -110,7 +110,7 @@ private
     
     case params[:view]
     when 'all'
-      col = active_scaffold_config.list.columns
+      col = @all_columns
     when 'avamar'
       col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned, :av_message]
       con = ['computers.av_status IS NOT NULL']
@@ -122,7 +122,7 @@ private
       col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     else
-      col = [:health] + base + [:description, :ip, :guest, :us_outstanding, :av_overview]
+      col = [:health] + base + [:company, :description, :ip, :guest, :us_outstanding, :av_overview]
     end
     
     active_scaffold_config.list.sorting = sort unless sort.nil?
@@ -131,7 +131,6 @@ private
       active_scaffold_config.list.columns = col
       active_scaffold_config.list.columns.set_columns(active_scaffold_config.columns)
     end
-    
   end
 
   def update_page_display

@@ -29,6 +29,13 @@ module ComputersHelper
     computer.av_message ? truncate_with_tip(computer.av_message) : "-"
   end
   
+  def company_column computer
+    record = computer
+    column = active_scaffold_config.columns[:company]
+    collection = [['Unknown', 'Unknown'], ['RMR', 'RMR'], ['Five Star', 'Five Star',], ['Shared', 'Shared']].inspect
+    active_scaffold_inplace_collection_edit(record, column, collection)
+  end
+  
   def cpu_ready_column computer
     computer.cpu_ready ? number_with_precision(computer.cpu_ready, 2) + "%" : "-"
   end
@@ -146,6 +153,14 @@ module ComputersHelper
     results += ",#{c.av_scanned}"
     results += ",#{c.av_new}"
     return results
+  end
+  
+  def all_csv_header
+    Computer.column_names.sort.map {|n| "\"#{n}\""}.join(',')
+  end
+  
+  def all_csv_row c
+    c.attributes.sort.map {|k,v| "\"#{v.to_s}\""}.join(',')
   end
    
 end

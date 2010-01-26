@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100121025807) do
+ActiveRecord::Schema.define(:version => 20100126023442) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20100121025807) do
     t.integer  "us_pending_reboot",        :default => 0
     t.integer  "us_approved",              :default => 0
     t.integer  "ep_dat_outdated"
+    t.string   "company",                  :default => "Unknown"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
