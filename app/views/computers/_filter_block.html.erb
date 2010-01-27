@@ -1,28 +1,43 @@
 <ul class="nav main">
   <li>
-    <%= link_to("Status", :controller => :computers, :owner_initials => params[:owner_initials],
-                :status => nil)%>
+    <%= link_to("Status", params.merge(:status => nil, :page => nil))%>
     <ul>
-      <%= content_tag(:li, link_to("All", :controller => :computers, :owner_initials => params[:owner_initials],
-                                   :status => nil))%>
+      <%= content_tag(:li, link_to("All", params.merge(:status => nil, :page => nil)))%>
       <% Computer.aasm_states_for_select.each do |s| %>
-        <%= content_tag(:li, link_to(s[0], :controller => :computers, :owner_initials => params[:owner_initials],
-                                     :status => s[1])) %>
+        <%= content_tag(:li, link_to(s[0], params.merge(:status => s[1], :page => nil))) %>
       <% end %>
     </ul>
   </li>
   <li>
-    <%= link_to("Owner", :controller => :computers, :owner_initials => nil, :status => params[:status])%>
+    <%= link_to("Owner", params.merge(:owner_initials => nil, :page => nil))%>
     <ul>
-      <%= content_tag(:li, link_to("All", :controller => :computers, :owner_initials => nil, :status => params[:status]))%>
+      <%= content_tag(:li, link_to("All", params.merge(:owner_initials => nil, :page => nil)))%>
       <% Owner.all_sorted_by_name.each do |owner| %>
-        <%= content_tag(:li, link_to(owner.name, :controller => :computers, :owner_initials => owner.initials, 
-                                     :status => params[:status]))%>
+        <%= content_tag(:li, link_to(owner.name, params.merge(:owner_initials => owner.initials, :page => nil)))%>
       <% end %>
+    </ul>
+  </li>
+  <li>
+    <%= link_to("View", params.merge(:view => nil, :page => nil))%>
+    <ul>
+      <%= content_tag(:li, link_to("Default", params.merge(:view => nil, :page => nil)))%>
+      <%= content_tag(:li, link_to("Avamar", params.merge(:view => 'avamar', :page => nil)))%>
+      <%= content_tag(:li, link_to("Physical Servers", params.merge(:view => 'physical', :page => nil)))%>
+      <%= content_tag(:li, link_to("Virtual Servers", params.merge(:view => 'virtual', :page => nil)))%>
+      <%= content_tag(:li, link_to("All Data", params.merge(:view => 'all', :page => nil)))%>
     </ul>
   </li>
   <li class="secondary">
     <%= link_to("Download CSV", :controller => :computers, :owner_initials => params[:owner_initials],
-                 :status =>  params[:status], :format => :csv)%>
+                 :status => params[:status], :format => :csv)%>
+    <ul>
+      <li>
+        <%= link_to("Download CSV (formatted)", :controller => :computers, :owner_initials => params[:owner_initials],
+                     :status => params[:status], :format => :csv)%>
+      </li>
+      <li>
+        <%= link_to("Download CSV (all data)", :controller => :computers, :view => 'all', :format => :csv)%>
+      </li>
+    </ul>
   </li>
 </ul>

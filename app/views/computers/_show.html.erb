@@ -1,58 +1,11 @@
 <h3><%= "Details for " + @record.name -%></h3>
-
-<% if @record.scom_computer then %>
-<h4>SCOM</h4>
-<ul>
-  <% @record.scom_computer.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @record.akorri_server_storage then %>
-<h4>Akorri</h4>
-<ul>
-  <% @record.akorri_server_storage.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @record.epo_computer then %>
-<h4>EPO</h4>
-<ul>
-  <% @record.epo_computer.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @record.vmware_computer then %>
-<h4>VMware</h4>
-<ul>
-  <% @record.vmware_computer.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @record.wsus_computer then %>
-<h4>WSUS</h4>
-<ul>
-  <% @record.wsus_computer.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @record.avamar_computer then %>
-<h4>Avamar</h4>
-<ul>
-  <% @record.avamar_computer.attributes.each do |a, v| %>
-    <li><strong><%=h a %>: </strong><%=h v %></li>
-  <% end %>
-</ul>
-<% end %>
+<p>
+  <ul>
+    <% @record.attributes.sort.each do |a, v| %>
+      <li><strong><%=h a %>: </strong><%=h v %></li>
+    <% end %>
+  </ul>
+</p>
 <p class="form-footer">
   <%= link_to as_(:close), params_for(:controller => params[:parent_controller] ? params[:parent_controller] : params[:controller], :action => 'list'), :class => 'cancel' %>
   <%= loading_indicator_tag(:action => :create, :id => params[:id]) %>

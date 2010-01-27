@@ -2,39 +2,68 @@ class ComputersController < ApplicationController
   before_filter :update_table_config
   
   active_scaffold :computer do |c|
-    c.columns = [ :health, :wsus_computer, :status, :name, :domain, :owner, :ip, :virtual?, :avamar]
-    c.actions.exclude :create, :delete, :nested
-    c.show.link.label = "Detail"
-    c.update.link = false
-    c.formats << :csv
-   
-    c.columns[:health].sort_by :method => 'health'
-    c.columns[:health].includes = [:wsus_computer, :akorri_server_storage, :scom_computer,
-                                   :epo_computer, :vmware_computer, :avamar_computer]
-    c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+     @all_columns = c.columns = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
+                 :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
+                 :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
+                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+                 :cpu_reservation, :cpu_ready]
+    
+    c.columns[:av_dataset].label = 'Dataset'
+    c.columns[:av_message].label = 'Avamar Status'
+    c.columns[:av_message].sort_by :method => 'av_message || String.new'
+    c.columns[:av_new].description = 'Deduped and compressed data from last backup'
+    c.columns[:av_new].label = 'New'
+    c.columns[:av_overview].description = "Avamar protection and health"
+    c.columns[:av_overview].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
+    c.columns[:av_overview].sort_by :sql => 'av_scanned'
+    c.columns[:av_retention].label = 'Retention'
+    c.columns[:av_scanned].description = 'Total protected data from last backup'
+    c.columns[:av_scanned].label = 'Protected'
+    c.columns[:av_schedule].label = 'Schedule'
+    c.columns[:bios_date].label = "BIOS Date"
+    c.columns[:bios_ver].label = "BIOS Ver"
+    c.columns[:cpu_ready].label = "CPU Ready"
+    c.columns[:cpu_reservation].label = 'CPU Reservation'
+    c.columns[:fqdn].label = 'Computer'
+    c.columns[:guest].description = "Virtual or Physical"
+    c.columns[:guest].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:health].description = "Overall system health"
-    c.columns[:wsus_computer].sort_by :method => 'wsus_computer ? wsus_computer.updates_outstanding : 0.1'
-    c.columns[:wsus_computer].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
-    c.columns[:wsus_computer].description = "Outstanding WSUS patches"    
-    c.columns[:status].description = "Current server status"
-    c.columns[:status].inplace_edit = true
-    c.columns[:status].sort_by :method => 'disposition'
-    c.columns[:name].sort_by :method => 'name'
-    c.columns[:name].description = "DNS name"
-    c.columns[:owner].description = "Assigned owner's intials"   
-    c.columns[:domain].sort_by :method => 'domain || String.new'
-    c.columns[:domain].description = "DNS domain"
+    c.columns[:health].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+    c.columns[:health].sort_by :method => 'health'
+    c.columns[:health_av_last].description = 'Avamar last backup health'
+    c.columns[:health_av_last].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+    c.columns[:health_av_last].sort_by :method => 'health_av_last || 0'
+    c.columns[:host_computer].label = 'Host'
+    c.columns[:hp_mgmt_ver].label = "HP Agents"
+    c.columns[:ilo_ip].label = "iLO IP"
+    c.columns[:ilo_ip].sort_by :sql => 'ilo_ip_int'
     c.columns[:ip].label = "IP"
-    c.columns[:ip].sort_by :sql
-    c.columns[:ip].description = "Primary IP"
-    c.columns[:virtual?].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:virtual?].sort_by :method => 'virtual? ? 1 : 0'
-    c.columns[:virtual?].description = "Virtual or Physical"
-    c.columns[:avamar].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/avamar.png\" />"
-    c.columns[:avamar].sort_by :method => 'avamar_computer ? avamar_computer.bytes_scanned : -1'
-    c.columns[:avamar].description = "Avamar Protection"
+    c.columns[:ip].sort_by :sql => 'ip_int'
+    c.columns[:mem_balloon].label = 'Memory Ballooned'
+    c.columns[:mem_reservation].label = 'Memory Reservation'
+    c.columns[:owner].description = "Assigned owner"   
+    c.columns[:owner].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:serial_number].label = "Serial Number"
+    c.columns[:status].description = "Production status"
+    c.columns[:status].inplace_edit = true
+    c.columns[:status].sort_by :sql => 'disposition'
+    c.columns[:us_outstanding].description = "Outstanding WSUS patches"
+    c.columns[:us_outstanding].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
+    c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
+    c.columns[:vtools_ver].label = 'VM Tools'
+    
+    
+    c.actions.exclude :create, :delete, :nested
+    
+    c.update.link = false
+    
+    c.show.link.label = "Detail"
+    c.show.link.position = :after
+    
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
+    
+    c.formats << :csv
   end
   
   def health
@@ -53,32 +82,72 @@ class ComputersController < ApplicationController
   end
   
   def list_respond_to_csv
-    @computers = Computer.find_all_sorted_by_health(conditions_for_collection)
+    @computers = Computer.find_all_sorted_by_fqdn(conditions_for_collection)
   end
   
 private
 
   def conditions_for_collection
     conditions = []
+    conditions << @column_conditions
     conditions << ["computers.disposition = ?", params[:status]] if params[:status]
     conditions << ["computers.owner_id = ?", @owner.id] if params[:owner_initials]
     Computer.merge_conditions(*conditions)
   end
 
   def update_table_config
+    update_table_columns
+    update_page_display
+  end
+  
+  def update_table_columns
+    base = [:fqdn, :owner, :status]
+    
+    col = nil
+    con = nil
+    sort = nil
+    
+    case params[:view]
+    when 'all'
+      col = @all_columns
+    when 'avamar'
+      col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned, :av_message]
+      con = ['computers.av_status IS NOT NULL']
+      sort = [{:health_av_last => :desc}]
+    when 'physical'
+      col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
+      con = {:guest => false}
+    when 'virtual'
+      col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
+      con = {:guest => true}
+    else
+      col = [:health] + base + [:company, :description, :ip, :guest, :us_outstanding, :av_overview]
+    end
+    
+    active_scaffold_config.list.sorting = sort unless sort.nil?
+    @column_conditions = con unless con.nil?
+    unless col.nil?
+      active_scaffold_config.list.columns = col
+      active_scaffold_config.list.columns.set_columns(active_scaffold_config.columns)
+    end
+  end
+
+  def update_page_display
     custom_label = "Computers"
-    excludes = []
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
-      excludes << :status
     end
     if params[:owner_initials]
       @owner = Owner.find_by_initials(params[:owner_initials].upcase)
       custom_label = "#{@owner.first_name}'s #{custom_label}"
-      excludes << :owner
+    end
+    if params[:view]
+      custom_label = "#{custom_label}, #{params[:view].capitalize} View"
+    end
+    if params[:search]
+      custom_label = "#{custom_label} (#{params[:search]})"
     end
     params[:page] ||= 1
-    active_scaffold_config.columns.exclude(*excludes)
     active_scaffold_config.label = custom_label
   end
 
