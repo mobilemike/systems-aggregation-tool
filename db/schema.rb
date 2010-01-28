@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100126023442) do
+ActiveRecord::Schema.define(:version => 20100128024511) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -92,9 +92,20 @@ ActiveRecord::Schema.define(:version => 20100126023442) do
     t.integer  "us_approved",              :default => 0
     t.integer  "ep_dat_outdated"
     t.string   "company",                  :default => "Unknown"
+    t.string   "sc_bme"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
+
+  create_table "issues", :force => true do |t|
+    t.string   "identifier"
+    t.string   "category"
+    t.string   "text"
+    t.integer  "source"
+    t.integer  "computer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "owners", :force => true do |t|
     t.string   "name"

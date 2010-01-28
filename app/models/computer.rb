@@ -8,6 +8,7 @@ class Computer < ActiveRecord::Base
   belongs_to :host_computer, :class_name => "Computer"
   has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
           :primary_key => "scom_cpu_perf_id"
+  has_many :issues
 
   aasm_column :disposition
   aasm_initial_state :unknown
