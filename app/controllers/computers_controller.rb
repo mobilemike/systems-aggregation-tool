@@ -1,4 +1,4 @@
-class ComputersController < ApplicationController 
+class ComputersController < ApplicationController
   before_filter :update_table_config
   
   ALL_COLUMNS = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
@@ -95,7 +95,7 @@ private
     conditions << @column_conditions
     case params[:status]
     when nil
-      conditions << ["computers.disposition NOT IN ('decomissioned', 'archived')"]
+      conditions << ["computers.disposition NOT IN ('decommissioned', 'archived')"]
     when 'all'
     else
       conditions << ["computers.disposition = ?", params[:status]]
