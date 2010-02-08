@@ -1,13 +1,16 @@
 class ComputersController < ApplicationController 
   before_filter :update_table_config
   
+  ALL_COLUMNS = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
+               :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
+               :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
+               :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+               :cpu_reservation, :cpu_ready]
+  
   active_scaffold :computer do |c|
-     @all_columns = c.columns = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
-                 :av_overview, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
-                 :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
-                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
-                 :cpu_reservation, :cpu_ready]
+    c.columns = ALL_COLUMNS
     
+    c.columns[:av_completed_at].label = "<img src=\"#{ActionController::Base.relative_url_root}/images/time.png\" />"
     c.columns[:av_dataset].label = 'Dataset'
     c.columns[:av_message].label = 'Avamar Status'
     c.columns[:av_message].sort_by :method => 'av_message || String.new'
@@ -90,7 +93,13 @@ private
   def conditions_for_collection
     conditions = []
     conditions << @column_conditions
-    conditions << ["computers.disposition = ?", params[:status]] if params[:status]
+    case params[:status]
+    when nil
+      conditions << ["computers.disposition NOT IN ('decomissioned', 'archived')"]
+    when 'all'
+    else
+      conditions << ["computers.disposition = ?", params[:status]]
+    end
     conditions << ["computers.owner_id = ?", @owner.id] if params[:owner_initials]
     Computer.merge_conditions(*conditions)
   end
@@ -109,9 +118,9 @@ private
     
     case params[:view]
     when 'all'
-      col = @all_columns
+      col = ALL_COLUMNS
     when 'avamar'
-      col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned, :av_message]
+      col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_completed_at, :av_new, :av_scanned, :av_message]
       con = ['computers.av_status IS NOT NULL']
       sort = [{:health_av_last => :desc}]
     when 'physical'

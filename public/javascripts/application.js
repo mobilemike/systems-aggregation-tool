@@ -24,7 +24,7 @@ function generateHealthTooltips()
         {
           content: {text: $j(this).attr('title')},
           position: {corner: {target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {x: 20}},
-          style: {name: 'blue', tip: 'bottomLeft'}
+          style: {name: 'dark', tip: 'bottomLeft'}
         });
       $j(this).attr(
         {
