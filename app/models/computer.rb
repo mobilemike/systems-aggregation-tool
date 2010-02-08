@@ -14,7 +14,7 @@ class Computer < ActiveRecord::Base
   aasm_state :unknown
   aasm_state :nonproduction
   aasm_state :production
-  aasm_state :decomissioned
+  aasm_state :decommissioned
   aasm_state :archived
   aasm_state :remove
   
@@ -117,6 +117,37 @@ class Computer < ActiveRecord::Base
   def os_long
     [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
   end
+  
+  def in_akorri?
+    self.ak_mem_last_modified ? true : false
+  end
+  
+  def in_avamar?
+    self.av_status ? true : false
+  end
+  
+  def in_epo?
+    self.ep_last_update ? true : false
+  end
+  
+  def in_wsus?
+    self.us_last_sync ? true : false
+  end
+
+  def is_guest_of_esx?
+    self.vtools_ver ? true : false
+  end
+
+  def is_windows?
+    self.os_name == "Windows" ? true : false
+  end
+  
+  def is_esx?
+    self.os_name == "ESX" ? true : false
+  end
+  
+  
+  
   
 private
   
