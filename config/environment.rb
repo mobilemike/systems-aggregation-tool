@@ -13,6 +13,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
+  config.load_paths += ["#{RAILS_ROOT}/app/rules"]
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -22,6 +23,7 @@ Rails::Initializer.run do |config|
   config.gem 'dbi', :version => '0.4.1'
   config.gem 'dbd-odbc', :version => '0.2.4', :lib => 'dbd/ODBC'
   config.gem 'aasm', :version => '2.1.3'
+  config.gem 'ruleby', :version => '0.6'
 
 
   # Only load the plugins named here, in the order given (default is alphabetical).

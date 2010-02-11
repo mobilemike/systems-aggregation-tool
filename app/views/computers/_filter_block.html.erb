@@ -2,7 +2,8 @@
   <li>
     <%= link_to("Status", params.merge(:status => nil, :page => nil))%>
     <ul>
-      <%= content_tag(:li, link_to("All", params.merge(:status => nil, :page => nil)))%>
+      <%= content_tag(:li, link_to("Default", params.merge(:status => nil, :page => nil)))%>
+      <%= content_tag(:li, link_to("All", params.merge(:status => 'all', :page => nil))) %>
       <% Computer.aasm_states_for_select.each do |s| %>
         <%= content_tag(:li, link_to(s[0], params.merge(:status => s[1], :page => nil))) %>
       <% end %>
