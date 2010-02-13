@@ -121,7 +121,7 @@ private
       col = ALL_COLUMNS
     when 'avamar'
       col = [:health_av_last] + base + [:av_dataset, :av_retention, :av_schedule, :av_completed_at, :av_new, :av_scanned, :av_message]
-      con = ['computers.av_status IS NOT NULL']
+      con = {:in_avamar => true}
       sort = [{:health_av_last => :desc}]
     when 'physical'
       col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
