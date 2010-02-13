@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100213182937) do
+ActiveRecord::Schema.define(:version => 20100213222509) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(:version => 20100213182937) do
     t.boolean  "in_scom"
     t.boolean  "in_esx"
     t.boolean  "in_wsus"
+    t.boolean  "in_ldap"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
