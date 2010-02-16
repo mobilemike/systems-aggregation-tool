@@ -17,7 +17,7 @@ function generateHealthTooltips()
       hide: {fixed: true, delay: 250, effect: {length: 75}}
     });
   });
-  $j('#as_computers-content th, span.truncate-with-tip').each(function()
+  $j('#as_computers-content th, span.tip').each(function()
   {
     if($j(this).attr('title')) {
       $j(this).qtip(
