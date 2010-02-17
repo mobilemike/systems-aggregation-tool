@@ -59,8 +59,7 @@ class ComputerRulebook < Ruleby::Rulebook
     # Production virtual guests shouldn't be powered off
     rule [Computer, :c, m.production? == true,
                         m.in_esx? == true,
-                        m.power? == false,
-                        m.host? == false] do |v|
+                        m.power? == false] do |v|
       puts "#{v[:c].name}: Production virtual guests shouldn't be powered off"
     end
     
@@ -73,6 +72,12 @@ class ComputerRulebook < Ruleby::Rulebook
       puts "#{v[:c].name}: Online computers shouldn't have " +
         ActionController::Base.helpers.pluralize(v[:c].us_outstanding, 'patch') +
         " outstanding in WSUS"
+    end
+    
+    # All computers in AD should have a description
+    rule [Computer, :c, m.in_ldap? == true,
+                        m.description == nil] do |v|
+      puts "#{v[:c].name}: All computers in AD should have a description"
     end
     
   end
