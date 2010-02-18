@@ -26,7 +26,7 @@ module ApplicationHelper
   
   def truncate_with_tip(text)
     if text.length > 30
-      content_tag(:span, truncate(text, 30), :class => 'truncate-with-tip',
+      content_tag(:span, truncate(text, 30), :class => 'tip',
                   :title => text)
     else
       text

@@ -5,7 +5,7 @@
     <%= content_tag(:td, 'Memory', :class => 'health') if @computer.health_ak_mem %>
     <%= content_tag(:td, 'Storage', :class => 'health') if @computer.health_ak_storage %>
     <%= content_tag(:td, 'DAT', :class => 'health') if @computer.ep_dat_outdated %>
-    <%= content_tag(:td, 'Avamar', :class => 'health') if @computer.av_status %>
+    <%= content_tag(:td, 'Avamar', :class => 'health') if @computer.in_avamar %>
   </tr>
   <tr>
     <%= content_tag(:td, food_icon(@computer.health_sc_state), :class => 'health') if @computer.health_sc_state %>
@@ -13,6 +13,6 @@
     <%= content_tag(:td, food_icon(@computer.health_ak_mem), :class => 'health') if @computer.health_ak_mem %>
     <%= content_tag(:td, food_icon(@computer.health_ak_storage), :class => 'health') if @computer.health_ak_storage %>
     <%= content_tag(:td, food_icon(@computer.health_ep_dat), :class => 'health') if @computer.ep_dat_outdated %>
-    <%= content_tag(:td, food_icon(@computer.health_av_last), :class => 'health') if @computer.av_status %>
+    <%= content_tag(:td, food_icon(@computer.health_av_last), :class => 'health') if @computer.in_avamar %>
   </tr>
 </table>
