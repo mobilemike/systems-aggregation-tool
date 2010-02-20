@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100128024511) do
+ActiveRecord::Schema.define(:version => 20100214225717) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(:version => 20100128024511) do
     t.integer  "ep_dat_outdated"
     t.string   "company",                  :default => "Unknown"
     t.string   "sc_bme"
+    t.boolean  "in_akorri"
+    t.boolean  "in_avamar"
+    t.boolean  "in_epo"
+    t.boolean  "in_scom"
+    t.boolean  "in_esx"
+    t.boolean  "in_wsus"
+    t.boolean  "in_ldap"
+    t.string   "us_group_name"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"

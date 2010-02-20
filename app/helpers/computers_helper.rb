@@ -2,31 +2,61 @@ module ComputersHelper
   
   
   def av_overview_column computer
-    av_protected = "-"
     span_class = "health-empty"
     
-    if computer.av_status
+    if computer.in_avamar?
       span_class = case computer.health_av_last
         when 1 then "health-normal"
         when 2 then "health-warning"
         when 3 then "health-error"
       end
-      av_protected = mb_to_human_size(computer.av_scanned)
     end
     
-    content_tag(:span, av_protected, :class => span_class)
+    content_tag(:span, computer.av_scanned ? content_tag(:span,
+                                                  mb_to_human_size(computer.av_scanned),
+                                                  :class => 'tip',
+                                                  :title => computer.av_message) : '-', 
+                :class => span_class)
   end
   
   def av_new_column computer
-    computer.av_new ? mb_to_human_size(computer.av_new) : '-'
+    span_class = "health-empty"
+    
+    if computer.in_avamar?
+      span_class = case computer.av_new
+        when 0 then "health-warning"
+        else "health-normal"
+      end
+    end
+    
+    content_tag(:span, computer.av_new ? mb_to_human_size(computer.av_new) : '-', :class => span_class)
   end
   
   def av_scanned_column computer
-    computer.av_scanned ? mb_to_human_size(computer.av_scanned) : '-'
+    span_class = "health-empty"
+    
+    if computer.in_avamar?
+      span_class = case computer.av_scanned
+        when 0 then "health-error"
+        else "health-normal"
+      end
+    end
+    
+    content_tag(:span, computer.av_scanned ? mb_to_human_size(computer.av_scanned) : '-', :class => span_class)
   end
   
   def av_message_column computer
-    computer.av_message ? truncate_with_tip(computer.av_message) : "-"
+    span_class = "health-empty"
+    
+    if computer.in_avamar?
+      span_class = case computer.health_av_last
+        when 1 then "health-normal"
+        when 2 then "health-warning"
+        when 3 then "health-error"
+      end
+    end
+    
+    content_tag(:span, computer.av_message ? truncate_with_tip(computer.av_message) : "-", :class => span_class)
   end
   
   def company_column computer
