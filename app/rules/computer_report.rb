@@ -2,6 +2,8 @@ class ComputerReport
   include Ruleby
   
   def report
+    issues = IssueGroup.new
+    
     engine :enging do |e|
       r = ComputerRulebook.new(e)
     
@@ -12,6 +14,7 @@ class ComputerReport
       end
     
       e.match
+      e.retrieve(Issue).each {|i| i.save}
       return true
     end
   end

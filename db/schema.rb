@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100214225717) do
+ActiveRecord::Schema.define(:version => 20100222033629) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -109,10 +109,11 @@ ActiveRecord::Schema.define(:version => 20100214225717) do
     t.string   "identifier"
     t.string   "category"
     t.string   "text"
-    t.integer  "source"
+    t.string   "source"
     t.integer  "computer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active"
   end
 
   create_table "owners", :force => true do |t|
