@@ -36,5 +36,4 @@ function generateHealthTooltips()
 
 $j(document).ready(function()
 {
-  generateHealthTooltips()
 });
