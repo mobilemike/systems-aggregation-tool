@@ -10,6 +10,10 @@ class Issue < ActiveRecord::Base
                                                                :text => text)
   end
   
+  def self.mark_old_closed
+    self.update_all(["active = ?", false], ["active = ? AND updated_at < ?", true, Time.now.utc - 1.minute])
+  end
+  
 end
 
 

@@ -4,7 +4,7 @@ class ComputerReport
   def report
     issues = IssueGroup.new
     
-    engine :enging do |e|
+    engine :engine do |e|
       r = ComputerRulebook.new(e)
     
       r.configuration_issues
@@ -14,7 +14,7 @@ class ComputerReport
       end
     
       e.match
-      e.retrieve(Issue).each {|i| i.save}
+      e.retrieve(Issue).each {|i| i.update_attributes(:updated_at => Time.now)}
       return true
     end
   end
