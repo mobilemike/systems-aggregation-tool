@@ -154,8 +154,8 @@ module ComputersHelper
   end
   
   def csv_header
-    header = '"FQDN","Status","Health","WSUS","Owner","Virtual","IP","OS","Install Date","Serial Number",'
-    header += '"Make","Model","Dataset","Schedule","Retention",'
+    header = '"FQDN","Status","Health","WSUS","Owner","Virtual","Host","IP",'
+    header += '"OS","Install Date","Serial Number","Make","Model","Dataset","Schedule","Retention",'
     header += '"MB Protected","MB New"'
   end
   
@@ -171,6 +171,7 @@ module ComputersHelper
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
+    results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
     results += ",\"#{c.os_long}\""
     results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
