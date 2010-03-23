@@ -154,14 +154,17 @@ module ComputersHelper
   end
   
   def csv_header
-    header = '"FQDN","Status","Health","WSUS","Owner","Virtual","Host","IP",'
-    header += '"OS","Install Date","Serial Number","Make","Model","Dataset","Schedule","Retention",'
-    header += '"MB Protected","MB New"'
+    header = '"FQDN","Owner","Status","Company","Description","Health","WSUS","Virtual","Host","IP",'
+    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make","Model","Dataset",'
+    header += '"Schedule","Retention","MB Protected","MB New"'
   end
   
   def csv_row c
     results = "\"#{c.fqdn}\""
+    results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.status}\""
+    results += ",\"#{c.company}\""
+    results += ",\"#{c.description}\""
     results += case c.health
                  when 1 then ',"Normal"'
                  when 2 then ',"Warning"'
@@ -169,10 +172,11 @@ module ComputersHelper
                  else ',""'
                end
     results += ",#{c.us_outstanding}"
-    results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
+    results += ",\"#{number_to_human_size(c.disk_total * 1024 * 1024)}\""
+    results += ",\"#{number_to_human_size(c.disk_free * 1024 * 1024)}\""
     results += ",\"#{c.os_long}\""
     results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
     results += ",\"#{c.serial_number}\""
