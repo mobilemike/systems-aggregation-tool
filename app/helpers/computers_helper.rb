@@ -176,7 +176,7 @@ module ComputersHelper
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
-    results += ",\"#{c.cpu_speed ? "#{c.cpu_speed + " Mhz"}" : ""}\""
+    results += ",\"#{c.cpu_speed}\""
     results += ",\"#{c.cpu_count}\""
     results += ",\"#{c.mem_total ? mb_to_human_size(c.mem_total) : ""}\""
     results += ",\"#{c.mem_used ? mb_to_human_size(c.mem_used) : ""}\""
