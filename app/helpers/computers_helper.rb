@@ -155,8 +155,9 @@ module ComputersHelper
   
   def csv_header
     header = '"FQDN","Owner","Status","Company","Description","Health","WSUS","Virtual","Host","IP",'
-    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make","Model","Dataset",'
-    header += '"Schedule","Retention","MB Protected","MB New"'
+    header += '"CPU Speed","CPU Count","RAM Total","RAM Used","Disk Total","Disk Free","OS",'
+    header += '"Install Date","Serial Number","Make","Model","Dataset","Schedule",'
+    header += '"Retention","MB Protected","MB New"'
   end
   
   def csv_row c
@@ -175,8 +176,12 @@ module ComputersHelper
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
-    results += ",\"#{c.total_disk ? number_to_human_size(c.total_disk * 1024 * 1024) : ""}\""
-    results += ",\"#{c.free_disk ? number_to_human_size(c.free_disk * 1024 * 1024) : ""}\""
+    results += ",\"#{c.cpu_speed ? "#{c.cpu_speed + " Mhz"}" : ""}\""
+    results += ",\"#{c.cpu_count}\""
+    results += ",\"#{c.mem_total ? mb_to_human_size(c.mem_total) : ""}\""
+    results += ",\"#{c.mem_used ? mb_to_human_size(c.mem_used) : ""}\""
+    results += ",\"#{c.total_disk ? mb_to_human_size(c.total_disk) : ""}\""
+    results += ",\"#{c.free_disk ? mb_to_human_size(c.free_disk) : ""}\""
     results += ",\"#{c.os_long}\""
     results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
     results += ",\"#{c.serial_number}\""
