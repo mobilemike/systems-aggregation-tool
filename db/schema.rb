@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100222033629) do
+ActiveRecord::Schema.define(:version => 20100323181327) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -101,6 +101,8 @@ ActiveRecord::Schema.define(:version => 20100222033629) do
     t.boolean  "in_wsus"
     t.boolean  "in_ldap"
     t.string   "us_group_name"
+    t.integer  "total_disk"
+    t.integer  "free_disk"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
