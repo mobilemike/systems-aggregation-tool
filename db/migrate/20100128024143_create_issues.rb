@@ -1,8 +1,10 @@
 class CreateIssues < ActiveRecord::Migration
   def self.up
     create_table :issues do |t|
-      t.string :identifier, :category, :text
-      t.integer :source, :computer_id
+      t.string :identifier, :source
+      t.text :description
+      t.integer :computer_id, :severity
+      t.boolean :active
       
       t.timestamps
     end

@@ -109,13 +109,13 @@ ActiveRecord::Schema.define(:version => 20100323181327) do
 
   create_table "issues", :force => true do |t|
     t.string   "identifier"
-    t.string   "category"
-    t.string   "text"
     t.string   "source"
+    t.text     "description"
     t.integer  "computer_id"
+    t.integer  "severity"
+    t.boolean  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "active"
   end
 
   create_table "owners", :force => true do |t|

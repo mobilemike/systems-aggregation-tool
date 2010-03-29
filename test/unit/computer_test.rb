@@ -21,6 +21,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -115,5 +116,7 @@ end
 #  in_wsus                  :boolean
 #  in_ldap                  :boolean
 #  us_group_name            :string(255)
+#  total_disk               :integer
+#  free_disk                :integer
 #
 

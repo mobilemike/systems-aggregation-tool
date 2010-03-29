@@ -2,8 +2,6 @@ class ComputerReport
   include Ruleby
   
   def report
-    issues = IssueGroup.new
-    
     engine :engine do |e|
       r = ComputerRulebook.new(e)
     
