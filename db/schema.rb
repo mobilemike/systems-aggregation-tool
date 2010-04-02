@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20100323181327) do
     t.integer  "us_approved",              :default => 0
     t.integer  "ep_dat_outdated"
     t.string   "company",                  :default => "Unknown"
+    t.string   "sc_bme"
     t.boolean  "in_akorri"
     t.boolean  "in_avamar"
     t.boolean  "in_epo"
@@ -105,6 +106,17 @@ ActiveRecord::Schema.define(:version => 20100323181327) do
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
+
+  create_table "issues", :force => true do |t|
+    t.string   "identifier"
+    t.string   "source"
+    t.text     "description"
+    t.integer  "computer_id"
+    t.integer  "severity"
+    t.boolean  "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "owners", :force => true do |t|
     t.string   "name"

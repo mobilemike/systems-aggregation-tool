@@ -8,6 +8,7 @@ class Computer < ActiveRecord::Base
   belongs_to :host_computer, :class_name => "Computer"
   has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
           :primary_key => "scom_cpu_perf_id"
+  has_many :issues
 
   aasm_column :disposition
   aasm_initial_state :unknown
@@ -139,9 +140,6 @@ private
 
 end
 
-
-
-
 # == Schema Information
 #
 # Table name: computers
@@ -226,5 +224,17 @@ end
 #  us_pending_reboot        :integer         default(0)
 #  us_approved              :integer         default(0)
 #  ep_dat_outdated          :integer
+#  company                  :string(255)     default("Unknown")
+#  sc_bme                   :string(255)
+#  in_akorri                :boolean
+#  in_avamar                :boolean
+#  in_epo                   :boolean
+#  in_scom                  :boolean
+#  in_esx                   :boolean
+#  in_wsus                  :boolean
+#  in_ldap                  :boolean
+#  us_group_name            :string(255)
+#  total_disk               :integer
+#  free_disk                :integer
 #
 
