@@ -9,7 +9,7 @@ function generateHealthTooltips()
     {
       content: {text: 'Loading...',
                 url: '/cmdb/computers/' + $j(this).children('img').attr('alt') + '/health',
-                prerender: true},
+                prerender: false},
       position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35}},
       style: {name: 'light', width: 400,
               'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
@@ -36,4 +36,5 @@ function generateHealthTooltips()
 
 $j(document).ready(function()
 {
+  generateHealthTooltips()
 });
