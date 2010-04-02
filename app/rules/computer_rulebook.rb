@@ -93,7 +93,7 @@ class ComputerRulebook < Ruleby::Rulebook
         
       severity = 2
       source   = 'WSUS'
-      identifer = 'Pending patches'
+      identifier = 'Pending patches'
       description     = "Computer has " +
                  ActionController::Base.helpers.pluralize(v[:c].us_outstanding, 'patch') +
                  " outstanding in WSUS"
