@@ -5,7 +5,7 @@ module IssuesHelper
   end
   
   def description_column issue
-    truncate_with_tip(issue.description || 'None')
+    truncate_with_tip(issue.description || 'None', 75)
   end
   
 end

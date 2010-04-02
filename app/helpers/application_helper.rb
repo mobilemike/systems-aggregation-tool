@@ -24,9 +24,9 @@ module ApplicationHelper
     image_tag(image_source, :alt => id, :class => 'health-icon')
   end
   
-  def truncate_with_tip(text)
-    if text.length > 30
-      content_tag(:span, truncate(text, 30), :class => 'tip',
+  def truncate_with_tip(text,length=30)
+    if text.length > length
+      content_tag(:span, truncate(text, length), :class => 'tip',
                   :title => text)
     else
       text
