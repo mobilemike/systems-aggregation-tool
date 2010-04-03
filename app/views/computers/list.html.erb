@@ -1,4 +1,4 @@
-<% title 'Salad - ' + @page_title -%>
+<% title 'Salad - ' + @page_title if @page_title -%>
 <div class="grid_16">
   <%= render :partial => 'filter_block' %>
 </div>

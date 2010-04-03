@@ -2,6 +2,9 @@ class Issue < ActiveRecord::Base
   
   belongs_to :computer
   
+  named_scope :active, :conditions => {:active => true}
+  
+  
   def self.find_or_init(computer, severity, source, identifier, description)
     self.find_or_initialize_by_active_and_computer_id_and_identifier(:active => true,
                                                                      :computer_id => computer.id,
@@ -12,7 +15,7 @@ class Issue < ActiveRecord::Base
   end
   
   def self.mark_old_closed
-    self.update_all(["active = ?", false], ["active = ? AND updated_at < ?", true, Time.now.utc - 1.minute])
+    self.update_all(["active = ?", false], ["active = ? AND updated_at < ?", true, Time.now.utc - 2.minutes])
   end
   
 end

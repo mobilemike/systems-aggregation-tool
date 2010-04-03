@@ -42,14 +42,7 @@ class Computer < ActiveRecord::Base
   end
 
   def health
-    healths = [0]
-    healths << self.health_sc_state if self.health_sc_state
-    healths << self.health_ak_cpu if self.health_ak_cpu
-    healths << self.health_ak_mem if self.health_ak_mem
-    healths << self.health_ak_storage if self.health_ak_storage  
-    healths << self.health_av_last if self.av_status
-    healths << self.health_ep_dat if self.ep_dat_outdated
-    healths.max
+    self.issues.active.map {|i| i.severity + 1}.max || 0
   end
   
   def health_av_last

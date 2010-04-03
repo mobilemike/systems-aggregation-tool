@@ -56,15 +56,13 @@ class ComputersController < ApplicationController
     c.columns[:vtools_ver].label = 'VM Tools'
     
     
-    c.actions.exclude :create, :delete
+    c.actions.exclude :create, :delete, :nested
     
     c.update.link = false
     
     c.show.link.label = "Detail"
     c.show.link.position = :after
-    
-    c.nested.add_link("Issues", [:issues])
-    
+
     c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
     

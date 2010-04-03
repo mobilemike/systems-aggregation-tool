@@ -11,7 +11,7 @@ function generateHealthTooltips()
                 url: '/cmdb/computers/' + $j(this).children('img').attr('alt') + '/health',
                 prerender: false},
       position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35}},
-      style: {name: 'light', width: 400,
+      style: {name: 'light', width: 850,
               'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
       show: {solo: true, delay: 75, effect: {length: 75}},
       hide: {fixed: true, delay: 250, effect: {length: 75}}
