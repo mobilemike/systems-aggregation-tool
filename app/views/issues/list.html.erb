@@ -1,23 +1,12 @@
 <% title 'Salad - ' + @page_title if @page_title -%>
-<div class="grid_11">
-  <h2 id="page-heading"><%=h active_scaffold_config.list.user.label %></h2>
-</div>
-<div class="grid_16">
-  <div class="box" id="as-content-box">
-    <div id="<%= active_scaffold_id -%>" class="grid active-scaffold active-scaffold-<%= controller_id %> <%= "#{params[:controller]}-view" %> <%= active_scaffold_config.theme %>-theme">
-      <div id="<%= active_scaffold_content_id -%>">
-        <%= render :partial => 'list' %>
-      </div>
+
+<div class="box" id="as-content-box">
+  <div id="<%= active_scaffold_id -%>" class="grid active-scaffold active-scaffold-<%= controller_id %> <%= "#{params[:controller]}-view" %> <%= active_scaffold_config.theme %>-theme">
+    <div id="<%= active_scaffold_content_id -%>">
+      <%= render :partial => 'list' %>
     </div>
   </div>
 </div>
-<div class="clear"></div>
-<div class="grid_16" id="site_info">
-  <div class="box">
-    <p>Brrrr. It's cold out there.</p>
-  </div>
-</div>
-<div class="clear"></div>
 
 <script type="text/javascript">
 //<![CDATA[

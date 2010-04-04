@@ -5,7 +5,7 @@ module IssuesHelper
   end
   
   def severity_column issue
-    food_icon(issue.severity)
+    food_icon(issue.severity + 1)
   end
   
   def identifier_column issue

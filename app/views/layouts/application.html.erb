@@ -19,14 +19,38 @@
         <%= content_tag :div, msg, :id => "flash_#{name}" %>
       <%- end -%>
       
-      <%= yield %>
+      <div class="grid_16">
+        <%= render :partial => 'filter_block' %>
+      </div>
+      <div class="clear"></div>
+      
+      <div class="grid_11">
+        <h2 id="page-heading"><%=h active_scaffold_config.list.user.label %></h2>
+      </div>
+      <div class="grid_5">
+        <%= render :partial => 'search_block' %>
+      </div>
+      <div class="clear"></div>
+      
+      <div class="grid_16">
+        <%= yield %>
+      </div>
+      <div class="clear"></div>
+      
+      <div class="grid_16" id="site_info">
+        <div class="box">
+          <p>Brrrr. It's cold out there.</p>
+        </div>
+      </div>
+      <div class="clear"></div>
+      
     </div>
     
-    <%= javascript_include_tag 'jquery-1.3.2.min' %>
+    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
     <script type="text/javascript">
       var $j = jQuery.noConflict();
     </script>
-    <%= javascript_include_tag 'jquery.qtip-1.0.0-rc3.min' %>
+    <%= javascript_include_tag 'jquery.qtip-1.0.0-rc3-dm-min' %>
     <%= javascript_include_tag 'application' %>
   </body>
 </html>
