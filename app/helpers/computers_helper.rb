@@ -154,14 +154,18 @@ module ComputersHelper
   end
   
   def csv_header
-    header = '"FQDN","Status","Health","WSUS","Owner","Virtual","IP","OS","Install Date","Serial Number",'
-    header += '"Make","Model","Dataset","Schedule","Retention",'
-    header += '"MB Protected","MB New"'
+    header = '"FQDN","Owner","Status","Company","Description","Health","WSUS","Virtual","Host","IP",'
+    header += '"CPU Speed","CPU Count","RAM Total","RAM Used","Disk Total","Disk Free","OS",'
+    header += '"Install Date","Serial Number","Make","Model","Dataset","Schedule",'
+    header += '"Retention","MB Protected","MB New"'
   end
   
   def csv_row c
     results = "\"#{c.fqdn}\""
+    results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.status}\""
+    results += ",\"#{c.company}\""
+    results += ",\"#{c.description}\""
     results += case c.health
                  when 1 then ',"Normal"'
                  when 2 then ',"Warning"'
@@ -169,9 +173,15 @@ module ComputersHelper
                  else ',""'
                end
     results += ",#{c.us_outstanding}"
-    results += ",\"#{c.owner ? c.owner.name : "" }\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
+    results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
+    results += ",\"#{c.cpu_speed}\""
+    results += ",\"#{c.cpu_count}\""
+    results += ",\"#{c.mem_total}\""
+    results += ",\"#{c.mem_used}\""
+    results += ",\"#{c.total_disk}\""
+    results += ",\"#{c.free_disk}\""
     results += ",\"#{c.os_long}\""
     results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
     results += ",\"#{c.serial_number}\""

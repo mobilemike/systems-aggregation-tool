@@ -157,7 +157,7 @@ private
       custom_label = "#{custom_label} (#{params[:search]})"
     end
     params[:page] ||= 1
-    active_scaffold_config.label = custom_label
+    @page_title = active_scaffold_config.label = custom_label
   end
 
   def chart_maker(*args)
