@@ -6,7 +6,7 @@ module ComputersHelper
     
     if computer.in_avamar?
       span_class = case computer.health_av_last
-        when 1 then "health-normal"
+        when 0 then "health-normal"
         when 2 then "health-warning"
         when 3 then "health-error"
       end
@@ -50,7 +50,7 @@ module ComputersHelper
     
     if computer.in_avamar?
       span_class = case computer.health_av_last
-        when 1 then "health-normal"
+        when 0 then "health-normal"
         when 2 then "health-warning"
         when 3 then "health-error"
       end
@@ -122,7 +122,7 @@ module ComputersHelper
     
     if computer.us_last_sync
       span_class = case computer.health_us_outstanding
-      when 1 then "health-normal"
+      when 0 then "health-normal"
       when 3 then "health-error"
       end
       updates = computer.us_outstanding
@@ -167,7 +167,8 @@ module ComputersHelper
     results += ",\"#{c.company}\""
     results += ",\"#{c.description}\""
     results += case c.health
-                 when 1 then ',"Normal"'
+                 when 0 then ',"Normal"'
+                 when 1 then ',"Info"'
                  when 2 then ',"Warning"'
                  when 3 then ',"Critical"'
                  else ',""'
