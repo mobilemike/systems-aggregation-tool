@@ -1,7 +1,7 @@
 module IssuesHelper
 
   def age_column issue
-    distance_of_time_in_words(issue.updated_at, Time.now)
+    distance_of_time_in_words(issue.created_at, Time.now)
   end
   
   def severity_column issue

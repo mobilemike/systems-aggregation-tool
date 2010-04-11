@@ -7,7 +7,5 @@ class IssuesController < ApplicationController
     
     c.actions.exclude :create, :delete, :show, :update
     
-    
-    
   end
 end
