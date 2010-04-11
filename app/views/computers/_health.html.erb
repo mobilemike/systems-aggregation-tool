@@ -1,4 +1,5 @@
 <%= render :active_scaffold => "issues",
            :params => {:sort => "severity", :sort_direction => "DESC"},
-           :constraints => {:computer_id => @computer.id}
-            %>
+           :constraints => {:computer_id => @computer.id,
+                            :active => true}
+%>
