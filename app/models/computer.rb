@@ -48,7 +48,7 @@ class Computer < ActiveRecord::Base
   def health_av_last
     case self.av_status
       when /failed/i then 3
-      when /successfully/i then 1
+      when /successfully/i then 0
       else 2
     end
   end
@@ -63,7 +63,7 @@ class Computer < ActiveRecord::Base
   
   def health_us_outstanding
     case self.us_outstanding
-      when 0 then 1
+      when 0 then 0
       when 1..(1.0/0) then 3
     end
   end
@@ -78,7 +78,8 @@ class Computer < ActiveRecord::Base
   
   def health_ep_dat
     case ep_dat_outdated
-      when -(1.0/0)..2 then 1
+      when -(1.0/0)..0 then 0
+      when 1..2 then 1
       when 3..5 then 2
       when 6..(1.0/0) then 3
     end
