@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100323181327) do
+ActiveRecord::Schema.define(:version => 20100413191239) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20100323181327) do
     t.integer  "cpu_reservation"
     t.integer  "cpu_speed"
     t.text     "description"
-    t.boolean  "guest",                    :default => false
+    t.boolean  "guest",                    :default => false,     :null => false
     t.boolean  "host",                     :default => false
     t.integer  "host_computer_id"
     t.string   "hp_mgmt_ver"
