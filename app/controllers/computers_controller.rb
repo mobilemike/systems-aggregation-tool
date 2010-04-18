@@ -72,7 +72,8 @@ class ComputersController < ApplicationController
   def health
     @computer = Computer.find(params[:id])
     render :partial => 'health'
-  end
+    logger.info session.inspect
+end
   
   def chart
     respond_to do |wants|
