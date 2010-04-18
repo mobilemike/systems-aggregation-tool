@@ -15,7 +15,7 @@ class Issue < ActiveRecord::Base
   end
   
   def self.mark_old_closed
-    self.update_all(["active = ?", false], ["active = ? AND updated_at < ?", true, Time.now.utc - 2.minutes])
+    self.update_all(["active = ?", false], ["active = ? AND updated_at < ?", true, Time.now.utc - 32.minutes])
   end
   
 end

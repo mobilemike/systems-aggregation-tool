@@ -45,6 +45,10 @@ class Computer < ActiveRecord::Base
     self.issues.active.map {|i| i.severity + 1}.max || 0
   end
   
+  def health_rank
+    self.issues.active.map {|i| i.severity}.inject(0) {|sum, n| sum + n}
+  end
+  
   def health_av_last
     case self.av_status
       when /failed/i then 3

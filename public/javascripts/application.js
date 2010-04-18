@@ -3,7 +3,7 @@
 
 function generateHealthTooltips()
 {
-  $j('td.health-column').live("mouseover", function()
+  $j('td.health_rank-column').live("mouseover", function()
   {
     var target = $j(this);
     if (target.data('qtip')) { return false; }
@@ -13,7 +13,7 @@ function generateHealthTooltips()
                 url: '/cmdb/computers/' + $j(this).children('img').attr('alt') + '/health',
                 prerender: false},
       position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35}},
-      style: {name: 'light', 'width': 800, 'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
+      style: {name: 'light', 'width': '100%', 'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
       show: {ready: true, solo: true, delay: 75, effect: {length: 75}},
       hide: {fixed: true, delay: 250, effect: {length: 75}}
     });
