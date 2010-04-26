@@ -251,7 +251,7 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # All computers in AD should have a description
     rule [Computer, :c, m.in_ldap? == true,
-                        m.description == nil || m.description == ""] do |v|
+                        m.description == nil] do |v|
                           
       severity = 1
       source   = 'AD'
