@@ -112,7 +112,7 @@ module ComputersHelper
   def status_column computer
     record = computer
     column = active_scaffold_config.columns[:status]
-    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.capitalize]}.inspect
+    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
     active_scaffold_inplace_collection_edit(record, column, collection)
   end
   
