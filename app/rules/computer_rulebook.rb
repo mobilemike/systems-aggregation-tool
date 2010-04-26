@@ -7,10 +7,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_epo? == false] do |v|
                           
-      severity = 3
-      source   = 'EPO'
-      identifier = 'Not in EPO'
-      description     = "Windows computer is online, but not in EPO"
+      severity    = 3
+      source      = 'EPO'
+      identifier  = 'Not in EPO'
+      description = "Windows computer is online, but not in EPO"
       
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -18,10 +18,10 @@ class ComputerRulebook < Ruleby::Rulebook
     # Computers in EPO should report their current DAT version accurately
     rule [Computer, :c, m.ep_dat_outdated > 5000] do |v|
       
-      severity = 3
-      source   = 'EPO'
-      identifier = 'DAT not reporting'
-      description     = "Computer is not reporting it's DAT version accurately"
+      severity    = 3
+      source      = 'EPO'
+      identifier  = 'DAT not reporting'
+      description = "Computer is not reporting it's DAT version accurately"
       
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -32,10 +32,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.ep_dat_outdated > 1,
                         m.ep_dat_outdated < 5000] do |v|
                           
-      severity = 2
-      source   = 'EPO'
-      identifier = 'DAT out of date'
-      description     = "Production computer's DAT is #{v[:c].ep_dat_outdated} days old"
+      severity    = 2
+      source      = 'EPO'
+      identifier  = 'DAT out of date'
+      description = "Production computer's DAT is #{v[:c].ep_dat_outdated} days old"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -52,10 +52,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_esx? == true,
                         m.in_akorri? == false] do |v|
 
-      severity = 2
-      source   = 'Akorri'
-      identifier = 'Not in Akorri'
-      description     = "Production ESX guest isn't in Akorri"
+      severity    = 2
+      source      = 'Akorri'
+      identifier  = 'Not in Akorri'
+      description = "Production ESX guest isn't in Akorri"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -65,10 +65,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_esx? == true,
                         m.in_akorri? == false] do |v|
 
-      severity = 2
-      source   = 'Akorri'
-      identifier = 'Not in Akorri'
-      description     = "Production ESX guest isn't in Akorri"
+      severity    = 2
+      source      = 'Akorri'
+      identifier  = 'Not in Akorri'
+      description = "Production ESX guest isn't in Akorri"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -78,10 +78,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_scom? == false] do |v|
 
-      severity = 2
-      source   = 'SCOM'
-      identifier = 'Not in SCOM'
-      description     = "Production Windows computer is not in SCOM"
+      severity    = 2
+      source      = 'SCOM'
+      identifier  = 'Not in SCOM'
+      description = "Production Windows computer is not in SCOM"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
     end
@@ -91,10 +91,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_wsus? == false] do |v|
 
-      severity = 2
-      source   = 'WSUS'
-      identifier = 'Not in WSUS'
-      description     = "Online Windows computer is not in WSUS"
+      severity    = 2
+      source      = 'WSUS'
+      identifier  = 'Not in WSUS'
+      description = "Online Windows computer is not in WSUS"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
     end
@@ -104,12 +104,12 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.us_outstanding > 0] do |v|
         
-      severity = 2
-      source   = 'WSUS'
-      identifier = 'Pending patches'
-      description     = "Computer has " +
-                 ActionController::Base.helpers.pluralize(v[:c].us_outstanding, 'patch') +
-                 " outstanding in WSUS"
+      severity    = 2
+      source      = 'WSUS'
+      identifier  = 'Pending patches'
+      description = "Computer has " +
+                    ActionController::Base.helpers.pluralize(v[:c].us_outstanding, 'patch') +
+                    " outstanding in WSUS"
 
        assert Issue.find_or_init(v[:c], severity, source, identifier, description)        
     end
@@ -118,10 +118,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.archived? == true,
                         m.power? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'Powered on'
-      description     = "Computer in Archived status shouldn't be powered on"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'Powered on'
+      description = "Computer in Archived status shouldn't be powered on"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -131,10 +131,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_esx? == true,
                         m.power? == false] do |v|
       
-      severity = 2
-      source   = 'Configuration'
-      identifier = 'Powered off'
-      description     = "Computer in Production status shouldn't be powered off"
+      severity    = 2
+      source      = 'Configuration'
+      identifier  = 'Powered off'
+      description = "Computer in Production status shouldn't be powered off"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -143,10 +143,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.production? == true || m.nonproduction? == true,
                         m.owner_id == nil] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'No Owner'
-      description     = "Online computers should have an owner"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'No Owner'
+      description = "Online computers should have an owner"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -156,10 +156,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_wsus? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In WSUS'
-      description     = "Computer in Decommissioned status shouldn't be in WSUS"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In WSUS'
+      description = "Computer in Decommissioned status shouldn't be in WSUS"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -168,10 +168,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_epo? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In EPO'
-      description     = "Computer in Decommissioned status shouldn't be in EPO"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In EPO'
+      description = "Computer in Decommissioned status shouldn't be in EPO"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -180,10 +180,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_scom? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In SCOM'
-      description     = "Computer in Decommissioned status shouldn't be in SCOM"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In SCOM'
+      description = "Computer in Decommissioned status shouldn't be in SCOM"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -192,10 +192,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_ldap? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In AD'
-      description     = "Computer in Decommissioned status shouldn't be in AD"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In AD'
+      description = "Computer in Decommissioned status shouldn't be in AD"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -204,10 +204,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_esx? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In ESX'
-      description     = "Computer in Decommissioned status shouldn't be in ESX"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In ESX'
+      description = "Computer in Decommissioned status shouldn't be in ESX"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -216,10 +216,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_akorri? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In Akorri'
-      description     = "Computer in Decommissioned status shouldn't be in Akorri"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In Akorri'
+      description = "Computer in Decommissioned status shouldn't be in Akorri"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -228,10 +228,10 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.decommissioned? == true,
                         m.in_avamar? == true] do |v|
       
-      severity = 1
-      source   = 'Configuration'
-      identifier = 'In Avamar'
-      description     = "Computer in Decommissioned status shouldn't be active in Avamar"
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'In Avamar'
+      description = "Computer in Decommissioned status shouldn't be active in Avamar"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -241,22 +241,22 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_ldap? == false] do |v|
 
-      severity = 3
-      source   = 'AD'
-      identifier = 'Not in AD'
-      description     = "Online Windows computer isn't in AD"
+      severity    = 3
+      source      = 'AD'
+      identifier  = 'Not in AD'
+      description = "Online Windows computer isn't in AD"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
     
     # All computers in AD should have a description
     rule [Computer, :c, m.in_ldap? == true,
-                        m.description == nil || m.description == ""] do |v|
+                        m.description == nil] do |v|
                           
-      severity = 1
-      source   = 'AD'
-      identifier = 'No description'
-      description     = "Computer must have a description set in AD"
+      severity    = 1
+      source      = 'AD'
+      identifier  = 'No description'
+      description = "Computer must have a description set in AD"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
