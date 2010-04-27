@@ -1,6 +1,5 @@
 class ConvertProductionToTiers < ActiveRecord::Migration
   def self.up
-    Computer.update_all("disposition = 'production_3'", "disposition = 'production'")
   end
 
   def self.down
