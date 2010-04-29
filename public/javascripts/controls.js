@@ -516,6 +516,7 @@ Ajax.InPlaceEditor = Class.create({
     var text = this.options[mode + 'Text'];
     if ('button' == control) {
       var btn = document.createElement('input');
+      Element.extend(btn);
       btn.type = 'submit';
       btn.value = text;
       btn.className = 'editor_' + mode + '_button';
@@ -525,6 +526,7 @@ Ajax.InPlaceEditor = Class.create({
       this._controls[mode] = btn;
     } else if ('link' == control) {
       var link = document.createElement('a');
+      Element.extend(link);
       link.href = '#';
       link.appendChild(document.createTextNode(text));
       link.onclick = 'cancel' == mode ? this._boundCancelHandler : this._boundSubmitHandler;
@@ -540,11 +542,13 @@ Ajax.InPlaceEditor = Class.create({
     var fld;
     if (1 >= this.options.rows && !/\r|\n/.test(this.getText())) {
       fld = document.createElement('input');
+      Element.extend(fld);
       fld.type = 'text';
       var size = this.options.size || this.options.cols || 0;
       if (0 < size) fld.size = size;
     } else {
       fld = document.createElement('textarea');
+      Element.extend(fld);
       fld.rows = (1 >= this.options.rows ? this.options.autoRows : this.options.rows);
       fld.cols = this.options.cols || 40;
     }
@@ -553,6 +557,7 @@ Ajax.InPlaceEditor = Class.create({
     fld.className = 'editor_field';
     if (this.options.submitOnBlur)
       fld.onblur = this._boundSubmitHandler;
+    Element.extend(fld);
     this._controls.editor = fld;
     if (this.options.loadTextURL)
       this.loadExternalText();
@@ -763,6 +768,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
     var list = document.createElement('select');
     list.name = this.options.paramName;
     list.size = 1;
+    Element.extend(list);
     this._controls.editor = list;
     this._collection = this.options.collection || [];
     if (this.options.loadCollectionURL)
@@ -796,6 +802,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
     var tempOption = this._controls.editor.firstChild;
     if (!tempOption) {
       tempOption = document.createElement('option');
+      Element.extend(tempOption);
       tempOption.value = '';
       this._controls.editor.appendChild(tempOption);
       tempOption.selected = true;
@@ -839,6 +846,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
     var option;
     this._collection.each(function(entry, index) {
       option = document.createElement('option');
+      Element.extend(option);
       option.value = entry[0];
       option.selected = textFound ? entry[0] == marker : 0 == index;
       option.appendChild(document.createTextNode(entry[1]));

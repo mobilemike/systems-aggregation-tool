@@ -1,7 +1,7 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:health, :fqdn, :owner, :status, :company, :description, :ip, :guest, :us_outstanding,
+  ALL_COLUMNS = [:health, :fqdn, :owner_id, :status, :company, :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
@@ -25,6 +25,7 @@ class ComputersController < ApplicationController
     c.columns[:av_schedule].label              = 'Schedule'
     c.columns[:bios_date].label                = "BIOS Date"
     c.columns[:bios_ver].label                 = "BIOS Ver"
+    c.columns[:company].inplace_edit           = true
     c.columns[:cpu_ready].label                = "CPU Ready"
     c.columns[:cpu_reservation].label          = 'CPU Reservation'
     c.columns[:fqdn].label                     = 'Computer'
@@ -44,8 +45,9 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql                => 'ip_int'
     c.columns[:mem_balloon].label              = 'Memory Ballooned'
     c.columns[:mem_reservation].label          = 'Memory Reservation'
-    c.columns[:owner].description              = "Assigned owner"   
-    c.columns[:owner].label                    = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:owner_id].description           = "Assigned owner"   
+    c.columns[:owner_id].inplace_edit          = true
+    c.columns[:owner_id].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:serial_number].label            = "Serial Number"
     c.columns[:status].description             = "Production status"
     c.columns[:status].inplace_edit            = true
@@ -54,6 +56,7 @@ class ComputersController < ApplicationController
     c.columns[:us_outstanding].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
     c.columns[:vtools_ver].label               = 'VM Tools'
+
 
     
     c.actions.exclude :create, :delete, :nested
@@ -112,7 +115,7 @@ private
   end
   
   def update_table_columns
-    base = [:fqdn, :owner, :status]
+    base = [:fqdn, :owner_id, :status]
     
     col = nil
     con = nil

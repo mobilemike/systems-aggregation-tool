@@ -63,7 +63,7 @@ module ComputersHelper
     record = computer
     column = active_scaffold_config.columns[:company]
     collection = [['Unknown', 'Unknown'], ['RMR', 'RMR'], ['Five Star', 'Five Star',], ['Shared', 'Shared']].inspect
-    active_scaffold_inplace_collection_edit(record, column, collection)
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.company)
   end
   
   def cpu_ready_column computer
@@ -109,12 +109,29 @@ module ComputersHelper
     computer.mem_balloon ? mb_to_human_size(computer.mem_balloon) : "-"
   end
   
-  def status_column computer
-    record = computer
-    column = active_scaffold_config.columns[:status]
-    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
-    active_scaffold_inplace_collection_edit(record, column, collection)
+  def owner_id_column computer
+    case computer.in_scom?
+    when true
+      computer.owner.to_label
+    else
+      record = computer
+      column = active_scaffold_config.columns[:owner_id]
+      collection = Owner.find_all_for_select
+      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner.to_label)
+    end
   end
+  
+  def status_column computer
+    case computer.in_scom?
+    when true
+      computer.status
+    else
+      record = computer
+      column = active_scaffold_config.columns[:status]
+      collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
+      active_scaffold_inplace_collection_edit(record, column, collection, computer.status)
+    end
+   end
   
   def us_outstanding_column computer
     updates = "N/A"
@@ -133,8 +150,7 @@ module ComputersHelper
   
   
   
-  def active_scaffold_inplace_collection_edit(record, column, collection)
-    formatted_column = record.send(column.name)
+  def active_scaffold_inplace_collection_edit(record, column, collection, formatted_column)
     id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}
     tag_options = {:id => element_cell_id(id_options), :class => "in_place_editor_field"}
     in_place_collection_editor_options = {:url => {:controller => params_for[:controller],
