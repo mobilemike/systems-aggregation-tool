@@ -109,15 +109,15 @@ module ComputersHelper
     computer.mem_balloon ? mb_to_human_size(computer.mem_balloon) : "-"
   end
   
-  def owner_id_column computer
+  def owner_initials_column computer
     case computer.in_scom?
     when true
-      computer.owner.to_label
+      computer.owner_initials
     else
       record = computer
-      column = active_scaffold_config.columns[:owner_id]
+      column = active_scaffold_config.columns[:owner_initials]
       collection = Owner.find_all_for_select
-      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner.to_label)
+      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner_initials)
     end
   end
   

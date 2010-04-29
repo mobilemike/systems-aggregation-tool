@@ -19,7 +19,7 @@ class Owner < ActiveRecord::Base
   end
   
   def self.find_all_for_select
-    self.all_sorted_by_name.map! {|o| [o.initials, o.id.to_s]}.inspect
+    self.all_sorted_by_name.map! {|o| [o.initials, o.initials]}.inspect
   end
   
 end

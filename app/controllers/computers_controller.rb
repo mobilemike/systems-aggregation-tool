@@ -1,7 +1,7 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:health, :fqdn, :owner_id, :status, :company, :description, :ip, :guest, :us_outstanding,
+  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
@@ -45,9 +45,9 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql                => 'ip_int'
     c.columns[:mem_balloon].label              = 'Memory Ballooned'
     c.columns[:mem_reservation].label          = 'Memory Reservation'
-    c.columns[:owner_id].description           = "Assigned owner"   
-    c.columns[:owner_id].inplace_edit          = true
-    c.columns[:owner_id].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:owner_initials].description              = "Assigned owner"   
+    c.columns[:owner_initials].inplace_edit             = true
+    c.columns[:owner_initials].label                    = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:serial_number].label            = "Serial Number"
     c.columns[:status].description             = "Production status"
     c.columns[:status].inplace_edit            = true
@@ -115,7 +115,7 @@ private
   end
   
   def update_table_columns
-    base = [:fqdn, :owner_id, :status]
+    base = [:fqdn, :owner_initials, :status]
     
     col = nil
     con = nil

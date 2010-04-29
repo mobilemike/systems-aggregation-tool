@@ -130,6 +130,14 @@ class Computer < ActiveRecord::Base
   def os_long
     [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
   end
+  
+  def owner_initials
+    self.owner.try(:initials)
+  end
+  
+  def owner_initials=(initials)
+    self.owner = Owner.find_by_initials(initials)
+  end
 
   def is_windows?
     self.os_name == "Windows" ? true : false
