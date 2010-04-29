@@ -17,6 +17,11 @@ class Owner < ActiveRecord::Base
   def self.all_sorted_by_name
     self.find(:all, :order => :name)
   end
+  
+  def self.find_all_for_select
+    self.all_sorted_by_name.map! {|o| [o.initials, o.initials]}.inspect
+  end
+  
 end
 
 # == Schema Information
