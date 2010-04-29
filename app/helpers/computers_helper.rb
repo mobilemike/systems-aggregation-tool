@@ -75,7 +75,13 @@ module ComputersHelper
   end
   
   def description_column computer
-    computer.description ? truncate_with_tip(computer.description) : "-"
+    if computer.in_ldap?
+      computer.description ? truncate_with_tip(computer.description) : "-"
+    else
+      record = computer
+      column = active_scaffold_config.columns[:description]
+      active_scaffold_inplace_edit(record, column, computer.description ? truncate_with_tip(computer.description) : "-")
+    end
   end
   
   def fqdn_column computer
@@ -148,26 +154,6 @@ module ComputersHelper
     content_tag(:span, updates, :class => span_class)
   end
   
-  
-  
-  def active_scaffold_inplace_collection_edit(record, column, collection, formatted_column)
-    id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}
-    tag_options = {:id => element_cell_id(id_options), :class => "in_place_editor_field"}
-    in_place_collection_editor_options = {:url => {:controller => params_for[:controller],
-                                                   :action => "update_column",
-                                                   :column => column.name,
-                                                   :id => record.id.to_s},
-                                          :with => params[:eid] ? "Form.serialize(form) + '&eid=#{params[:eid]}'" : nil,
-                                          :collection => collection,
-                                          :click_to_edit_text => as_(:click_to_edit),
-                                          :cancel_text => as_(:cancel),
-                                          :loading_text => as_(:loading),
-                                          :save_text => as_(:update),
-                                          :saving_text => as_(:saving),
-                                          :options => "{method: 'post'}",
-                                          :script => true}.merge(column.options)
-    content_tag(:span, formatted_column, tag_options) + in_place_collection_editor(tag_options[:id], in_place_collection_editor_options)
-  end
   
   def csv_header
     header = '"FQDN","Owner","Status","Company","Description","Health","WSUS","Virtual","Host","IP",'

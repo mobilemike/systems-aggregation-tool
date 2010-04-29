@@ -28,6 +28,7 @@ class ComputersController < ApplicationController
     c.columns[:company].inplace_edit           = true
     c.columns[:cpu_ready].label                = "CPU Ready"
     c.columns[:cpu_reservation].label          = 'CPU Reservation'
+    c.columns[:description].inplace_edit       = true
     c.columns[:fqdn].label                     = 'Computer'
     c.columns[:guest].description              = "Virtual or Physical"
     c.columns[:guest].label                    = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
