@@ -118,12 +118,12 @@ module ComputersHelper
   def owner_initials_column computer
     case computer.in_scom?
     when true
-      computer.owner_initials
+      computer.owner ? computer.owner_initials : "-"
     else
       record = computer
       column = active_scaffold_config.columns[:owner_initials]
       collection = Owner.find_all_for_select
-      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner_initials)
+      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner ? computer.owner_initials : "-")
     end
   end
   
