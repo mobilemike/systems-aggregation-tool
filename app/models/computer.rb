@@ -11,12 +11,25 @@ class Computer < ActiveRecord::Base
 
   aasm_column :disposition
   aasm_initial_state :unknown
-  aasm_state :unknown
+  aasm_state :production_1
+  aasm_state :production_2
+  aasm_state :production_3
   aasm_state :nonproduction
-  aasm_state :production
   aasm_state :decommissioned
   aasm_state :archived
+  aasm_state :unknown
   aasm_state :remove
+  
+  def self.states_combined
+    [["Production", "production"]] + self.aasm_states_for_select - [["Production 1", "production_1"],
+                                                                    ["Production 2", "production_2"],
+                                                                    ["Production 3", "production_3"]]
+                                   
+  end
+  
+  def production?
+    production_3? || production_2? || production_1?
+  end
   
   def self.find_all_sorted_by_fqdn(conditions=[])
     computers = self.find(:all,
@@ -29,11 +42,11 @@ class Computer < ActiveRecord::Base
   end
   
   def status
-    self.disposition ? self.disposition.capitalize : "-"
+    self.disposition ? self.disposition.humanize : "-"
   end
   
   def status=(disposition)
-    self.disposition = disposition.downcase
+    self.disposition = disposition.downcase.tr(" ", "_")
   end
   
   def self.states
@@ -116,6 +129,14 @@ class Computer < ActiveRecord::Base
   
   def os_long
     [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
+  end
+  
+  def owner_initials
+    self.owner.try(:initials)
+  end
+  
+  def owner_initials=(initials)
+    self.owner = Owner.find_by_initials(initials)
   end
 
   def is_windows?
