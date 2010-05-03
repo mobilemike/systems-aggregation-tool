@@ -5,11 +5,11 @@ module ApplicationHelper
     options ||= {}
     id = ''
     health = case options
-      when Integer || Float
-        options
-      else
+      when Computer
         id = options.id
         options.health
+      else
+        options
     end
            
     image_source = case health

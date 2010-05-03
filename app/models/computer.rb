@@ -53,7 +53,7 @@ class Computer < ActiveRecord::Base
   
   def health_rank
     rank = self.issues.active.without_scom.map {|i| i.severity}.inject(0) {|sum, n| sum + n}
-    rank += self.health_sc_state || 0
+    rank += (self.health_sc_state || 0) > 0 ? self.health_sc_state : 0
   end
   
   def health_av_last
