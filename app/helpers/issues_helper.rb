@@ -5,7 +5,11 @@ module IssuesHelper
   end
   
   def severity_column issue
-    food_icon(issue.severity + 1)
+    if issue.source = 'SCOM'
+      food_icon((issue.severity * 0.1) + 1)
+    else
+      food_icon(issue.severity)
+    end
   end
   
   def identifier_column issue
