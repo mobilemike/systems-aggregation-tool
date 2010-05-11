@@ -3,9 +3,12 @@ class ComputerRulebook < Ruleby::Rulebook
   def configuration_issues
     
     # Online Windows computers should be in EPO
-    rule [Computer, :c, m.production? == true || m.nonproduction? == true,
-                        m.is_windows? == true,
-                        m.in_epo? == false] do |v|
+    rule OR ([Computer, :c, m.production? == true,
+                            m.is_windows? == true,
+                            m.in_epo? == false],
+             [Computer, :c, m.nonproduction? == true,
+                            m.is_windows? == true,
+                            m.in_epo? == false]) do |v|
                           
       severity    = 3
       source      = 'EPO'
