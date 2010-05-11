@@ -3,6 +3,8 @@ class Issue < ActiveRecord::Base
   belongs_to :computer
   
   named_scope :active, :conditions => {:active => true}
+  named_scope :scom_only, :conditions => {:source => 'SCOM'}
+  named_scope :without_scom, :conditions => "source != 'SCOM'"
   
   
   def self.find_or_init(computer, severity, source, identifier, description)

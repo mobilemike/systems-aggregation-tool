@@ -42,11 +42,18 @@ class Computer < ActiveRecord::Base
   end
 
   def health
-    self.issues.active.map {|i| i.severity + 1}.max || 0
+    health = []
+    health << (self.issues.active.without_scom.map {|i| i.severity}.max || 0)
+    
+    scom_health = (self.issues.active.scom_only.map {|i| i.severity + 1}.max || 0) * 0.1
+    health << ((scom_health + 1 if scom_health > 0) || 0)
+    
+    health.max
   end
   
   def health_rank
-    self.issues.active.map {|i| i.severity}.inject(0) {|sum, n| sum + n}
+    rank = self.issues.active.without_scom.map {|i| i.severity}.inject(0) {|sum, n| sum + n}
+    rank += (self.health_sc_state || 0) > 0 ? self.health_sc_state : 0
   end
   
   def health_av_last
