@@ -1,0 +1,19 @@
+== Changelog
+
+=== Release 2.3.0  (April 30, 2010)
+
+= FEATURES
+
+* Assigned owners and server descriptions can be modified from the list view
+* Broke server "Production" status into three Tiers
+* Server status is automatically assigned based on SCOM group membership
+* Added ILC as a company option
+
+= FIXES / ENHANCEMENTS
+
+* Removed SCOM's ability to create new owners
+* Updated DC list for RMR's 2008 R2 project
+* Updated SCOM query with NOLOCKs
+* Enhanced Avamar query to exclude inactive
+* Correct physical/virtual identification thus improving views
+* Hacked the prototype controls.js file extensively for better inplaceediting compatibility
