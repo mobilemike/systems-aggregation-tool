@@ -5,10 +5,10 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online Windows computers should be in EPO
     rule OR([Computer, :c, m.production? == true,
                            m.is_windows? == true,
-                           m.in_epo? == false],
+                           m.in_epo?.not== true],
             [Computer, :c, m.nonproduction? == true,
                            m.is_windows? == true,
-                           m.in_epo? == false]) do |v|
+                           m.in_epo?.not== true]) do |v|
                           
       severity    = 3
       source      = 'EPO'
@@ -57,10 +57,10 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online virtual guests should be in Akorri
     rule OR([Computer, :c, m.production? == true,
                            m.in_esx? == true,
-                           m.in_akorri? == false],
+                           m.in_akorri?.not== true],
             [Computer, :c, m.nonproduction? == true,
                            m.in_esx? == true,
-                           m.in_akorri? == false]) do |v|
+                           m.in_akorri?.not== true]) do |v|
 
       severity    = 2
       source      = 'Akorri'
@@ -73,7 +73,7 @@ class ComputerRulebook < Ruleby::Rulebook
     # Prodcution Windows computers should be in SCOM
     rule [Computer, :c, m.production? == true,
                         m.is_windows? == true,
-                        m.in_scom? == false] do |v|
+                        m.in_scom?.not== true] do |v|
 
       severity    = 2
       source      = 'SCOM'
@@ -86,10 +86,10 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online Windows computers should be in WSUS
     rule OR([Computer, :c, m.production? == true,
                            m.is_windows? == true,
-                           m.in_wsus? == false],
+                           m.in_wsus?.not== true],
             [Computer, :c, m.nonproduction? == true,
                            m.is_windows? == true,
-                           m.in_wsus? == false]) do |v|
+                           m.in_wsus?.not== true]) do |v|
 
       severity    = 2
       source      = 'WSUS'
@@ -144,9 +144,9 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Online computers should have an owner
     rule OR([Computer, :c, m.production? == true,
-                           m.owner_id == nil],
+                           m.owner_id.not== true],
             [Computer, :c, m.nonproduction? == true,
-                           m.owner_id == nil]) do |v|
+                           m.owner_id.not== true]) do |v|
       
       severity    = 1
       source      = 'Configuration'
@@ -244,10 +244,10 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online virtual windows guests should be in a domain
     rule OR([Computer, :c, m.production? == true,
                            m.is_windows? == true,
-                           m.in_ldap? == false],
+                           m.in_ldap?.not== true],
             [Computer, :c, m.nonproduction? == true,
                            m.is_windows? == true,
-                           m.in_ldap? == false]) do |v|
+                           m.in_ldap?.not== true]) do |v|
 
       severity    = 3
       source      = 'AD'
@@ -258,10 +258,8 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # All computers in AD should have a description
-    rule OR([Computer, :c, m.in_ldap? == true,
-                           m.description == nil],
-            [Computer, :c, m.in_ldap? == true,
-                           m.description == '']) do |v|
+    rule [Computer, :c, m.in_ldap? == true,
+                           m.description.not== true] do |v|
                           
       severity    = 1
       source      = 'AD'
