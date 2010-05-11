@@ -241,10 +241,13 @@ class ComputerRulebook < Ruleby::Rulebook
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
     
-    # Online virtual guests should be in a domain
-    rule [Computer, :c, m.production? == true,
-                        m.is_windows? == true,
-                        m.in_ldap? == false] do |v|
+    # Online virtual windows guests should be in a domain
+    rule OR([Computer, :c, m.production? == true,
+                           m.is_windows? == true,
+                           m.in_ldap? == false],
+            [Computer, :c, m.nonproduction? == true,
+                           m.is_windows? == true,
+                           m.in_ldap? == false]) do |v|
 
       severity    = 3
       source      = 'AD'
@@ -255,8 +258,10 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # All computers in AD should have a description
-    rule [Computer, :c, m.in_ldap? == true,
-                        m.description == nil] do |v|
+    rule OR([Computer, :c, m.in_ldap? == true,
+                           m.description == nil],
+            [Computer, :c, m.in_ldap? == true,
+                           m.description == '']) do |v|
                           
       severity    = 1
       source      = 'AD'
