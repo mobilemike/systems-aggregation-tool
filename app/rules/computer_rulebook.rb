@@ -144,9 +144,9 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Online computers should have an owner
     rule OR([Computer, :c, m.production? == true,
-                           m.owner_id == nil],
+                           m.owner_id? == false],
             [Computer, :c, m.nonproduction? == true,
-                           m.owner_id == nil]) do |v|
+                           m.owner_id? == false]) do |v|
       
       severity    = 1
       source      = 'Configuration'
@@ -258,10 +258,8 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # All computers in AD should have a description
-    rule OR([Computer, :c, m.in_ldap? == true,
-                           m.description == nil],
-            [Computer, :c, m.in_ldap? == true,
-                           m.description == '']) do |v|
+    rule [Computer, :c, m.in_ldap? == true,
+                        m.description? == false] do |v|
                           
       severity    = 1
       source      = 'AD'
