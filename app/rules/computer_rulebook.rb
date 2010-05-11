@@ -65,7 +65,7 @@ class ComputerRulebook < Ruleby::Rulebook
       severity    = 2
       source      = 'Akorri'
       identifier  = 'Not in Akorri'
-      description = "Production ESX guest isn't in Akorri"
+      description = "ESX guest isn't in Akorri"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
