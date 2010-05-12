@@ -42,15 +42,20 @@ class ComputerRulebook < Ruleby::Rulebook
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
     
-    # # Production computers that don't run ESX should be in Avamar
-    # rule [Computer, :c, m.production? == true,
-    #                     m.is_esx? == false,
-    #                     m.in_avamar? == false] do |v|
-    #   puts "#{v[:c].name}: Production computers that don't run ESX should be in Avamar"
-    # end
+    # Avmar protected comptuters should backup without error 
+    rule [Computer, :c, m.in_avamar? == true,
+                        m.health_av_last > 0] do |v|
+
+
+      severity    = v[:c].health_av_last
+      source      = 'Avamar'
+      identifier  = 'Last Backup Status'
+      description = v[:c].av_message
+      
+      assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
+    end
     
     # Online virtual guests should be in Akorri
-    
     rule [Computer, :c, m.online? == true,
                         m.in_esx? == true,
                         m.in_akorri? == false] do |v|
@@ -75,6 +80,24 @@ class ComputerRulebook < Ruleby::Rulebook
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
     end
+    
+    # SCOM health state should create an alert to that effect
+    rule [Computer, :c, m.in_scom? == true,
+                        m.health_sc_state > 1] do |v|
+
+      state_in_words = case v[:c].health_sc_state
+        when 2 then "Warning"
+        when 3 then "Critical"
+      end
+
+      severity    = v[:c].health_sc_state
+      source      = 'SCOM'
+      identifier  = 'System State'
+      description = "The system is in a #{state_in_words} health state"
+      
+      assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
+    end    
+
     
     # Online Windows computers should be in WSUS
     rule [Computer, :c, m.online? == true,
@@ -131,16 +154,6 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Online computers should have an owner
     rule [Computer, :c, m.online? == true,
-                        m.owner_id? == false] do |v|
-      
-      severity    = 1
-      source      = 'Configuration'
-      identifier  = 'No Owner'
-      description = "Online computers should have an owner"
-
-      assert Issue.find_or_init(v[:c], severity, source, identifier, description)
-    end
-    
     
     # Decommissioned computers shouldn't be listed as active in WSUS
     rule [Computer, :c, m.decommissioned? == true,

@@ -82,7 +82,7 @@ class Computer < ActiveRecord::Base
   end
   
   def av_message
-    if health_av_last > 1
+    if health_av_last > 0
       self.av_error
     else
       self.av_status
