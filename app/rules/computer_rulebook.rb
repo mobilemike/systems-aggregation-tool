@@ -16,7 +16,8 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Computers in EPO should report their current DAT version accurately
-    rule [Computer, :c, m.ep_dat_outdated > 5000] do |v|
+    rule [Computer, :c, m.in_epo? == true,
+                        m.ep_dat_outdated > 5000] do |v|
       
       severity    = 3
       source      = 'EPO'
@@ -29,6 +30,7 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online computers should have a very recent DAT
     rule [Computer, :c, m.online? == true,
                         m.power?.not== false,
+                        m.in_epo? == true,
                         m.ep_dat_outdated > 1,
                         m.ep_dat_outdated < 5000] do |v|
                           
@@ -48,6 +50,7 @@ class ComputerRulebook < Ruleby::Rulebook
     # end
     
     # Online virtual guests should be in Akorri
+    
     rule [Computer, :c, m.online? == true,
                         m.in_esx? == true,
                         m.in_akorri? == false] do |v|
