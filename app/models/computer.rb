@@ -32,6 +32,10 @@ class Computer < ActiveRecord::Base
     production_3? || production_2? || production_1?
   end
   
+  def online?
+    production? || nonproduction?
+  end
+  
   def self.find_all_sorted_by_fqdn(conditions=[])
     computers = self.find(:all,
                           :order => "computers.fqdn",

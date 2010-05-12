@@ -3,12 +3,9 @@ class ComputerRulebook < Ruleby::Rulebook
   def configuration_issues
     
     # Online Windows computers should be in EPO
-    rule OR([Computer, :c, m.production? == true,
-                           m.is_windows? == true,
-                           m.in_epo? == false],
-            [Computer, :c, m.nonproduction? == true,
-                           m.is_windows? == true,
-                           m.in_epo? == false]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.is_windows? == true,
+                        m.in_epo? == false] do |v|
                           
       severity    = 3
       source      = 'EPO'
@@ -30,14 +27,10 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Online computers should have a very recent DAT
-    rule OR([Computer, :c, m.production? == true,
-                           m.power?.not== false,
-                           m.ep_dat_outdated > 1,
-                           m.ep_dat_outdated < 5000],
-            [Computer, :c, m.nonproduction? == true,
-                           m.power?.not== false,
-                           m.ep_dat_outdated > 1,
-                           m.ep_dat_outdated < 5000]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.power?.not== false,
+                        m.ep_dat_outdated > 1,
+                        m.ep_dat_outdated < 5000] do |v|
                           
       severity    = 2
       source      = 'EPO'
@@ -55,12 +48,9 @@ class ComputerRulebook < Ruleby::Rulebook
     # end
     
     # Online virtual guests should be in Akorri
-    rule OR([Computer, :c, m.production? == true,
-                           m.in_esx? == true,
-                           m.in_akorri? == false],
-            [Computer, :c, m.nonproduction? == true,
-                           m.in_esx? == true,
-                           m.in_akorri? == false]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.in_esx? == true,
+                        m.in_akorri? == false] do |v|
 
       severity    = 2
       source      = 'Akorri'
@@ -84,12 +74,9 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Online Windows computers should be in WSUS
-    rule OR([Computer, :c, m.production? == true,
-                           m.is_windows? == true,
-                           m.in_wsus? == false],
-            [Computer, :c, m.nonproduction? == true,
-                           m.is_windows? == true,
-                           m.in_wsus? == false]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.is_windows? == true,
+                        m.in_wsus? == false] do |v|
 
       severity    = 2
       source      = 'WSUS'
@@ -100,12 +87,9 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Online Windows computers shouldn't have outstanding patches
-    rule OR([Computer, :c, m.production? == true,
-                           m.is_windows? == true,
-                           m.us_outstanding > 0],
-            [Computer, :c, m.nonproduction? == true,
-                           m.is_windows? == true,
-                           m.us_outstanding > 0]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.is_windows? == true,
+                        m.us_outstanding > 0] do |v|
         
       severity    = 2
       source      = 'WSUS'
@@ -143,10 +127,8 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Online computers should have an owner
-    rule OR([Computer, :c, m.production? == true,
-                           m.owner_id? == false],
-            [Computer, :c, m.nonproduction? == true,
-                           m.owner_id? == false]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.owner_id? == false] do |v|
       
       severity    = 1
       source      = 'Configuration'
@@ -242,12 +224,9 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # Online virtual windows guests should be in a domain
-    rule OR([Computer, :c, m.production? == true,
-                           m.is_windows? == true,
-                           m.in_ldap? == false],
-            [Computer, :c, m.nonproduction? == true,
-                           m.is_windows? == true,
-                           m.in_ldap? == false]) do |v|
+    rule [Computer, :c, m.online? == true,
+                        m.is_windows? == true,
+                        m.in_ldap? == false] do |v|
 
       severity    = 3
       source      = 'AD'
