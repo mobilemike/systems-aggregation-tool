@@ -154,6 +154,16 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Online computers should have an owner
     rule [Computer, :c, m.online? == true,
+                        m.owner? == false] do|v|
+                          
+      severity    = 1
+      source      = 'Configuration'
+      identifier  = 'Owner Required'
+      description = "Computer does not have an Owner"
+
+      assert Issue.find_or_init(v[:c], severity, source, identifier, description)
+    end
+                          
     
     # Decommissioned computers shouldn't be listed as active in WSUS
     rule [Computer, :c, m.decommissioned? == true,
