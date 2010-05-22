@@ -8,12 +8,12 @@ class Issue < ActiveRecord::Base
   
   
   def self.find_or_init(computer, severity, source, identifier, description)
-    self.find_or_initialize_by_active_and_computer_id_and_identifier(:active => true,
-                                                                     :computer_id => computer.id,
-                                                                     :severity => severity,
-                                                                     :source => source,
-                                                                     :identifier => identifier,
-                                                                     :description => description)
+    self.find_or_initialize_by_active_and_computer_id_and_identifier_and_severity(:active => true,
+                                                                                  :computer_id => computer.id,
+                                                                                  :severity => severity,
+                                                                                  :source => source,
+                                                                                  :identifier => identifier,
+                                                                                  :description => description)
   end
   
   def self.mark_old_closed
