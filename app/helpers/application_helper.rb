@@ -14,8 +14,7 @@ module ApplicationHelper
            
     image_source = case health
       when 0 then "cabbage_16.gif"
-      when 1 then "carrot_blue_16.gif"
-      when 1.1 then "carrot_carrot_22.gif"
+      when 1..1.1 then "carrot_blue_16.gif"
       when 1.2 then "carrot_onion_22.gif"
       when 1.3 then "carrot_tomato_22.gif"
       when 2 then "onion_16.gif"
