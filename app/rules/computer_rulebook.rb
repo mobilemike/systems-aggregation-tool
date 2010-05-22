@@ -8,7 +8,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_epo? == false] do |v|
                           
       severity    = 3
-      source      = 'EPO'
+      source      = 'Configuration'
       identifier  = 'Not in EPO'
       description = "Windows computer is online, but not in EPO"
       
@@ -61,7 +61,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_akorri? == false] do |v|
 
       severity    = 2
-      source      = 'Akorri'
+      source      = 'Configuration'
       identifier  = 'Not in Akorri'
       description = "ESX guest isn't in Akorri"
 
@@ -74,7 +74,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_scom? == false] do |v|
 
       severity    = 2
-      source      = 'SCOM'
+      source      = 'Configuration'
       identifier  = 'Not in SCOM'
       description = "Production Windows computer is not in SCOM"
 
@@ -91,7 +91,7 @@ class ComputerRulebook < Ruleby::Rulebook
       end
 
       severity    = v[:c].health_sc_state
-      source      = 'SCOM'
+      source      = 'Health'
       identifier  = 'System State'
       description = "The system is in a #{state_in_words} health state"
       
@@ -105,7 +105,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_wsus? == false] do |v|
 
       severity    = 2
-      source      = 'WSUS'
+      source      = 'Configuration'
       identifier  = 'Not in WSUS'
       description = "Online Windows computer is not in WSUS"
 
@@ -255,7 +255,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_ldap? == false] do |v|
 
       severity    = 3
-      source      = 'AD'
+      source      = 'Configuration'
       identifier  = 'Not in AD'
       description = "Online Windows computer isn't in AD"
 
