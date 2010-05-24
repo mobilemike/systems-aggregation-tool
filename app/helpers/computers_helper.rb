@@ -176,7 +176,7 @@ module ComputersHelper
                  else ',""'
                end
     results += ",#{c.us_outstanding}"
-    resluts += ",\"#{c.us_group_name}\""
+    results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
