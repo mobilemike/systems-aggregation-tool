@@ -157,10 +157,10 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","WSUS","Virtual","Host","IP",'
-    header += '"CPU Speed","CPU Count","RAM Total","RAM Used","Disk Total","Disk Free","OS",'
-    header += '"Install Date","Serial Number","Make","Model","Dataset","Schedule",'
-    header += '"Retention","MB Protected","MB New"'
+    header = '"FQDN","Owner","Status","Company","Description","Health","Patches","SUS Group",'
+    header += '"Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
+    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
+    header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
   
   def csv_row c
@@ -176,6 +176,7 @@ module ComputersHelper
                  else ',""'
                end
     results += ",#{c.us_outstanding}"
+    resluts += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
