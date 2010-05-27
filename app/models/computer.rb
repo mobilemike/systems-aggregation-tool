@@ -62,7 +62,7 @@ class Computer < ActiveRecord::Base
     health = []
     health << (self.issues.active.without_scom.map {|i| i.severity}.max || 0)
     
-    scom_health = (self.issues.active.scom_only.map {|i| i.severity + 1}.max || 0) * 0.1
+    scom_health = (self.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
     health << ((scom_health + 1 if scom_health > 0) || 0)
     
     health.max
