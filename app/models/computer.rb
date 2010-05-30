@@ -69,24 +69,17 @@ class Computer < ActiveRecord::Base
   end
   
   def health_rank
-    # rank = self.issues.active.without_scom.map {|i| i.severity}.inject(0) {|sum, n| sum + n}
+    rank = self.health * 100
     
-    rank = case self.health
-      when 3 then   1000000
-      when 2 then   100000
-      when 1.3 then 10000
-      when 1.2 then 1000
-      when 1.1 then 100
-      when 1 then   10
-      else          1
-    end
+    rank += 1000 if (self.production? && self.health >= 2)
       
-    case self.aasm_current_state
-      when :production_1 then  rank + 3
-      when :production_2 then  rank + 2
-      when :production_3 then  rank + 1
-      when :nonproduction then rank / 100000
-      else rank / 1000000
+    rank += case self.aasm_current_state
+      when :production_1 then  5
+      when :production_2 then  4
+      when :production_3 then  3
+      when :nonproduction then 2
+      when :unknown then       1
+      else 0
     end
   end
   
