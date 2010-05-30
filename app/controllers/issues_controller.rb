@@ -7,5 +7,7 @@ class IssuesController < ApplicationController
     
     c.actions.exclude :create, :delete, :show, :update
     
+    c.list.sorting = [{:severity => :desc}]
+    
   end
 end
