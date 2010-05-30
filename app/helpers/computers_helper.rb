@@ -100,7 +100,7 @@ module ComputersHelper
     food_icon(computer.health_av_last)
   end
   
-  def health_rank_column computer
+  def health_column computer
     food_icon(computer)
   end
   

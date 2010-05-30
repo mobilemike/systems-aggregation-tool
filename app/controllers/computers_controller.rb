@@ -1,7 +1,7 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
 
-  ALL_COLUMNS = [:health_rank, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
+  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
                :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
@@ -33,9 +33,9 @@ class ComputersController < ApplicationController
     c.columns[:fqdn].label                     = 'Computer'
     c.columns[:guest].description              = "Virtual or Physical"
     c.columns[:guest].label                    = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:health_rank].description        = "Overall system health"
-    c.columns[:health_rank].label              = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
-    c.columns[:health_rank].sort_by :method    => 'health'
+    c.columns[:health].description             = "Overall system health"
+    c.columns[:health].label                   = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
+    c.columns[:health].sort_by         :method => 'health_rank'
     c.columns[:health_av_last].description     = 'Avamar last backup health'
     c.columns[:health_av_last].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health_av_last].sort_by :method => 'health_av_last || 0'
@@ -68,7 +68,7 @@ class ComputersController < ApplicationController
     c.show.link.label    = "Detail"
     c.show.link.position = :after
 
-    c.list.sorting = [{:health_rank => :desc}]
+    c.list.sorting = [{:health => :desc}]
     c.list.per_page = 20
 
     
@@ -139,7 +139,7 @@ private
       col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     else
-      col = [:health_rank] + base + [:company, :description, :ip, :guest, :us_outstanding, :av_overview]
+      col = [:health] + base + [:company, :description, :ip, :guest, :us_outstanding, :av_overview]
     end
     
     active_scaffold_config.list.sorting = sort unless sort.nil?

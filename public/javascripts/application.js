@@ -3,7 +3,7 @@
 
 function generateHealthTooltips()
 {
-  $j('td.health_rank-column').live("mouseover", function()
+  $j('td.health-column').live("mouseover", function()
   {
     var target = $j(this);
     if (target.data('qtip')) { return false; }
