@@ -1,6 +1,6 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
-
+  
   ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
                :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
@@ -33,7 +33,7 @@ class ComputersController < ApplicationController
     c.columns[:fqdn].label                     = 'Computer'
     c.columns[:guest].description              = "Virtual or Physical"
     c.columns[:guest].label                    = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
-    c.columns[:health].description             = "Overall system health"
+    c.columns[:health].description             = HEALTH_DESCRIPTION
     c.columns[:health].label                   = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health].sort_by         :method => 'health_rank'
     c.columns[:health_av_last].description     = 'Avamar last backup health'
@@ -47,7 +47,7 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql                => 'ip_int'
     c.columns[:mem_balloon].label              = 'Memory Ballooned'
     c.columns[:mem_reservation].label          = 'Memory Reservation'
-    c.columns[:owner_initials].description     = "Assigned owner"   
+    c.columns[:owner_initials].description     = 'Assigned owner'
     c.columns[:owner_initials].inplace_edit    = true
     c.columns[:owner_initials].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:owner_initials].sort_by :method => 'owner_initials'
