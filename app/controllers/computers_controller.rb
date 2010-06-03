@@ -47,9 +47,10 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql                => 'ip_int'
     c.columns[:mem_balloon].label              = 'Memory Ballooned'
     c.columns[:mem_reservation].label          = 'Memory Reservation'
-    c.columns[:owner_initials].description    = "Assigned owner"   
-    c.columns[:owner_initials].inplace_edit   = true
-    c.columns[:owner_initials].label          = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:owner_initials].description     = "Assigned owner"   
+    c.columns[:owner_initials].inplace_edit    = true
+    c.columns[:owner_initials].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
+    c.columns[:owner_initials].sort_by :method => 'owner_initials'
     c.columns[:serial_number].label            = "Serial Number"
     c.columns[:status].description             = "Production status"
     c.columns[:status].inplace_edit            = true
