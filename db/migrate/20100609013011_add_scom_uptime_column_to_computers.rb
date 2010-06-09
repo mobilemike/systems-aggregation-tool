@@ -1,6 +1,6 @@
 class AddScomUptimeColumnToComputers < ActiveRecord::Migration
   def self.up
-    add_column :computers, :sc_uptime_percentage, :decimal
+    add_column :computers, :sc_uptime_percentage, :float
   end
 
   def self.down
