@@ -5,7 +5,7 @@ class ComputersController < ApplicationController
                  :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
-                 :cpu_reservation, :cpu_ready]
+                 :cpu_reservation, :cpu_ready, :sc_uptime_percentage]
   
   active_scaffold :computer do |c|
     c.columns = ALL_COLUMNS
@@ -51,6 +51,7 @@ class ComputersController < ApplicationController
     c.columns[:owner_initials].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:owner_initials].sort_by :method => 'owner_initials'
     c.columns[:serial_number].label            = "Serial Number"
+    c.columns[:sc_uptime_percentage].label     = "Uptime"
     c.columns[:status].description             = "Production status"
     c.columns[:status].inplace_edit            = true
     c.columns[:status].sort_by :sql            => 'disposition'
@@ -137,7 +138,7 @@ private
       col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     else
-      col = [:health] + base + [:company, :description, :ip, :guest, :us_outstanding, :av_overview]
+      col = [:health] + base + [:company, :description, :ip, :guest, :sc_uptime_percentage, :av_overview]
     end
     
     active_scaffold_config.list.sorting = sort unless sort.nil?

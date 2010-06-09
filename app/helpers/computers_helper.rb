@@ -138,7 +138,19 @@ module ComputersHelper
       collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
       active_scaffold_inplace_collection_edit(record, column, collection, computer.status)
     end
-   end
+  end
+  
+  def sc_uptime_percentage_column computer
+    uptime = "-"
+
+    if computer.sc_uptime_percentage?
+      span_class = "health-normal"
+      span_class = "health-warning" if computer.sc_uptime_percentage < 98
+      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 2)
+    end
+
+    content_tag(:span, uptime, :class => span_class)
+  end
   
   def us_outstanding_column computer
     updates = "N/A"

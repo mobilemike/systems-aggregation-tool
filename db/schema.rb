@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100426020816) do
+ActiveRecord::Schema.define(:version => 20100609013011) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -102,9 +102,22 @@ ActiveRecord::Schema.define(:version => 20100426020816) do
     t.string   "us_group_name"
     t.integer  "total_disk"
     t.integer  "free_disk"
+    t.string   "sc_bme"
+    t.decimal  "sc_uptime_percentage"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
+
+  create_table "issues", :force => true do |t|
+    t.string   "identifier"
+    t.string   "source"
+    t.text     "description"
+    t.integer  "computer_id"
+    t.integer  "severity"
+    t.boolean  "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "owners", :force => true do |t|
     t.string   "name"
@@ -112,5 +125,15 @@ ActiveRecord::Schema.define(:version => 20100426020816) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
 end
