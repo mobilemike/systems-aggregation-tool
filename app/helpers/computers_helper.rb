@@ -146,7 +146,7 @@ module ComputersHelper
     if computer.sc_uptime_percentage?
       span_class = "health-normal"
       span_class = "health-warning" if computer.sc_uptime_percentage < 98
-      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 2)
+      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 2) + "%"
     end
 
     content_tag(:span, uptime, :class => span_class)
@@ -169,8 +169,8 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","Patches","SUS Group",'
-    header += '"Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
+    header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
+    header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
@@ -187,6 +187,7 @@ module ComputersHelper
                  when 3 then ',"Critical"'
                  else ',""'
                end
+    results += ",\"#{number_with_precision(computer.sc_uptime_percentage, :precision => 2)}%\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""

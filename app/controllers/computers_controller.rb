@@ -52,6 +52,7 @@ class ComputersController < ApplicationController
     c.columns[:owner_initials].sort_by :method => 'owner_initials'
     c.columns[:serial_number].label            = "Serial Number"
     c.columns[:sc_uptime_percentage].label     = "Uptime"
+    c.columns[:sc_uptime_percentage].sort_by :method => 'sc_uptime_percentage || 101'
     c.columns[:status].description             = "Production status"
     c.columns[:status].inplace_edit            = true
     c.columns[:status].sort_by :sql            => 'disposition'
@@ -137,8 +138,10 @@ private
     when 'virtual'
       col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
+    when 'compliance'
+      col = base + [:us_outstanding]
     else
-      col = [:health] + base + [:company, :description, :ip, :guest, :sc_uptime_percentage, :av_overview]
+      col = [:health, :sc_uptime_percentage] + base + [:company, :description, :ip, :guest, :av_overview]
     end
     
     active_scaffold_config.list.sorting = sort unless sort.nil?
