@@ -3,13 +3,13 @@
 <html>
 
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title><%= h(yield(:title) || "Salad") %></title>
     <%= javascript_include_tag 'prototype', 'effects', 'controls' %>
     <%= active_scaffold_includes %>
     <%= stylesheet_link_tag 'reset', 'text', 'grid', 'layout', 'nav', 'application' %>
     <!--[if IE 6]><%= stylesheet_link_tag 'ie6' %><![endif]--> 
     <!--[if IE 7]><%= stylesheet_link_tag 'ie' %><![endif]-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <%= yield(:head) %>
   </head>
   
