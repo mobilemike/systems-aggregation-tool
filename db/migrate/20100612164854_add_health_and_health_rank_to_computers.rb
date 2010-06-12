@@ -1,7 +1,7 @@
 class AddHealthAndHealthRankToComputers < ActiveRecord::Migration
   def self.up
-    add_column :computers, :health, :integer
-    add_column :computers, :health_rank, :integer
+    add_column :computers, :health, :integer, :default => 0
+    add_column :computers, :health_rank, :integer, :default => 0
   end
 
   def self.down
