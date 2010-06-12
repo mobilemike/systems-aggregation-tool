@@ -57,31 +57,6 @@ class Computer < ActiveRecord::Base
   def self.states
     self.aasm_states.map {|s| s.display_name}
   end
-
-  def health
-    health = []
-    health << (self.issues.active.without_scom.map {|i| i.severity}.max || 0)
-    
-    scom_health = (self.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
-    health << ((scom_health + 1 if scom_health > 0) || 0)
-    
-    health.max
-  end
-  
-  def health_rank
-    rank = self.health * 100
-    
-    rank += 1000 if (self.production? && self.health >= 2)
-      
-    rank += case self.aasm_current_state
-      when :production_1 then  5
-      when :production_2 then  4
-      when :production_3 then  3
-      when :nonproduction then 2
-      when :unknown then       1
-      else 0
-    end
-  end
   
   def health_av_last
     case self.av_status
@@ -167,6 +142,33 @@ class Computer < ActiveRecord::Base
     self.os_name == "ESX" ? true : false
   end
   
+  def self.regenerate_health
+    Computer.all.each do |c|
+      health_array = []
+      health_array << (c.issues.active.without_scom.map {|i| i.severity}.max || 0)
+    
+      scom_health = (c.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
+      health_array << ((scom_health + 1 if scom_health > 0) || 0)
+      health = health_array.max
+      
+      rank = health * 100
+    
+      rank += 1000 if (c.production? && health >= 2)
+      
+      rank += case c.aasm_current_state
+        when :production_1 then  5
+        when :production_2 then  4
+        when :production_3 then  3
+        when :nonproduction then 2
+        when :unknown then       1
+        else 0
+      end
+    
+      c.health = health
+      c.health_rank = rank
+      c.save
+    end
+  end
   
 private
   

@@ -35,7 +35,7 @@ class ComputersController < ApplicationController
     c.columns[:guest].label                          = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:health].description                   = HEALTH_DESCRIPTION
     c.columns[:health].label                         = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
-    c.columns[:health].sort_by         :method       => 'health_rank'
+    c.columns[:health].sort_by :sql                  => 'health_rank'
     c.columns[:health_av_last].description           = 'Avamar last backup health'
     c.columns[:health_av_last].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/cabbage_16.gif\" />"
     c.columns[:health_av_last].sort_by :method       => 'health_av_last || 0'
