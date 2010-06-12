@@ -138,7 +138,19 @@ module ComputersHelper
       collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
       active_scaffold_inplace_collection_edit(record, column, collection, computer.status)
     end
-   end
+  end
+  
+  def sc_uptime_percentage_column computer
+    uptime = "-"
+
+    if computer.sc_uptime_percentage?
+      span_class = "health-normal"
+      span_class = "health-warning" if computer.sc_uptime_percentage < 98
+      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 2) + "%"
+    end
+
+    content_tag(:span, uptime, :class => span_class)
+  end
   
   def us_outstanding_column computer
     updates = "N/A"
@@ -157,8 +169,8 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","Patches","SUS Group",'
-    header += '"Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
+    header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
+    header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
@@ -176,6 +188,7 @@ module ComputersHelper
                  when 3 then ',"Critical"'
                  else ',""'
                end
+    results += ",\"#{number_with_precision(computer.sc_uptime_percentage, :precision => 2)}%\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
