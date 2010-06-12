@@ -7,6 +7,12 @@
     <title><%= h(yield(:title) || "Salad") %></title>
     <%= javascript_include_tag 'prototype', 'effects', 'controls' %>
     <%= active_scaffold_includes %>
+    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
+    <script type="text/javascript">
+      var $j = jQuery.noConflict();
+    </script>
+    <%= javascript_include_tag 'jquery.qtip-1.0.0-rc3-dm-min' %>
+    <%= javascript_include_tag 'application' %>
     <%= stylesheet_link_tag 'reset', 'text', 'grid', 'layout', 'nav', 'application' %>
     <!--[if IE 6]><%= stylesheet_link_tag 'ie6' %><![endif]--> 
     <!--[if IE 7]><%= stylesheet_link_tag 'ie' %><![endif]-->
@@ -46,12 +52,5 @@
       <div class="clear"></div>
       
     </div>
-    
-    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
-    <script type="text/javascript">
-      var $j = jQuery.noConflict();
-    </script>
-    <%= javascript_include_tag 'jquery.qtip-1.0.0-rc3-dm-min' %>
-    <%= javascript_include_tag 'application' %>
   </body>
 </html>
