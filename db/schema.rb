@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(:version => 20100612164854) do
     t.integer  "total_disk"
     t.integer  "free_disk"
     t.string   "sc_bme"
-    t.decimal  "sc_uptime_percentage"
     t.integer  "health"
     t.integer  "health_rank"
+    t.float    "sc_uptime_percentage"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"

@@ -144,9 +144,12 @@ module ComputersHelper
     uptime = "-"
 
     if computer.sc_uptime_percentage?
-      span_class = "health-normal"
-      span_class = "health-warning" if computer.sc_uptime_percentage < 98
-      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 2) + "%"
+      span_class = case computer.sc_uptime_percentage
+      when (-1.0/0)..90 then "health-error"
+      when 90..98 then "health-warning"
+      when 98..(1.0/0) then "health-normal"
+      end
+      uptime = number_with_precision(computer.sc_uptime_percentage, :precision => 0) + "%"
     end
 
     content_tag(:span, uptime, :class => span_class)
