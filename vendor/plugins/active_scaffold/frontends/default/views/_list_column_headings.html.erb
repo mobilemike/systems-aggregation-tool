@@ -20,7 +20,6 @@ default_sorting_stages = ['ASC', 'DESC']
         :before => "addActiveScaffoldPageToHistory('#{href}', '#{controller_id}')",
         :loading => "Element.addClassName('#{column_header_id}','loading');",
         :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",
-        :complete => "generateHealthTooltips();",
         :update => active_scaffold_content_id,
         :method => :get },
       { :href => href } %>

@@ -5,28 +5,28 @@ module ApplicationHelper
     options ||= {}
     id = ''
     health = case options
-      when Integer
-        options
-      else
+      when Computer
         id = options.id
         options.health
+      else
+        options
     end
            
     image_source = case health
-      when 0 then "knob_message_16.gif"
-      when 1 then "cabbage_16.gif"
+      when 0 then "cabbage_16.gif"
+      when 1..1.1 then "carrot_blue_16.gif"
+      when 1.2 then "carrot_onion_22.gif"
+      when 1.3 then "carrot_tomato_22.gif"
       when 2 then "onion_16.gif"
       when 3 then "tomato_16.gif"
-      when 4 then "cabbage_16.gif"
-      when 5 then "tomato_16.gif"
     end
     
     image_tag(image_source, :alt => id, :class => 'health-icon')
   end
   
-  def truncate_with_tip(text)
-    if text.length > 30
-      content_tag(:span, truncate(text, 30), :class => 'tip',
+  def truncate_with_tip(text,length=30)
+    if text.length > length
+      content_tag(:span, truncate(text, length), :class => 'tip',
                   :title => text)
     else
       text

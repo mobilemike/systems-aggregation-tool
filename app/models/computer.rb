@@ -8,6 +8,7 @@ class Computer < ActiveRecord::Base
   belongs_to :host_computer, :class_name => "Computer"
   has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
           :primary_key => "scom_cpu_perf_id"
+  has_many :issues
 
   aasm_column :disposition
   aasm_initial_state :unknown
@@ -31,6 +32,10 @@ class Computer < ActiveRecord::Base
     production_3? || production_2? || production_1?
   end
   
+  def online?
+    production? || nonproduction?
+  end
+  
   def self.find_all_sorted_by_fqdn(conditions=[])
     computers = self.find(:all,
                           :order => "computers.fqdn",
@@ -52,28 +57,17 @@ class Computer < ActiveRecord::Base
   def self.states
     self.aasm_states.map {|s| s.display_name}
   end
-
-  def health
-    healths = [0]
-    healths << self.health_sc_state if self.health_sc_state
-    healths << self.health_ak_cpu if self.health_ak_cpu
-    healths << self.health_ak_mem if self.health_ak_mem
-    healths << self.health_ak_storage if self.health_ak_storage  
-    healths << self.health_av_last if self.av_status
-    healths << self.health_ep_dat if self.ep_dat_outdated
-    healths.max
-  end
   
   def health_av_last
     case self.av_status
       when /failed/i then 3
-      when /successfully/i then 1
+      when /successfully/i then 0
       else 2
     end
   end
   
   def av_message
-    if health_av_last > 1
+    if health_av_last > 0
       self.av_error
     else
       self.av_status
@@ -82,7 +76,7 @@ class Computer < ActiveRecord::Base
   
   def health_us_outstanding
     case self.us_outstanding
-      when 0 then 1
+      when 0 then 0
       when 1..(1.0/0) then 3
     end
   end
@@ -97,7 +91,8 @@ class Computer < ActiveRecord::Base
   
   def health_ep_dat
     case ep_dat_outdated
-      when -(1.0/0)..2 then 1
+      when -(1.0/0)..0 then 0
+      when 1..2 then 1
       when 3..5 then 2
       when 6..(1.0/0) then 3
     end
@@ -147,6 +142,33 @@ class Computer < ActiveRecord::Base
     self.os_name == "ESX" ? true : false
   end
   
+  def self.regenerate_health
+    Computer.all.each do |c|
+      health_array = []
+      health_array << (c.issues.active.without_scom.map {|i| i.severity}.max || 0)
+    
+      scom_health = (c.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
+      health_array << ((scom_health + 1 if scom_health > 0) || 0)
+      health = health_array.max
+      
+      rank = health * 100
+    
+      rank += 1000 if (c.production? && health >= 2)
+      
+      rank += case c.aasm_current_state
+        when :production_1 then  5
+        when :production_2 then  4
+        when :production_3 then  3
+        when :nonproduction then 2
+        when :unknown then       1
+        else 0
+      end
+    
+      c.health = health
+      c.health_rank = rank
+      c.save
+    end
+  end
   
 private
   
@@ -159,9 +181,6 @@ private
   end
 
 end
-
-
-
 
 # == Schema Information
 #
@@ -247,5 +266,17 @@ end
 #  us_pending_reboot        :integer         default(0)
 #  us_approved              :integer         default(0)
 #  ep_dat_outdated          :integer
+#  company                  :string(255)     default("Unknown")
+#  sc_bme                   :string(255)
+#  in_akorri                :boolean
+#  in_avamar                :boolean
+#  in_epo                   :boolean
+#  in_scom                  :boolean
+#  in_esx                   :boolean
+#  in_wsus                  :boolean
+#  in_ldap                  :boolean
+#  us_group_name            :string(255)
+#  total_disk               :integer
+#  free_disk                :integer
 #
 

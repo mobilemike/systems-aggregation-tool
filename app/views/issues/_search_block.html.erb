@@ -1,0 +1,19 @@
+<% href = url_for(params_for(:controller => :computers).delete_if{|k,v| k == 'search'}) -%>
+
+
+  <div class="box">
+  <% form_tag href, :method => :get do -%>
+    <p>
+      <%= text_field_tag 'search', params[:search], :class => 'search text' %>
+      <%= submit_tag 'Find', :name => nil, :class => 'search button' %>
+      <%= link_to("Reset", href, :class => 'search link') %>
+    </p>
+  <% end -%>
+  </div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  new TextFieldWithExample('search', 'Search Terms...');
+//]]>
+</script>
