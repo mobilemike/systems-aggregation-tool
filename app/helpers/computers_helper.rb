@@ -191,7 +191,7 @@ module ComputersHelper
                  when 3 then ',"Critical"'
                  else ',""'
                end
-    results += ",\"#{number_with_precision(c.sc_uptime_percentage, :precision => 2)}%\""
+    results += ",\"#{c.sc_uptime_percentage? ? number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%" : ""}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
