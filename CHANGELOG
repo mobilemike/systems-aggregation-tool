@@ -1,5 +1,20 @@
 == Changelog
 
+=== Release 3.0.0  (June 14, 2010)
+
+= FEATURES
+
+* All alerts are now imported from SCOM and display on hover
+* Server health is now determined based on a set of compliance rules
+
+= FIXES / ENHANCEMENTS
+
+* In modern browsers, tooltips function significantly better than before
+* Added sorting by Owner
+* Changed the ePO import script to be more reliable
+* Previous day SCOM Uptime is now displayed on the Default view
+
+
 === Release 2.3.0  (April 30, 2010)
 
 = FEATURES
