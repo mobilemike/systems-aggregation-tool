@@ -29,5 +29,3 @@ config.whiny_nils = true
 
 # Enable threaded mode
 # config.threadsafe!
-
-config.action_controller.relative_url_root = "/cmdb"
