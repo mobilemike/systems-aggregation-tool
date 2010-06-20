@@ -182,6 +182,7 @@ private
 
 end
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -202,7 +203,7 @@ end
 #  cpu_reservation          :integer
 #  cpu_speed                :integer
 #  description              :text
-#  guest                    :boolean         default(FALSE)
+#  guest                    :boolean         default(FALSE), not null
 #  host                     :boolean         default(FALSE)
 #  host_computer_id         :integer
 #  hp_mgmt_ver              :string(255)
@@ -267,7 +268,6 @@ end
 #  us_approved              :integer         default(0)
 #  ep_dat_outdated          :integer
 #  company                  :string(255)     default("Unknown")
-#  sc_bme                   :string(255)
 #  in_akorri                :boolean
 #  in_avamar                :boolean
 #  in_epo                   :boolean
@@ -278,5 +278,9 @@ end
 #  us_group_name            :string(255)
 #  total_disk               :integer
 #  free_disk                :integer
+#  sc_bme                   :string(255)
+#  health                   :integer
+#  health_rank              :integer
+#  sc_uptime_percentage     :float
 #
 
