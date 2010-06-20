@@ -145,10 +145,7 @@ class Computer < ActiveRecord::Base
   def self.regenerate_health
     Computer.all.each do |c|
       health_array = []
-      health_array << (c.issues.active.without_scom.map {|i| i.severity}.max || 0)
-    
-      scom_health = (c.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
-      health_array << ((scom_health + 1 if scom_health > 0) || 0)
+      health_array << (c.issues.active.map {|i| i.severity}.max || 0)
       health = health_array.max
       
       rank = health * 100
