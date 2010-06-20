@@ -85,6 +85,22 @@ module ComputersHelper
     end
   end
   
+  def ep_dat_outdated_column computer
+    updates = "-"
+    span_class = "health-empty"
+    
+    if computer.in_epo?
+      span_class = case computer.health_ep_dat
+      when 0 then "health-normal"
+      when 1..2 then "health-warning"
+      when 3 then "health-error"
+      end
+      updates = computer.health_ep_dat
+    end
+    
+    content_tag(:span, updates, :class => span_class)
+  end
+  
   def fqdn_column computer
     computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end

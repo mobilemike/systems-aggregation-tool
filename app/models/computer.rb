@@ -92,9 +92,9 @@ class Computer < ActiveRecord::Base
   def health_ep_dat
     case ep_dat_outdated
       when -(1.0/0)..0 then 0
-      when 1..2 then 1
-      when 3..5 then 2
-      when 6..(1.0/0) then 3
+      when 1 then 1
+      when 2..3 then 2
+      when 4..(1.0/0) then 3
     end
   end
   
