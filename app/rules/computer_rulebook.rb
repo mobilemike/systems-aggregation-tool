@@ -7,7 +7,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_epo? == false] do |v|
                           
-      severity    = 3
+      severity    = 5
       source      = 'Configuration'
       identifier  = 'Not in EPO'
       description = "Windows computer is online, but not in EPO"
@@ -19,7 +19,7 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.in_epo? == true,
                         m.ep_dat_outdated > 5000] do |v|
       
-      severity    = 3
+      severity    = 5
       source      = 'EPO'
       identifier  = 'DAT not reporting'
       description = "Computer is not reporting it's DAT version accurately"
@@ -34,10 +34,10 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.ep_dat_outdated > 1,
                         m.ep_dat_outdated < 5000] do |v|
                           
-      severity    = 2
+      severity    = 4
       source      = 'EPO'
       identifier  = 'DAT out of date'
-      description = "Production computer's DAT is #{v[:c].ep_dat_outdated} days old"
+      description = "Online computer's DAT is #{v[:c].ep_dat_outdated} days old"
 
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)
     end
@@ -47,7 +47,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.health_av_last > 0] do |v|
 
 
-      severity    = v[:c].health_av_last
+      severity    = v[:c].health_av_last + 2
       source      = 'Avamar'
       identifier  = 'Last Backup Status'
       description = v[:c].av_message
@@ -60,7 +60,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_esx? == true,
                         m.in_akorri? == false] do |v|
 
-      severity    = 2
+      severity    = 4
       source      = 'Configuration'
       identifier  = 'Not in Akorri'
       description = "ESX guest isn't in Akorri"
@@ -73,7 +73,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_scom? == false] do |v|
 
-      severity    = 2
+      severity    = 4
       source      = 'Configuration'
       identifier  = 'Not in SCOM'
       description = "Production Windows computer is not in SCOM"
@@ -86,14 +86,14 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.health_sc_state > 1] do |v|
 
       state_in_words = case v[:c].health_sc_state
-        when 2 then "Warning"
-        when 3 then "Critical"
+        when 2 then "warning"
+        when 3 then "critical"
       end
 
-      severity    = v[:c].health_sc_state
-      source      = 'Health'
+      severity    = v[:c].health_sc_state + 2
+      source      = 'SCOM'
       identifier  = 'System State'
-      description = "The system is in a #{state_in_words} health state"
+      description = "The system is in a #{state_in_words} SCOM health state"
       
       assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
     end    
@@ -104,7 +104,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_wsus? == false] do |v|
 
-      severity    = 2
+      severity    = 4
       source      = 'Configuration'
       identifier  = 'Not in WSUS'
       description = "Online Windows computer is not in WSUS"
@@ -117,7 +117,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.us_outstanding > 0] do |v|
         
-      severity    = 2
+      severity    = 1
       source      = 'WSUS'
       identifier  = 'Pending patches'
       description = "Computer has " +
@@ -144,7 +144,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.in_esx? == true,
                         m.power? == false] do |v|
       
-      severity    = 2
+      severity    = 4
       source      = 'Configuration'
       identifier  = 'Powered off'
       description = "Computer in Production status shouldn't be powered off"
@@ -254,7 +254,7 @@ class ComputerRulebook < Ruleby::Rulebook
                         m.is_windows? == true,
                         m.in_ldap? == false] do |v|
 
-      severity    = 3
+      severity    = 5
       source      = 'Configuration'
       identifier  = 'Not in AD'
       description = "Online Windows computer isn't in AD"
