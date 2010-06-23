@@ -5,7 +5,7 @@ class ComputersController < ApplicationController
                  :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
                  :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
-                 :cpu_reservation, :cpu_ready, :sc_uptime_percentage]
+                 :cpu_reservation, :cpu_ready, :sc_uptime_percentage, :us_group_name, :ep_dat_outdated]
   
   active_scaffold :computer do |c|
     c.columns = ALL_COLUMNS
@@ -30,6 +30,7 @@ class ComputersController < ApplicationController
     c.columns[:cpu_ready].label                      = "CPU Ready"
     c.columns[:cpu_reservation].label                = 'CPU Reservation'
     c.columns[:description].inplace_edit             = true
+    c.columns[:ep_dat_outdated].label                = 'DAT Outdated'
     c.columns[:fqdn].label                           = 'Computer'
     c.columns[:guest].description                    = "Virtual or Physical"
     c.columns[:guest].label                          = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
@@ -61,8 +62,7 @@ class ComputersController < ApplicationController
     c.columns[:us_outstanding].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:us_outstanding].sort_by :method       => 'us_outstanding'
     c.columns[:vtools_ver].label                     = 'VM Tools'
-
-
+    c.columns[:us_group_name].label                  = 'WSUS Group'
 
     
     c.actions.exclude :create, :delete, :nested
@@ -76,7 +76,6 @@ class ComputersController < ApplicationController
     c.list.per_page      = 20
 
 
-    
     c.formats << :csv
   end
   
@@ -144,7 +143,7 @@ private
       col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     when 'compliance'
-      col = base + [:us_outstanding]
+      col = base + [:us_group_name, :us_outstanding, :ep_dat_outdated]
     else
       col = [:health, :sc_uptime_percentage] + base + [:company, :description, :ip, :guest, :av_overview]
     end
