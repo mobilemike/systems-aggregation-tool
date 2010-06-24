@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pcs, :active_scaffold => true
+
   map.resources :owners, :has_many => :computers, :active_scaffold => true
   map.resources :issues, :active_scaffold => true
 

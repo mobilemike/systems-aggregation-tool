@@ -1,0 +1,59 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  fqdn: MyString
+  cpu_speed: 1
+  cpu_count: 1
+  ip_int: 1
+  last_logged_on: MyString
+  mac: MyString
+  make: MyString
+  mem_total: 1
+  mem_used: 1
+  model: MyString
+  os_edition: MyString
+  os_sp: MyString
+  os_version: MyString
+  serial_number: MyString
+  subnet_mask_int: 1
+  ep_last_update: 2010-06-23 21:32:04
+  ep_dat_version: 1
+  ep_dat_outdated: 1
+  company: MyString
+  in_epo: false
+  in_wsus: false
+  in_ldap: false
+  in_sccm: false
+  us_group_name: MyString
+  disk_total: 1
+  disk_free: 1
+  us_approved: 1
+
+two:
+  fqdn: MyString
+  cpu_speed: 1
+  cpu_count: 1
+  ip_int: 1
+  last_logged_on: MyString
+  mac: MyString
+  make: MyString
+  mem_total: 1
+  mem_used: 1
+  model: MyString
+  os_edition: MyString
+  os_sp: MyString
+  os_version: MyString
+  serial_number: MyString
+  subnet_mask_int: 1
+  ep_last_update: 2010-06-23 21:32:04
+  ep_dat_version: 1
+  ep_dat_outdated: 1
+  company: MyString
+  in_epo: false
+  in_wsus: false
+  in_ldap: false
+  in_sccm: false
+  us_group_name: MyString
+  disk_total: 1
+  disk_free: 1
+  us_approved: 1

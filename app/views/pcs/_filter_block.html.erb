@@ -1,0 +1,15 @@
+<ul class="nav main">
+  <li class="secondary">
+    <%= link_to("Download CSV", :controller => :computers, :owner_initials => params[:owner_initials],
+                 :status => params[:status], :format => :csv)%>
+    <ul>
+      <li>
+        <%= link_to("Download CSV (formatted)", :controller => :computers, :owner_initials => params[:owner_initials],
+                     :status => params[:status], :format => :csv)%>
+      </li>
+      <li>
+        <%= link_to("Download CSV (all data)", :controller => :computers, :view => 'all', :format => :csv)%>
+      </li>
+    </ul>
+  </li>
+</ul>
