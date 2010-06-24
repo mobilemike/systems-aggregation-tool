@@ -15,10 +15,10 @@ class PcsController < ApplicationController
     c.columns[:us_outstanding].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
     c.columns[:ep_dat_outdated].label          = "DAT"
-    c.columns[:in_epo].label                   = "EPO"
+    c.columns[:in_epo].label                   = "ePO"
     c.columns[:in_ldap].label                  = "AD"
-    c.columns[:in_sccm].label                  = "WSUS"
-    c.columns[:in_wsus].label                  = "SCCM"   
+    c.columns[:in_sccm].label                  = "SCCM"
+    c.columns[:in_wsus].label                  = "WSUS"   
 
 
     c.actions.exclude :create, :delete, :nested
