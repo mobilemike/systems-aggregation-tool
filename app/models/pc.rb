@@ -56,7 +56,7 @@ class Pc < ActiveRecord::Base
 
 
     def os_long
-      [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
+      [self.os_version, self.os_edition, "SP #{self.os_sp}"].join(' ')
     end
 
     def self.regenerate_health
