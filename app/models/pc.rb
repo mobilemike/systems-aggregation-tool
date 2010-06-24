@@ -5,9 +5,9 @@ class Pc < ActiveRecord::Base
     IP_PAD = 2147483648
 
     def self.find_all_sorted_by_fqdn(conditions=[])
-      computers = self.find(:all,
-                            :order => "computers.fqdn",
-                            :conditions => conditions)
+      pc = self.find(:all,
+                     :order => "pcs.fqdn",
+                     :conditions => conditions)
     end
 
     def to_label
