@@ -32,7 +32,7 @@ class PcsController < ApplicationController
   end
   
   def list_respond_to_csv
-    @pc = Pc.find_all_sorted_by_fqdn(conditions_for_collection)
+    @pcs = Pc.find_all_sorted_by_fqdn(conditions_for_collection)
   end
   
 private

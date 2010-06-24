@@ -83,11 +83,11 @@ module PcsHelper
   end
   
   def all_csv_header
-    Computer.column_names.sort.map {|n| "\"#{n}\""}.join(',')
+    Pc.column_names.sort.map {|n| "\"#{n}\""}.join(',')
   end
   
-  def all_csv_row c
-    c.attributes.sort.map {|k,v| "\"#{v.to_s}\""}.join(',')
+  def all_csv_row pc
+    pc.attributes.sort.map {|k,v| "\"#{v.to_s}\""}.join(',')
   end
    
 end
