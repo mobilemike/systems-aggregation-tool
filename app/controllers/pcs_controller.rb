@@ -1,19 +1,24 @@
 class PcsController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:fqdn, :company, :ip, :us_outstanding, :make, :model, :serial_number]
+  ALL_COLUMNS = [:fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
+                 :in_epo, :in_ldap, :in_sccm, :in_wsus]
   
   active_scaffold :pc do |c|
     c.columns = ALL_COLUMNS
     
 
-    c.columns[:company].inplace_edit                 = true
-    c.columns[:ip].label                             = "IP"
-    c.columns[:ip].sort_by :sql                      => 'ip_int'
-    c.columns[:serial_number].label                  = "Serial Number"
-    c.columns[:us_outstanding].description           = "Outstanding WSUS patches"
-    c.columns[:us_outstanding].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
-    c.columns[:us_outstanding].sort_by :method       => 'us_outstanding'
+    c.columns[:ip].label                       = "IP"
+    c.columns[:ip].sort_by :sql                => 'ip_int'
+    c.columns[:last_logged_on].label           = "Last User"
+    c.columns[:us_outstanding].description     = "Outstanding WSUS patches"
+    c.columns[:us_outstanding].label           = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
+    c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
+    c.columns[:ep_dat_outdated].label          = "DAT"
+    c.columns[:in_epo].label                   = "EPO"
+    c.columns[:in_ldap].label                  = "AD"
+    c.columns[:in_sccm].label                  = "WSUS"
+    c.columns[:in_wsus].label                  = "SCCM"   
 
 
     c.actions.exclude :create, :delete, :nested
