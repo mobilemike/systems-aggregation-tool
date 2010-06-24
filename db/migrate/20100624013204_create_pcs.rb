@@ -4,6 +4,11 @@ class CreatePcs < ActiveRecord::Migration
       t.string :fqdn
       t.integer :cpu_speed
       t.integer :cpu_count
+      t.string :cpu_name
+      t.date     :bios_date
+      t.string   :bios_name
+      t.string   :bios_ver
+      t.datetime :boot_time
       t.integer :ip_int
       t.string :last_logged_on
       t.string :mac
@@ -11,7 +16,6 @@ class CreatePcs < ActiveRecord::Migration
       t.integer :mem_total
       t.integer :mem_used
       t.string :model
-      t.string :os_edition
       t.string :os_sp
       t.string :os_version
       t.string :serial_number
@@ -27,6 +31,7 @@ class CreatePcs < ActiveRecord::Migration
       t.string :us_group_name
       t.integer :disk_total
       t.integer :disk_free
+      t.datetime :us_last_sync
       t.integer  :us_unknown,               :default => 0
       t.integer  :us_not_installed,         :default => 0
       t.integer  :us_downloaded,            :default => 0
