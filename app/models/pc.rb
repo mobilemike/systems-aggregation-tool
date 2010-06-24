@@ -56,7 +56,7 @@ class Pc < ActiveRecord::Base
 
 
     def os_long
-      [self.os_version, self.os_edition, "SP #{self.os_sp}"].join(' ')
+      [self.os_version, "SP #{self.os_sp}"].join(' ')
     end
 
     def self.regenerate_health
@@ -113,7 +113,6 @@ end
 #  mem_total         :integer
 #  mem_used          :integer
 #  model             :string(255)
-#  os_edition        :string(255)
 #  os_sp             :string(255)
 #  os_version        :string(255)
 #  serial_number     :string(255)
