@@ -10,7 +10,7 @@ module PcsHelper
       when 1..2 then "health-warning"
       when 3 then "health-error"
       end
-      updates = pc.health_ep_dat
+      updates = pc.ep_dat_outdated
     end
     
     content_tag(:span, updates, :class => span_class)
@@ -53,47 +53,32 @@ module PcsHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
-    header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
-    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
-    header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
+    header = '"FQDN","Company","Patches",'
+    header += '"SUS Group","DAT Age","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
+    header += '"Disk Total","Disk Free","OS","Make",'
+    header += '"Model","ePO","AD","SCCM","WSUS"'
   end
   
   def csv_row c
     results = "\"#{c.fqdn}\""
-    results += ",\"#{c.owner ? c.owner.name : "" }\""
-    results += ",\"#{c.status}\""
     results += ",\"#{c.company}\""
-    results += ",\"#{c.description}\""
-    results += case c.health
-                 when 0 then ',"Normal"'
-                 when 1 then ',"Info"'
-                 when 2 then ',"Warning"'
-                 when 3 then ',"Critical"'
-                 else ',""'
-               end
-    results += ",\"#{c.sc_uptime_percentage? ? number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%" : ""}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
-    results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
-    results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
+    results += ",\"#{c.ep_dat_outdated}\""
     results += ",\"#{c.ip}\""
     results += ",\"#{c.cpu_speed}\""
     results += ",\"#{c.cpu_count}\""
     results += ",\"#{c.mem_total}\""
     results += ",\"#{c.mem_used}\""
-    results += ",\"#{c.total_disk}\""
-    results += ",\"#{c.free_disk}\""
+    results += ",\"#{c.disk_total}\""
+    results += ",\"#{c.disk_free}\""
     results += ",\"#{c.os_long}\""
-    results += ",\"#{c.install_date ? c.install_date.strftime("%m/%d/%Y %I:%M %p") : "" }\""    
-    results += ",\"#{c.serial_number}\""
     results += ",\"#{c.make}\""    
     results += ",\"#{c.model}\""
-    results += ",\"#{c.av_dataset}\""
-    results += ",\"#{c.av_schedule}\""
-    results += ",\"#{c.av_retention}\""
-    results += ",#{c.av_scanned}"
-    results += ",#{c.av_new}"
+    results += ",\"#{c.in_epo? ? "Yes" : ""}\""
+    results += ",\"#{c.in_ldap? ? "Yes" : ""}\""
+    results += ",\"#{c.in_sccm? ? "Yes" : ""}\""
+    results += ",\"#{c.in_wsus? ? "Yes" : ""}\""
     return results
   end
   
