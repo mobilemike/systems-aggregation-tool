@@ -144,13 +144,11 @@ class Computer < ActiveRecord::Base
   
   def self.regenerate_health
     Computer.all.each do |c|
-      health_array = []
-      health_array << (c.issues.active.map {|i| i.severity}.max || 0)
-      health = health_array.max
+      health = (c.issues.active.map {|i| i.severity}.max || 0)
       
       rank = health * 100
     
-      rank += 1000 if (c.production? && health >= 2)
+      rank += 1000 if (c.production? && health >= 4)
       
       rank += case c.aasm_current_state
         when :production_1 then  5
