@@ -95,7 +95,7 @@ module ComputersHelper
       when 1..2 then "health-warning"
       when 3 then "health-error"
       end
-      updates = computer.health_ep_dat
+      updates = computer.ep_dat_outdated
     end
     
     content_tag(:span, updates, :class => span_class)
