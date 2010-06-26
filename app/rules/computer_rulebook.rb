@@ -5,7 +5,8 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online Windows computers should be in EPO
     rule [Computer, :c, m.online? == true,
                         m.is_windows? == true,
-                        m.in_epo? == false] do |v|
+                        m.in_epo? == false,
+                        m.exempt_epo? == false] do |v|
                           
       severity    = 5
       source      = 'Configuration'
@@ -17,6 +18,7 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Computers in EPO should report their current DAT version accurately
     rule [Computer, :c, m.in_epo? == true,
+                        m.exempt_epo? == false,
                         m.ep_dat_outdated > 5000] do |v|
       
       severity    = 5
@@ -31,6 +33,7 @@ class ComputerRulebook < Ruleby::Rulebook
     rule [Computer, :c, m.online? == true,
                         m.power?.not== false,
                         m.in_epo? == true,
+                        m.exempt_epo? == false,
                         m.ep_dat_outdated > 1,
                         m.ep_dat_outdated < 5000] do |v|
                           
@@ -44,6 +47,7 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # Avmar protected comptuters should backup without error 
     rule [Computer, :c, m.in_avamar? == true,
+                        m.exempt_avamar? == false,
                         m.health_av_last > 0] do |v|
 
 
@@ -58,7 +62,8 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online virtual guests should be in Akorri
     rule [Computer, :c, m.online? == true,
                         m.in_esx? == true,
-                        m.in_akorri? == false] do |v|
+                        m.in_akorri? == false,
+                        m.exempt_akorri? == false] do |v|
 
       severity    = 4
       source      = 'Configuration'
@@ -71,7 +76,8 @@ class ComputerRulebook < Ruleby::Rulebook
     # Prodcution Windows computers should be in SCOM
     rule [Computer, :c, m.production? == true,
                         m.is_windows? == true,
-                        m.in_scom? == false] do |v|
+                        m.in_scom? == false,
+                        m.exempt_scom? == false] do |v|
 
       severity    = 4
       source      = 'Configuration'
@@ -83,6 +89,7 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # SCOM health state should create an alert to that effect
     rule [Computer, :c, m.in_scom? == true,
+                        m.exempt_scom? == false,
                         m.health_sc_state > 1] do |v|
 
       state_in_words = case v[:c].health_sc_state
@@ -102,7 +109,8 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online Windows computers should be in WSUS
     rule [Computer, :c, m.online? == true,
                         m.is_windows? == true,
-                        m.in_wsus? == false] do |v|
+                        m.in_wsus? == false,
+                        m.exempt_wsus? == false] do |v|
 
       severity    = 4
       source      = 'Configuration'
@@ -115,6 +123,7 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online Windows computers shouldn't have outstanding patches
     rule [Computer, :c, m.online? == true,
                         m.is_windows? == true,
+                        m.exempt_wsus? == false,
                         m.us_outstanding > 0] do |v|
         
       severity    = 1
@@ -252,7 +261,8 @@ class ComputerRulebook < Ruleby::Rulebook
     # Online virtual windows guests should be in a domain
     rule [Computer, :c, m.online? == true,
                         m.is_windows? == true,
-                        m.in_ldap? == false] do |v|
+                        m.in_ldap? == false,
+                        m.exempt_ldap? == false] do |v|
 
       severity    = 5
       source      = 'Configuration'
@@ -264,6 +274,7 @@ class ComputerRulebook < Ruleby::Rulebook
     
     # All computers in AD should have a description
     rule [Computer, :c, m.in_ldap? == true,
+                        m.exempt_ldap? == false,
                         m.description? == false] do |v|
                           
       severity    = 1
