@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100612164854) do
+ActiveRecord::Schema.define(:version => 20100626180917) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -106,6 +106,12 @@ ActiveRecord::Schema.define(:version => 20100612164854) do
     t.float    "sc_uptime_percentage"
     t.integer  "health",                   :default => 0
     t.integer  "health_rank",              :default => 0
+    t.boolean  "exempt_scom",              :default => false
+    t.boolean  "exempt_ldap",              :default => false
+    t.boolean  "exempt_avamar",            :default => false
+    t.boolean  "exempt_akorri",            :default => false
+    t.boolean  "exempt_epo",               :default => false
+    t.boolean  "exempt_wsus",              :default => false
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
