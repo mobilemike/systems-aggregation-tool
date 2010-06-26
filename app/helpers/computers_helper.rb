@@ -159,7 +159,7 @@ module ComputersHelper
   def sc_uptime_percentage_column computer
     uptime = "-"
 
-    if computer.sc_uptime_percentage?
+    if computer.sc_uptime_percentage
       span_class = case computer.sc_uptime_percentage
       when (-1.0/0)..90 then "health-error"
       when 90..98 then "health-warning"
