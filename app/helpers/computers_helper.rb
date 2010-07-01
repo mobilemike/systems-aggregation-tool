@@ -132,6 +132,10 @@ module ComputersHelper
     computer.mem_balloon ? mb_to_human_size(computer.mem_balloon) : "-"
   end
   
+  def mem_vm_host_used_column computer
+    computer.mem_vm_host_used ? mb_to_human_size(computer.mem_vm_host_used) : "-"
+  end
+  
   def owner_initials_column computer
     case computer.in_scom?
     when true
@@ -190,7 +194,7 @@ module ComputersHelper
   def csv_header
     header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
     header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
-    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
+    header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
   
@@ -217,6 +221,7 @@ module ComputersHelper
     results += ",\"#{c.cpu_count}\""
     results += ",\"#{c.mem_total}\""
     results += ",\"#{c.mem_used}\""
+    results += ",\"#{c.mem_vm_host_used}\""
     results += ",\"#{c.total_disk}\""
     results += ",\"#{c.free_disk}\""
     results += ",\"#{c.os_long}\""
