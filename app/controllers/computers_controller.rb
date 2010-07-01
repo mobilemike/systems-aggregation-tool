@@ -4,7 +4,7 @@ class ComputersController < ApplicationController
   ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
                  :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
                  :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
-                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :mem_vm_host_used,
                  :cpu_reservation, :cpu_ready, :sc_uptime_percentage, :us_group_name, :ep_dat_outdated]
   
   active_scaffold :computer do |c|
@@ -48,6 +48,7 @@ class ComputersController < ApplicationController
     c.columns[:ip].sort_by :sql                      => 'ip_int'
     c.columns[:mem_balloon].label                    = 'Memory Ballooned'
     c.columns[:mem_reservation].label                = 'Memory Reservation'
+    c.columns[:mem_vm_host_used].label               = 'Host Memory Used'
     c.columns[:owner_initials].description           = 'Assigned owner'
     c.columns[:owner_initials].inplace_edit          = true
     c.columns[:owner_initials].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
@@ -140,7 +141,7 @@ private
       col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
       con = {:guest => false}
     when 'virtual'
-      col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
+      col = base + [:host_computer, :vtools_ver, :mem_vm_host_used, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     when 'compliance'
       col = base + [:us_group_name, :us_outstanding, :ep_dat_outdated]
