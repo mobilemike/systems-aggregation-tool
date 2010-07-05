@@ -124,6 +124,14 @@ module ComputersHelper
     computer.ilo_ip_int ? link_to(computer.ilo_ip, "https:/#{computer.ilo_ip}", :popup => true) : "-"
   end
   
+  def location_column computer
+    record = computer
+    column = active_scaffold_config.columns[:location]
+    collection = [['IDC', 'IDC'], ['MA01', 'MA01'], ['MA02', 'MA02',],
+                  ['MA17', 'MA17'], ['MA36', 'MA36']].inspect
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.location ? computer.location : "-")
+  end
+  
   def mem_reservation_column computer
     computer.mem_reservation ? mb_to_human_size(computer.mem_reservation) : "-"
   end

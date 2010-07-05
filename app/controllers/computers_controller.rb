@@ -47,6 +47,7 @@ class ComputersController < ApplicationController
     c.columns[:ip].label                             = "IP"
     c.columns[:ip].sort_by :sql                      => 'ip_int'
     c.columns[:location].label                       = "<img src=\"#{ActionController::Base.relative_url_root}/images/pin.png\" />"
+    c.columns[:location].inplace_edit                = true
     c.columns[:mem_balloon].label                    = 'Memory Ballooned'
     c.columns[:mem_reservation].label                = 'Memory Reservation'
     c.columns[:mem_vm_host_used].label               = 'Host Memory Used'
