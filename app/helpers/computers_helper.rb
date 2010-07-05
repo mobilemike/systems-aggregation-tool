@@ -192,7 +192,7 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
+    header = '"FQDN","Owner","Status","Company","Description","Location","Health","Uptime","Patches",'
     header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
@@ -204,6 +204,7 @@ module ComputersHelper
     results += ",\"#{c.status}\""
     results += ",\"#{c.company}\""
     results += ",\"#{c.description}\""
+    results += ",\"#{c.location}\""
     results += case c.health
                  when 0 then ',"Normal"'
                  when 1 then ',"Info"'

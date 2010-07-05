@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100626180917) do
+ActiveRecord::Schema.define(:version => 20100705184400) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -112,6 +112,8 @@ ActiveRecord::Schema.define(:version => 20100626180917) do
     t.boolean  "exempt_akorri",            :default => false
     t.boolean  "exempt_epo",               :default => false
     t.boolean  "exempt_wsus",              :default => false
+    t.integer  "mem_vm_host_used"
+    t.string   "location"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
