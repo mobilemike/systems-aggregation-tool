@@ -122,6 +122,22 @@ class Computer < ActiveRecord::Base
     i_to_ip(self.ilo_ip_int)
   end
   
+  def subnet_mask=(ip_str)
+    self.subnet_mask_int = ip_to_i(ip_str)
+  end
+  
+  def subnet_mask
+    i_to_ip(self.subnet_mask_int)
+  end
+
+  def default_gateway=(ip_str)
+    self.default_gateway_int = ip_to_i(ip_str)
+  end
+  
+  def default_gateway
+    i_to_ip(self.default_gateway_int)
+  end
+  
   def os_long
     [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
   end
@@ -178,34 +194,76 @@ private
 end
 
 
+
 # == Schema Information
 #
 # Table name: computers
 #
-#  id                       :integer         not null, primary key
-#  fqdn                     :string(255)
-#  created_at               :datetime
-#  updated_at               :datetime
-#  owner_id                 :integer
-#  disposition              :string(255)
+#  ak_cpu_last_modified     :datetime
+#  ak_mem_last_modified     :datetime
+#  ak_storage_last_modified :datetime
+#  av_completed_at          :datetime
+#  av_dataset               :string(255)
+#  av_error                 :string(255)
+#  av_excluded              :float
+#  av_file_count            :integer
+#  av_file_skipped_count    :integer
+#  av_modified              :float
+#  av_new                   :float
+#  av_retention             :string(255)
+#  av_scanned               :float
+#  av_schedule              :string(255)
+#  av_skipped               :float
+#  av_started_at            :datetime
+#  av_status                :string(255)
 #  bios_date                :date
 #  bios_name                :string(255)
 #  bios_ver                 :string(255)
 #  boot_time                :datetime
+#  company                  :string(255)     default("Unknown")
 #  cpu_count                :integer
 #  cpu_name                 :string(255)
 #  cpu_ready                :float
 #  cpu_reservation          :integer
 #  cpu_speed                :integer
+#  created_at               :datetime
 #  description              :text
+#  disposition              :string(255)
+#  ep_dat_outdated          :integer
+#  ep_dat_version           :integer
+#  ep_last_update           :datetime
+#  exempt_akorri            :boolean         default(FALSE)
+#  exempt_avamar            :boolean         default(FALSE)
+#  exempt_epo               :boolean         default(FALSE)
+#  exempt_ldap              :boolean         default(FALSE)
+#  exempt_scom              :boolean         default(FALSE)
+#  exempt_wsus              :boolean         default(FALSE)
+#  fqdn                     :string(255)
+#  free_disk                :integer
 #  guest                    :boolean         default(FALSE), not null
+#  health                   :integer         default(0)
+#  health_ak_cpu            :integer
+#  health_ak_mem            :integer
+#  health_ak_storage        :integer
+#  health_rank              :integer         default(0)
+#  health_sc_state          :integer
+#  health_vm_vtools         :integer
 #  host                     :boolean         default(FALSE)
 #  host_computer_id         :integer
 #  hp_mgmt_ver              :string(255)
+#  id                       :integer         not null, primary key
 #  ilo_ip_int               :integer
 #  install_date             :datetime
+#  in_akorri                :boolean
+#  in_avamar                :boolean
+#  in_epo                   :boolean
+#  in_esx                   :boolean
+#  in_ldap                  :boolean
+#  in_scom                  :boolean
+#  in_wsus                  :boolean
 #  ip_int                   :integer
 #  last_logged_on           :string(255)
+#  location                 :string(255)
 #  mac                      :string(255)
 #  make                     :string(255)
 #  mem_balloon              :integer
@@ -213,6 +271,7 @@ end
 #  mem_swap                 :integer
 #  mem_total                :integer
 #  mem_used                 :integer
+#  mem_vm_host_used         :integer
 #  model                    :string(255)
 #  os_64                    :boolean
 #  os_edition               :string(255)
@@ -221,61 +280,25 @@ end
 #  os_sp                    :integer
 #  os_vendor                :string(255)
 #  os_version               :string(255)
+#  owner_id                 :integer
 #  power                    :boolean
-#  serial_number            :string(255)
-#  subnet_mask_int          :integer
-#  vtools_ver               :integer
-#  vcpu_efficiency          :float
-#  vcpu_used                :float
-#  health_ak_cpu            :integer
-#  ak_cpu_last_modified     :datetime
-#  health_ak_storage        :integer
-#  ak_storage_last_modified :datetime
-#  health_ak_mem            :integer
-#  ak_mem_last_modified     :datetime
-#  health_sc_state          :integer
+#  sc_bme                   :string(255)
 #  sc_cpu_perf_id           :integer
 #  sc_mem_perf_id           :integer
-#  ep_last_update           :datetime
-#  ep_dat_version           :integer
-#  health_vm_vtools         :integer
-#  av_dataset               :string(255)
-#  av_retention             :string(255)
-#  av_schedule              :string(255)
-#  av_started_at            :datetime
-#  av_completed_at          :datetime
-#  av_file_count            :integer
-#  av_scanned               :float
-#  av_new                   :float
-#  av_modified              :float
-#  av_excluded              :float
-#  av_skipped               :float
-#  av_file_skipped_count    :integer
-#  av_status                :string(255)
-#  av_error                 :string(255)
-#  us_last_sync             :datetime
-#  us_unknown               :integer         default(0)
-#  us_not_installed         :integer         default(0)
-#  us_downloaded            :integer         default(0)
-#  us_installed             :integer         default(0)
-#  us_failed                :integer         default(0)
-#  us_pending_reboot        :integer         default(0)
-#  us_approved              :integer         default(0)
-#  ep_dat_outdated          :integer
-#  company                  :string(255)     default("Unknown")
-#  in_akorri                :boolean
-#  in_avamar                :boolean
-#  in_epo                   :boolean
-#  in_scom                  :boolean
-#  in_esx                   :boolean
-#  in_wsus                  :boolean
-#  in_ldap                  :boolean
-#  us_group_name            :string(255)
-#  total_disk               :integer
-#  free_disk                :integer
-#  sc_bme                   :string(255)
-#  health                   :integer
-#  health_rank              :integer
 #  sc_uptime_percentage     :float
-#
-
+#  serial_number            :string(255)
+#  subnet_mask_int          :integer
+#  total_disk               :integer
+#  updated_at               :datetime
+#  us_approved              :integer         default(0)
+#  us_downloaded            :integer         default(0)
+#  us_failed                :integer         default(0)
+#  us_group_name            :string(255)
+#  us_installed             :integer         default(0)
+#  us_last_sync             :datetime
+#  us_not_installed         :integer         default(0)
+#  us_pending_reboot        :integer         default(0)
+#  us_unknown               :integer         default(0)
+#  vcpu_efficiency          :float
+#  vcpu_used                :float
+#  vtools_ver               :integer
