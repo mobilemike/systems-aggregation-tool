@@ -60,6 +60,7 @@ class ComputersController < ApplicationController
     c.columns[:owner_initials].sort_by :method       => 'owner_initials'
     c.columns[:serial_number].label                  = "Serial Number"
     c.columns[:service_category].inplace_edit        = true
+    c.columns[:service_category].label               = "Service Category"
     c.columns[:sc_uptime_percentage].label           = "Uptime"
     c.columns[:sc_uptime_percentage].sort_by :method => 'sc_uptime_percentage || 101'
     c.columns[:status].description                   = "Production status"
