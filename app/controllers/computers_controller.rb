@@ -1,11 +1,14 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :location, :guest, :us_outstanding,
-                 :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
-                 :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
-                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :mem_vm_host_used,
-                 :cpu_reservation, :cpu_ready, :sc_uptime_percentage, :us_group_name, :ep_dat_outdated]
+  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description,
+                 :ip, :location, :guest, :us_outstanding, :av_overview, :av_completed_at,
+                 :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
+                 :av_message, :health_av_last, :bios_ver, :bios_date, :make,
+                 :model, :serial_number, :service_category, :hp_mgmt_ver, :ilo_ip,
+                 :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+                 :mem_vm_host_used, :cpu_reservation, :cpu_ready, :sc_uptime_percentage,
+                 :us_group_name, :ep_dat_outdated, :service_category]
   
   active_scaffold :computer do |c|
     c.columns = ALL_COLUMNS
@@ -56,6 +59,8 @@ class ComputersController < ApplicationController
     c.columns[:owner_initials].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:owner_initials].sort_by :method       => 'owner_initials'
     c.columns[:serial_number].label                  = "Serial Number"
+    c.columns[:service_category].inplace_edit        = true
+    c.columns[:service_category].label               = "Service Category"
     c.columns[:sc_uptime_percentage].label           = "Uptime"
     c.columns[:sc_uptime_percentage].sort_by :method => 'sc_uptime_percentage || 101'
     c.columns[:status].description                   = "Production status"
@@ -147,8 +152,10 @@ private
       con = {:guest => true}
     when 'compliance'
       col = base + [:us_group_name, :us_outstanding, :ep_dat_outdated]
+    when 'reporting'
+      col = base + [:service_category, :location]
     else
-      col = [:health, :sc_uptime_percentage] + base + [:company, :description, :location, :guest, :av_overview]
+      col = [:health, :sc_uptime_percentage] + base + [:company, :description, :ip, :guest, :av_overview]
     end
     
     active_scaffold_config.list.sorting = sort unless sort.nil?

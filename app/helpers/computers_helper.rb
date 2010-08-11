@@ -127,10 +127,8 @@ module ComputersHelper
   def location_column computer
     record = computer
     column = active_scaffold_config.columns[:location]
-    collection = [['IDC', 'IDC'], ['MA01', 'MA01'], ['MA02', 'MA02',],
-                  ['MA17', 'MA17'], ['MA36', 'MA36']].inspect
-    active_scaffold_inplace_collection_edit(record, column, collection, computer.location ? computer.location : "-")
-  end
+    active_scaffold_inplace_edit(record, column, computer.location ? computer.location : "-")
+ end
   
   def mem_reservation_column computer
     computer.mem_reservation ? mb_to_human_size(computer.mem_reservation) : "-"
@@ -154,6 +152,15 @@ module ComputersHelper
       collection = Owner.find_all_for_select
       active_scaffold_inplace_collection_edit(record, column, collection, computer.owner ? computer.owner_initials : "-")
     end
+  end
+  
+  def service_category_column computer
+    record = computer
+    column = active_scaffold_config.columns[:service_category]
+    collection = [['Apps', 'Apps'], ['File & Print', 'File & Print'],
+                  ['Infrastructure', 'Infrastructure',], ['Messaging', 'Messaging'],
+                  ['Sharepoint', 'Sharepoint'], ['Other', 'Other'], ['Unknown', 'Unknown']].inspect
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.service_category ? computer.service_category : "-")
   end
   
   def status_column computer
@@ -200,7 +207,7 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Location","Health","Uptime","Patches",'
+    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category","Health","Uptime","Patches",'
     header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
@@ -213,14 +220,17 @@ module ComputersHelper
     results += ",\"#{c.company}\""
     results += ",\"#{c.description}\""
     results += ",\"#{c.location}\""
+    results += ",\"#{c.service_category}\""
     results += case c.health
                  when 0 then ',"Normal"'
-                 when 1 then ',"Info"'
-                 when 2 then ',"Warning"'
-                 when 3 then ',"Critical"'
+                 when 1 then ',"Info Alert"'
+                 when 2 then ',"Warning Alert"'
+                 when 3 then ',"Severe Alert"'
+                 when 4 then ',"Warning State"'
+                 when 5 then ',"Severe State"'
                  else ',""'
                end
-    results += ",\"#{c.sc_uptime_percentage? ? number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%" : ""}\""
+    results += ",\"#{c.sc_uptime_percentage.nil? ? "" : number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%"}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""

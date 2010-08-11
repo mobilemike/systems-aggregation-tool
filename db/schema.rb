@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100705184400) do
+ActiveRecord::Schema.define(:version => 20100712025342) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -114,6 +114,11 @@ ActiveRecord::Schema.define(:version => 20100705184400) do
     t.boolean  "exempt_wsus",              :default => false
     t.integer  "mem_vm_host_used"
     t.string   "location"
+    t.boolean  "in_sccm"
+    t.boolean  "exempt_sccm"
+    t.boolean  "dhcp"
+    t.integer  "default_gateway_int"
+    t.integer  "time_zone_offset"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
