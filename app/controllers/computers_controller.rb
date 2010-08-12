@@ -153,7 +153,7 @@ private
     when 'compliance'
       col = base + [:us_group_name, :us_outstanding, :ep_dat_outdated]
     when 'reporting'
-      col = base + [:service_category, :location]
+      col = base + [:company, :description, :service_category, :location]
     else
       col = [:health, :sc_uptime_percentage] + base + [:company, :description, :ip, :guest, :av_overview]
     end
