@@ -157,7 +157,7 @@ module ComputersHelper
   def service_category_column computer
     record = computer
     column = active_scaffold_config.columns[:service_category]
-    collection = [['Apps', 'Apps'], ['File & Print', 'File & Print'],
+    collection = [['Apps', 'Apps'], ['Database', 'Database'], ['File & Print', 'File & Print'],
                   ['Infrastructure', 'Infrastructure',], ['Messaging', 'Messaging'],
                   ['Sharepoint', 'Sharepoint'], ['Other', 'Other'], ['Unknown', 'Unknown']].inspect
     active_scaffold_inplace_collection_edit(record, column, collection, computer.service_category ? computer.service_category : "-")
