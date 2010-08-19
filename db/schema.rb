@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100624013204) do
+ActiveRecord::Schema.define(:version => 20100819021353) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.integer  "us_approved",              :default => 0
     t.integer  "ep_dat_outdated"
     t.string   "company",                  :default => "Unknown"
+    t.string   "sc_bme"
     t.boolean  "in_akorri"
     t.boolean  "in_avamar"
     t.boolean  "in_epo"
@@ -102,10 +103,23 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.string   "us_group_name"
     t.integer  "total_disk"
     t.integer  "free_disk"
-    t.string   "sc_bme"
-    t.integer  "health"
-    t.integer  "health_rank"
     t.float    "sc_uptime_percentage"
+    t.integer  "health",                   :default => 0
+    t.integer  "health_rank",              :default => 0
+    t.boolean  "exempt_scom",              :default => false
+    t.boolean  "exempt_ldap",              :default => false
+    t.boolean  "exempt_avamar",            :default => false
+    t.boolean  "exempt_akorri",            :default => false
+    t.boolean  "exempt_epo",               :default => false
+    t.boolean  "exempt_wsus",              :default => false
+    t.integer  "mem_vm_host_used"
+    t.string   "location"
+    t.boolean  "in_sccm"
+    t.boolean  "exempt_sccm"
+    t.boolean  "dhcp"
+    t.integer  "default_gateway_int"
+    t.integer  "time_zone_offset"
+    t.string   "service_category",         :default => "Unknown"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
@@ -132,6 +146,11 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.string   "fqdn"
     t.integer  "cpu_speed"
     t.integer  "cpu_count"
+    t.string   "cpu_name"
+    t.date     "bios_date"
+    t.string   "bios_name"
+    t.string   "bios_ver"
+    t.datetime "boot_time"
     t.integer  "ip_int"
     t.string   "last_logged_on"
     t.string   "mac"
@@ -139,7 +158,6 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.integer  "mem_total"
     t.integer  "mem_used"
     t.string   "model"
-    t.string   "os_edition"
     t.string   "os_sp"
     t.string   "os_version"
     t.string   "serial_number"
@@ -147,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.datetime "ep_last_update"
     t.integer  "ep_dat_version"
     t.integer  "ep_dat_outdated"
-    t.string   "company",           :default => "Unknown"
+    t.string   "company",             :default => "Unknown"
     t.boolean  "in_epo"
     t.boolean  "in_wsus"
     t.boolean  "in_ldap"
@@ -155,15 +173,20 @@ ActiveRecord::Schema.define(:version => 20100624013204) do
     t.string   "us_group_name"
     t.integer  "disk_total"
     t.integer  "disk_free"
-    t.integer  "us_unknown",        :default => 0
-    t.integer  "us_not_installed",  :default => 0
-    t.integer  "us_downloaded",     :default => 0
-    t.integer  "us_installed",      :default => 0
-    t.integer  "us_failed",         :default => 0
-    t.integer  "us_pending_reboot", :default => 0
-    t.integer  "us_approved",       :default => 0
+    t.datetime "us_last_sync"
+    t.integer  "us_unknown",          :default => 0
+    t.integer  "us_not_installed",    :default => 0
+    t.integer  "us_downloaded",       :default => 0
+    t.integer  "us_installed",        :default => 0
+    t.integer  "us_failed",           :default => 0
+    t.integer  "us_pending_reboot",   :default => 0
+    t.integer  "us_approved",         :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "dhcp"
+    t.integer  "default_gateway_int"
+    t.integer  "time_zone_offset"
+    t.datetime "install_date"
   end
 
   create_table "sessions", :force => true do |t|
