@@ -21,6 +21,8 @@ two:
 
 
 
+
+
 # == Schema Information
 #
 # Table name: computers
@@ -117,8 +119,21 @@ two:
 #  total_disk               :integer
 #  free_disk                :integer
 #  sc_bme                   :string(255)
-#  health                   :integer
-#  health_rank              :integer
 #  sc_uptime_percentage     :float
+#  health                   :integer         default(0)
+#  health_rank              :integer         default(0)
+#  exempt_scom              :boolean         default(FALSE)
+#  exempt_ldap              :boolean         default(FALSE)
+#  exempt_avamar            :boolean         default(FALSE)
+#  exempt_akorri            :boolean         default(FALSE)
+#  exempt_epo               :boolean         default(FALSE)
+#  exempt_wsus              :boolean         default(FALSE)
+#  mem_vm_host_used         :integer
+#  location                 :string(255)
+#  in_sccm                  :boolean
+#  exempt_sccm              :boolean
+#  dhcp                     :boolean
+#  default_gateway_int      :integer
+#  time_zone_offset         :integer
 #
 

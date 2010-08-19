@@ -92,9 +92,9 @@ class Computer < ActiveRecord::Base
   def health_ep_dat
     case ep_dat_outdated
       when -(1.0/0)..0 then 0
-      when 1..2 then 1
-      when 3..5 then 2
-      when 6..(1.0/0) then 3
+      when 1 then 1
+      when 2..3 then 2
+      when 4..(1.0/0) then 3
     end
   end
   
@@ -122,6 +122,22 @@ class Computer < ActiveRecord::Base
     i_to_ip(self.ilo_ip_int)
   end
   
+  def subnet_mask=(ip_str)
+    self.subnet_mask_int = ip_to_i(ip_str)
+  end
+  
+  def subnet_mask
+    i_to_ip(self.subnet_mask_int)
+  end
+
+  def default_gateway=(ip_str)
+    self.default_gateway_int = ip_to_i(ip_str)
+  end
+  
+  def default_gateway
+    i_to_ip(self.default_gateway_int)
+  end
+  
   def os_long
     [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
   end
@@ -144,16 +160,11 @@ class Computer < ActiveRecord::Base
   
   def self.regenerate_health
     Computer.all.each do |c|
-      health_array = []
-      health_array << (c.issues.active.without_scom.map {|i| i.severity}.max || 0)
-    
-      scom_health = (c.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
-      health_array << ((scom_health + 1 if scom_health > 0) || 0)
-      health = health_array.max
+      health = (c.issues.active.map {|i| i.severity}.max || 0)
       
       rank = health * 100
     
-      rank += 1000 if (c.production? && health >= 2)
+      rank += 1000 if (c.production? && health >= 4)
       
       rank += case c.aasm_current_state
         when :production_1 then  5
@@ -181,7 +192,6 @@ private
   end
 
 end
-
 
 # == Schema Information
 #
@@ -279,8 +289,21 @@ end
 #  total_disk               :integer
 #  free_disk                :integer
 #  sc_bme                   :string(255)
-#  health                   :integer
-#  health_rank              :integer
 #  sc_uptime_percentage     :float
+#  health                   :integer         default(0)
+#  health_rank              :integer         default(0)
+#  exempt_scom              :boolean         default(FALSE)
+#  exempt_ldap              :boolean         default(FALSE)
+#  exempt_avamar            :boolean         default(FALSE)
+#  exempt_akorri            :boolean         default(FALSE)
+#  exempt_epo               :boolean         default(FALSE)
+#  exempt_wsus              :boolean         default(FALSE)
+#  mem_vm_host_used         :integer
+#  location                 :string(255)
+#  in_sccm                  :boolean
+#  exempt_sccm              :boolean
+#  dhcp                     :boolean
+#  default_gateway_int      :integer
+#  time_zone_offset         :integer
 #
 

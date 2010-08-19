@@ -1,11 +1,14 @@
 class ComputersController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description, :ip, :guest, :us_outstanding,
-                 :av_overview, :av_completed_at, :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
-                 :av_message, :health_av_last, :bios_ver, :bios_date, :make, :model, :serial_number,
-                 :hp_mgmt_ver, :ilo_ip, :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
-                 :cpu_reservation, :cpu_ready, :sc_uptime_percentage]
+  ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description,
+                 :ip, :location, :guest, :us_outstanding, :av_overview, :av_completed_at,
+                 :av_dataset, :av_retention, :av_schedule, :av_new, :av_scanned,
+                 :av_message, :health_av_last, :bios_ver, :bios_date, :make,
+                 :model, :serial_number, :service_category, :hp_mgmt_ver, :ilo_ip,
+                 :host_computer, :vtools_ver, :mem_reservation, :mem_balloon,
+                 :mem_vm_host_used, :cpu_reservation, :cpu_ready, :sc_uptime_percentage,
+                 :us_group_name, :ep_dat_outdated, :service_category]
   
   active_scaffold :computer do |c|
     c.columns = ALL_COLUMNS
@@ -30,6 +33,7 @@ class ComputersController < ApplicationController
     c.columns[:cpu_ready].label                      = "CPU Ready"
     c.columns[:cpu_reservation].label                = 'CPU Reservation'
     c.columns[:description].inplace_edit             = true
+    c.columns[:ep_dat_outdated].label                = 'DAT Outdated'
     c.columns[:fqdn].label                           = 'Computer'
     c.columns[:guest].description                    = "Virtual or Physical"
     c.columns[:guest].label                          = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
@@ -45,13 +49,18 @@ class ComputersController < ApplicationController
     c.columns[:ilo_ip].sort_by :sql                  => 'ilo_ip_int'
     c.columns[:ip].label                             = "IP"
     c.columns[:ip].sort_by :sql                      => 'ip_int'
+    c.columns[:location].label                       = "<img src=\"#{ActionController::Base.relative_url_root}/images/pin.png\" />"
+    c.columns[:location].inplace_edit                = true
     c.columns[:mem_balloon].label                    = 'Memory Ballooned'
     c.columns[:mem_reservation].label                = 'Memory Reservation'
+    c.columns[:mem_vm_host_used].label               = 'Host Memory Used'
     c.columns[:owner_initials].description           = 'Assigned owner'
     c.columns[:owner_initials].inplace_edit          = true
     c.columns[:owner_initials].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/owner.png\" />"
     c.columns[:owner_initials].sort_by :method       => 'owner_initials'
     c.columns[:serial_number].label                  = "Serial Number"
+    c.columns[:service_category].inplace_edit        = true
+    c.columns[:service_category].label               = "Service Category"
     c.columns[:sc_uptime_percentage].label           = "Uptime"
     c.columns[:sc_uptime_percentage].sort_by :method => 'sc_uptime_percentage || 101'
     c.columns[:status].description                   = "Production status"
@@ -61,8 +70,7 @@ class ComputersController < ApplicationController
     c.columns[:us_outstanding].label                 = "<img src=\"#{ActionController::Base.relative_url_root}/images/band_aid.png\" />"
     c.columns[:us_outstanding].sort_by :method       => 'us_outstanding'
     c.columns[:vtools_ver].label                     = 'VM Tools'
-
-
+    c.columns[:us_group_name].label                  = 'WSUS Group'
 
     
     c.actions.exclude :create, :delete, :nested
@@ -76,7 +84,6 @@ class ComputersController < ApplicationController
     c.list.per_page      = 20
 
 
-    
     c.formats << :csv
   end
   
@@ -141,10 +148,12 @@ private
       col = base + [:bios_ver, :bios_date, :make, :model, :serial_number, :hp_mgmt_ver, :ilo_ip]
       con = {:guest => false}
     when 'virtual'
-      col = base + [:host_computer, :vtools_ver, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
+      col = base + [:host_computer, :vtools_ver, :mem_vm_host_used, :mem_reservation, :mem_balloon, :cpu_reservation, :cpu_ready]
       con = {:guest => true}
     when 'compliance'
-      col = base + [:us_outstanding]
+      col = base + [:us_group_name, :us_outstanding, :ep_dat_outdated]
+    when 'reporting'
+      col = base + [:company, :description, :service_category, :location]
     else
       col = [:health, :sc_uptime_percentage] + base + [:company, :description, :ip, :guest, :av_overview]
     end

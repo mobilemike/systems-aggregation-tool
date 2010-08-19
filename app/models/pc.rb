@@ -98,6 +98,7 @@ class Pc < ActiveRecord::Base
     end
 end
 
+
 # == Schema Information
 #
 # Table name: pcs
@@ -113,6 +114,7 @@ end
 #  mem_total         :integer
 #  mem_used          :integer
 #  model             :string(255)
+#  os_edition        :string(255)
 #  os_sp             :string(255)
 #  os_version        :string(255)
 #  serial_number     :string(255)

@@ -85,6 +85,22 @@ module ComputersHelper
     end
   end
   
+  def ep_dat_outdated_column computer
+    updates = "-"
+    span_class = "health-empty"
+    
+    if computer.in_epo?
+      span_class = case computer.health_ep_dat
+      when 0 then "health-normal"
+      when 1..2 then "health-warning"
+      when 3 then "health-error"
+      end
+      updates = computer.ep_dat_outdated
+    end
+    
+    content_tag(:span, updates, :class => span_class)
+  end
+  
   def fqdn_column computer
     computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end
@@ -108,12 +124,22 @@ module ComputersHelper
     computer.ilo_ip_int ? link_to(computer.ilo_ip, "https:/#{computer.ilo_ip}", :popup => true) : "-"
   end
   
+  def location_column computer
+    record = computer
+    column = active_scaffold_config.columns[:location]
+    active_scaffold_inplace_edit(record, column, computer.location ? computer.location : "-")
+ end
+  
   def mem_reservation_column computer
     computer.mem_reservation ? mb_to_human_size(computer.mem_reservation) : "-"
   end
   
   def mem_balloon_column computer
     computer.mem_balloon ? mb_to_human_size(computer.mem_balloon) : "-"
+  end
+  
+  def mem_vm_host_used_column computer
+    computer.mem_vm_host_used ? mb_to_human_size(computer.mem_vm_host_used) : "-"
   end
   
   def owner_initials_column computer
@@ -126,6 +152,15 @@ module ComputersHelper
       collection = Owner.find_all_for_select
       active_scaffold_inplace_collection_edit(record, column, collection, computer.owner ? computer.owner_initials : "-")
     end
+  end
+  
+  def service_category_column computer
+    record = computer
+    column = active_scaffold_config.columns[:service_category]
+    collection = [['Apps', 'Apps'], ['Database', 'Database'], ['File & Print', 'File & Print'],
+                  ['Infrastructure', 'Infrastructure',], ['Messaging', 'Messaging'],
+                  ['Sharepoint', 'Sharepoint'], ['Other', 'Other'], ['Unknown', 'Unknown']].inspect
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.service_category ? computer.service_category : "-")
   end
   
   def status_column computer
@@ -143,7 +178,7 @@ module ComputersHelper
   def sc_uptime_percentage_column computer
     uptime = "-"
 
-    if computer.sc_uptime_percentage?
+    if computer.sc_uptime_percentage
       span_class = case computer.sc_uptime_percentage
       when (-1.0/0)..90 then "health-error"
       when 90..98 then "health-warning"
@@ -172,9 +207,9 @@ module ComputersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Health","Uptime","Patches",'
+    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category","Health","Uptime","Patches",'
     header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
-    header += '"Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
+    header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
   
@@ -184,14 +219,18 @@ module ComputersHelper
     results += ",\"#{c.status}\""
     results += ",\"#{c.company}\""
     results += ",\"#{c.description}\""
+    results += ",\"#{c.location}\""
+    results += ",\"#{c.service_category}\""
     results += case c.health
                  when 0 then ',"Normal"'
-                 when 1 then ',"Info"'
-                 when 2 then ',"Warning"'
-                 when 3 then ',"Critical"'
+                 when 1 then ',"Info Alert"'
+                 when 2 then ',"Warning Alert"'
+                 when 3 then ',"Severe Alert"'
+                 when 4 then ',"Warning State"'
+                 when 5 then ',"Severe State"'
                  else ',""'
                end
-    results += ",\"#{c.sc_uptime_percentage? ? number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%" : ""}\""
+    results += ",\"#{c.sc_uptime_percentage.nil? ? "" : number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%"}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
@@ -201,6 +240,7 @@ module ComputersHelper
     results += ",\"#{c.cpu_count}\""
     results += ",\"#{c.mem_total}\""
     results += ",\"#{c.mem_used}\""
+    results += ",\"#{c.mem_vm_host_used}\""
     results += ",\"#{c.total_disk}\""
     results += ",\"#{c.free_disk}\""
     results += ",\"#{c.os_long}\""
