@@ -2,7 +2,7 @@ require 'ipaddr'
 
 class Pc < ActiveRecord::Base
     
-    before_save :compute_most_recent_update
+#   before_save :compute_most_recent_update
     
     IP_PAD = 2147483648
 
