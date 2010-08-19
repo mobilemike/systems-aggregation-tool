@@ -1,7 +1,9 @@
 require 'ipaddr'
 
 class Pc < ActiveRecord::Base
-  
+    
+    before_save :compute_most_recent_update
+    
     IP_PAD = 2147483648
 
     def self.find_all_sorted_by_fqdn(conditions=[])
@@ -54,40 +56,31 @@ class Pc < ActiveRecord::Base
       i_to_ip(self.ip_int)
     end
 
+    def subnet_mask=(ip_str)
+      self.subnet_mask_int = ip_to_i(ip_str)
+    end
+
+    def subnet_mask
+      i_to_ip(self.subnet_mask_int)
+    end
+
+    def default_gateway=(ip_str)
+      self.default_gateway_int = ip_to_i(ip_str)
+    end
+
+    def default_gateway
+      i_to_ip(self.default_gateway_int)
+    end
 
     def os_long
       [self.os_version, "SP #{self.os_sp}"].join(' ')
     end
 
-    def self.regenerate_health
-      Computer.all.each do |c|
-        health_array = []
-        health_array << (c.issues.active.without_scom.map {|i| i.severity}.max || 0)
-
-        scom_health = (c.issues.active.scom_only.map {|i| i.severity}.max || 0) * 0.1
-        health_array << ((scom_health + 1 if scom_health > 0) || 0)
-        health = health_array.max
-
-        rank = health * 100
-
-        rank += 1000 if (c.production? && health >= 2)
-
-        rank += case c.aasm_current_state
-          when :production_1 then  5
-          when :production_2 then  4
-          when :production_3 then  3
-          when :nonproduction then 2
-          when :unknown then       1
-          else 0
-        end
-
-        c.health = health
-        c.health_rank = rank
-        c.save
-      end
-    end
-
   private
+
+    def compute_most_recent_update
+      self.most_recent_update = [ep_last_update].max
+    end
 
     def i_to_ip(int)
       IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
