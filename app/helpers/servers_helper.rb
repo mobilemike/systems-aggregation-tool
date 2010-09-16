@@ -1,4 +1,4 @@
-module ComputersHelper
+module ServersHelper
   
   
   def av_overview_column computer

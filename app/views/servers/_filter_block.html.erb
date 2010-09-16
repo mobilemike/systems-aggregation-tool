@@ -1,5 +1,12 @@
 <ul class="nav main">
   <li>
+    <%= link_to("Class", :controller => 'servers')%>
+    <ul>
+      <%= content_tag(:li, link_to("Servers", :controller => 'servers'))%>
+      <%= content_tag(:li, link_to("PCs", :controller => 'pcs')) %>
+    </ul>
+  </li>
+  <li>
     <%= link_to("Status", params.merge(:status => nil, :page => nil))%>
     <ul>
       <%= content_tag(:li, link_to("Default", params.merge(:status => nil, :page => nil)))%>
@@ -31,15 +38,15 @@
     </ul>
   </li>
   <li class="secondary">
-    <%= link_to("Download CSV", :controller => :computers, :owner_initials => params[:owner_initials],
+    <%= link_to("Download CSV", :controller => :servers, :owner_initials => params[:owner_initials],
                  :status => params[:status], :format => :csv)%>
     <ul>
       <li>
-        <%= link_to("Download CSV (formatted)", :controller => :computers, :owner_initials => params[:owner_initials],
+        <%= link_to("Download CSV (formatted)", :controller => :servers, :owner_initials => params[:owner_initials],
                      :status => params[:status], :format => :csv)%>
       </li>
       <li>
-        <%= link_to("Download CSV (all data)", :controller => :computers, :view => 'all', :format => :csv)%>
+        <%= link_to("Download CSV (all data)", :controller => :servers, :view => 'all', :format => :csv)%>
       </li>
     </ul>
   </li>

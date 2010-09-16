@@ -1,4 +1,4 @@
-class ComputersController < ApplicationController
+class ServersController < ApplicationController
   before_filter :update_table_config
   
   ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description,
@@ -167,7 +167,7 @@ private
   end
 
   def update_page_display
-    custom_label = "Computers"
+    custom_label = "Servers"
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
     end
@@ -184,4 +184,5 @@ private
     params[:page] ||= 1
     @page_title = active_scaffold_config.label = custom_label
   end
+
 end
