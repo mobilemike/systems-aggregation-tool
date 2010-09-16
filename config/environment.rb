@@ -20,8 +20,10 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'dbi', :version => '0.4.1'
-  config.gem 'dbd-odbc', :version => '0.2.4', :lib => 'dbd/ODBC'
+  
+#  config.gem 'depricated', :version => '2.0.1'
+#  config.gem 'dbi', :version => '0.4.1'
+#  config.gem 'dbd-odbc', :version => '0.2.4', :lib => 'dbd/ODBC'
   config.gem 'aasm', :version => '2.1.3'
   config.gem 'ruleby', :version => '0.6'
 

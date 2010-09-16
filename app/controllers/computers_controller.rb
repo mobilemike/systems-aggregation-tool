@@ -184,26 +184,4 @@ private
     params[:page] ||= 1
     @page_title = active_scaffold_config.label = custom_label
   end
-
-  def chart_maker(*args)
-    options = {
-      :title => "Performance"
-    }
-    options.update(args.extract_options!)
-    
-    values = case options[:type]
-    when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
-    when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
-    end
-      
-    OFC::OpenFlashChart.new do |c|
-      c.elements = []
-      c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
-                                         :color => "#DB1750",
-                                         :width => 3,
-                                         :values => values)
-      c.title = OFC::Title.new(:text => options[:title])
-    end
-  end
-  
 end
