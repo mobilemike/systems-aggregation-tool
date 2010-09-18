@@ -34,7 +34,7 @@ class ServersController < ApplicationController
     c.columns[:cpu_reservation].label                = 'CPU Reservation'
     c.columns[:description].inplace_edit             = true
     c.columns[:ep_dat_outdated].label                = 'DAT Outdated'
-    c.columns[:fqdn].label                           = 'Computer'
+    c.columns[:fqdn].label                           = 'Server'
     c.columns[:guest].description                    = "Virtual or Physical"
     c.columns[:guest].label                          = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:health].description                   = HEALTH_DESCRIPTION
