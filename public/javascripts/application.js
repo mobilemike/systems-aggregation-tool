@@ -10,7 +10,7 @@ function generateHealthTooltips()
     $j(this).qtip(
     {
       content: {text: 'Loading...',
-                url: '/computers/' + $j(this).children('img').attr('alt') + '/health',
+                url: '/servers/' + $j(this).children('img').attr('alt') + '/health',
                 prerender: false},
       position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35, screen: true}},
       style: {name: 'light', 'width': '100%', 'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
