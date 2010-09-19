@@ -73,12 +73,9 @@ class ServersController < ApplicationController
     c.columns[:us_group_name].label                  = 'WSUS Group'
 
     
-    c.actions.exclude :create, :delete, :nested
+    c.actions.exclude :create, :delete, :nested, :show
     
     c.update.link        = false
-    
-    c.show.link.label    = "Detail"
-    c.show.link.position = :after
 
     c.list.sorting       = [{:health => :desc}]
     c.list.per_page      = 20
@@ -87,22 +84,16 @@ class ServersController < ApplicationController
     c.formats << :csv
   end
   
+  def show
+    @computer = Computer.find(params[:id])
+    render :partial => 'show'
+  end
+  
   def health
     @computer = Computer.find(params[:id])
     render :partial => 'health'
-    logger.info session.inspect
-end
-  
-  def chart
-    respond_to do |wants|
-      wants.html {
-        chart = chart_maker(:computer => Computer.find(params[:id]),
-                             :type => params[:type])
-        render :text => chart.render, :layout => false
-      }
-    end
   end
-  
+ 
   def list_respond_to_csv
     @computers = Computer.find_all_sorted_by_fqdn(conditions_for_collection)
   end

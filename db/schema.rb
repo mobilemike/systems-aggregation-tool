@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100819021353) do
+ActiveRecord::Schema.define(:version => 20100819163753) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -187,6 +187,8 @@ ActiveRecord::Schema.define(:version => 20100819021353) do
     t.integer  "default_gateway_int"
     t.integer  "time_zone_offset"
     t.datetime "install_date"
+    t.integer  "mem_swap"
+    t.string   "os_edition"
   end
 
   create_table "sessions", :force => true do |t|

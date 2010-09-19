@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :servers,
                 :active_scaffold => true,
-                :member => { :health => :get, :chart => :get },
+                :member => { :health => :get },
                 :has_many => :issues
   map.owner 'servers/owner/:owner_initials', :controller => 'servers', :action => 'index'
   map.owner_status 'servers/owner/:owner_initials/status/:status', :controller => 'servers', :action => 'index'
