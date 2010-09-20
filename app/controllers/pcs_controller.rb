@@ -2,7 +2,7 @@ class PcsController < ApplicationController
   before_filter :update_table_config
   
   ALL_COLUMNS = [:fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
-                 :in_epo, :in_ldap, :in_sccm, :in_wsus]
+                 :in_ldap, :in_sccm]
   
   active_scaffold :pc do |c|
     c.columns = ALL_COLUMNS
@@ -16,10 +16,8 @@ class PcsController < ApplicationController
     c.columns[:us_outstanding].sort_by :method => 'us_outstanding'
     c.columns[:ep_dat_outdated].label          = "DAT"
     c.columns[:fqdn].label                     = "Compuer"
-    c.columns[:in_epo].label                   = "ePO"
     c.columns[:in_ldap].label                  = "AD"
     c.columns[:in_sccm].label                  = "SCCM"
-    c.columns[:in_wsus].label                  = "WSUS"   
 
 
     c.actions.exclude :create, :delete, :nested

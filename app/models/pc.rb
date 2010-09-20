@@ -33,10 +33,9 @@ class Pc < ActiveRecord::Base
 
     def health_ep_dat
       case ep_dat_outdated
-        when -(1.0/0)..0 then 0
-        when 1..2 then 1
-        when 3..5 then 2
-        when 6..(1.0/0) then 3
+        when -(1.0/0)..2 then 0
+        when 3..4 then 2
+        when 5..(1.0/0) then 3
       end
     end
 
@@ -75,12 +74,19 @@ class Pc < ActiveRecord::Base
     def os_long
       [self.os_version, "SP #{self.os_sp}"].join(' ')
     end
-
-  private
-
+    
     def compute_most_recent_update
       self.most_recent_update = [ep_last_update].max
     end
+    
+    def self.regenerate_health
+      Pc.find_each do |pc|
+        pc.compute_most_recent_update
+        pc.save
+      end
+    end
+
+  private
 
     def i_to_ip(int)
       IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?

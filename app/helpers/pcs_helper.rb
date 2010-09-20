@@ -1,19 +1,19 @@
 module PcsHelper
   
   def ep_dat_outdated_column pc
-    updates = "-"
-    span_class = "health-empty"
+    age = "?"
+    span_class = "health-error"
     
     if pc.in_epo?
       span_class = case pc.health_ep_dat
       when 0 then "health-normal"
-      when 1..2 then "health-warning"
+      when 2 then "health-warning"
       when 3 then "health-error"
       end
-      updates = pc.ep_dat_outdated
+      age = pc.ep_dat_outdated < 90 ? pc.ep_dat_outdated : "!"
     end
     
-    content_tag(:span, updates, :class => span_class)
+    content_tag(:span, age, :class => span_class)
   end
   
   def fqdn_column computer
@@ -21,24 +21,16 @@ module PcsHelper
   end
   
   def in_ldap_column pc
-    pc.in_ldap? ? food_icon(0) : "-"
-  end
-  
-  def in_epo_column pc
-    pc.in_epo? ? food_icon(0) : "-"
+    pc.in_ldap? ? food_icon(0) : food_icon(5)
   end
   
   def in_sccm_column pc
-    pc.in_sccm? ? food_icon(0) : "-"
-  end
-  
-  def in_wsus_column pc
-    pc.in_wsus? ? food_icon(0) : "-"
+    pc.in_sccm? ? food_icon(0) : food_icon(5)
   end
   
   def us_outstanding_column computer
-    updates = "N/A"
-    span_class = "health-warning"
+    updates = "?"
+    span_class = "health-error"
     
     if computer.us_last_sync
       span_class = case computer.health_us_outstanding
