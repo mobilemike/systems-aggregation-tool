@@ -25,6 +25,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: computers
@@ -110,6 +111,7 @@ end
 #  us_approved              :integer         default(0)
 #  ep_dat_outdated          :integer
 #  company                  :string(255)     default("Unknown")
+#  sc_bme                   :string(255)
 #  in_akorri                :boolean
 #  in_avamar                :boolean
 #  in_epo                   :boolean
@@ -120,7 +122,6 @@ end
 #  us_group_name            :string(255)
 #  total_disk               :integer
 #  free_disk                :integer
-#  sc_bme                   :string(255)
 #  sc_uptime_percentage     :float
 #  health                   :integer         default(0)
 #  health_rank              :integer         default(0)
@@ -137,5 +138,6 @@ end
 #  dhcp                     :boolean
 #  default_gateway_int      :integer
 #  time_zone_offset         :integer
+#  service_category         :string(255)     default("Unknown")
 #
 
