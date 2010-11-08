@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100819163753) do
+ActiveRecord::Schema.define(:version => 20101104122959) do
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(:version => 20100819163753) do
     t.integer  "us_approved",              :default => 0
     t.integer  "ep_dat_outdated"
     t.string   "company",                  :default => "Unknown"
-    t.string   "sc_bme"
     t.boolean  "in_akorri"
     t.boolean  "in_avamar"
     t.boolean  "in_epo"
@@ -103,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20100819163753) do
     t.string   "us_group_name"
     t.integer  "total_disk"
     t.integer  "free_disk"
+    t.string   "sc_bme"
     t.float    "sc_uptime_percentage"
     t.integer  "health",                   :default => 0
     t.integer  "health_rank",              :default => 0
@@ -134,6 +134,9 @@ ActiveRecord::Schema.define(:version => 20100819163753) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "issues", ["active"], :name => "issues_active_idx"
+  add_index "issues", ["computer_id"], :name => "issues_computer_id_idx"
 
   create_table "owners", :force => true do |t|
     t.string   "name"
@@ -189,10 +192,13 @@ ActiveRecord::Schema.define(:version => 20100819163753) do
     t.datetime "install_date"
     t.integer  "mem_swap"
     t.string   "os_edition"
+    t.datetime "cm_last_heartbeat"
   end
 
+  add_index "pcs", ["fqdn"], :name => "pcs_fqdn_index"
+
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
+    t.string   "session_id", :default => "", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
