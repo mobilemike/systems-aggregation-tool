@@ -9,7 +9,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(:version => 20100926202824) do
+=======
 ActiveRecord::Schema.define(:version => 20101104122959) do
+>>>>>>> 8314b39525bdae5b5498897c62407907942432f0
 
   create_table "computers", :force => true do |t|
     t.string   "fqdn"
@@ -192,7 +196,11 @@ ActiveRecord::Schema.define(:version => 20101104122959) do
     t.datetime "install_date"
     t.integer  "mem_swap"
     t.string   "os_edition"
+<<<<<<< HEAD
+    t.datetime "cm_last_heatbeat"
+=======
     t.datetime "cm_last_heartbeat"
+>>>>>>> 8314b39525bdae5b5498897c62407907942432f0
   end
 
   add_index "pcs", ["fqdn"], :name => "pcs_fqdn_index"
