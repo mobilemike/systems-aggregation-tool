@@ -208,7 +208,8 @@ module ServersHelper
   
   def csv_header
     header = '"FQDN","Owner","Status","Company","Description","Location","Service Category","Health","Uptime","Patches",'
-    header += '"SUS Group","Virtual","Host","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
+    header += '"SUS Group","Virtual","Host","IP","Default Gateway","CPU 
+Speed","CPU Count","RAM Total","RAM Used",'
     header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
@@ -236,6 +237,7 @@ module ServersHelper
     results += ",\"#{c.guest ? "Virtual" : "Physical"}\""
     results += ",\"#{c.host_computer ? c.host_computer.name : ""}\""
     results += ",\"#{c.ip}\""
+    results += ",\"#{c.default_gateway}\""
     results += ",\"#{c.cpu_speed}\""
     results += ",\"#{c.cpu_count}\""
     results += ",\"#{c.mem_total}\""
