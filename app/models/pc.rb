@@ -100,6 +100,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: pcs
@@ -152,5 +153,6 @@ end
 #  mem_swap            :integer
 #  os_edition          :string(255)
 #  cm_last_heatbeat    :datetime
+#  cm_last_heartbeat   :datetime
 #
 
