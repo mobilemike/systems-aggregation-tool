@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101104122959) do
+ActiveRecord::Schema.define(:version => 20101120175831) do
 
   create_table "computers", :force => true do |t|
     t.string    "fqdn"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20101104122959) do
     t.string   "os_edition"
     t.datetime "cm_last_heatbeat"
     t.datetime "cm_last_heartbeat"
+    t.datetime "most_recent_update"
   end
 
   create_table "sessions", :force => true do |t|

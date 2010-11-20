@@ -76,7 +76,11 @@ class Pc < ActiveRecord::Base
     end
     
     def compute_most_recent_update
-      self.most_recent_update = [ep_last_update,us_last_sync,cm_last_heatbeat].max
+      updates = []
+      updates << ep_last_update if ep_last_update
+      updates << us_last_sync if us_last_sync
+      updates << cm_last_heatbeat if cm_last_heatbeat
+      self.most_recent_update = updates.max unless updates.empty?
     end
     
     def self.regenerate_health
