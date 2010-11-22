@@ -73,7 +73,7 @@ class ServersController < ApplicationController
     c.columns[:us_group_name].label                  = 'WSUS Group'
 
     
-    c.actions.exclude :create, :delete, :nested, :show
+    c.actions.exclude :create, :delete, :nested
     
     c.update.link        = false
 
