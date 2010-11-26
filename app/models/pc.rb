@@ -79,7 +79,7 @@ class Pc < ActiveRecord::Base
       updates = []
       updates << ep_last_update if ep_last_update
       updates << us_last_sync if us_last_sync
-      updates << cm_last_heatbeat if cm_last_heatbeat
+      updates << cm_last_heartbeat if cm_last_heartbeat
       self.most_recent_update = updates.max unless updates.empty?
     end
     
@@ -156,7 +156,5 @@ end
 #  install_date        :datetime
 #  mem_swap            :integer
 #  os_edition          :string(255)
-#  cm_last_heatbeat    :datetime
 #  cm_last_heartbeat   :datetime
 #
-
