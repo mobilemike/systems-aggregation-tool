@@ -1,8 +1,15 @@
-<h3><%= "Details for " + @computer.name -%></h3>
-<p>
-  <ul>
-    <% @computer.attributes.sort.each do |a, v| %>
-      <li><strong><%=h a %>: </strong><%=h v %></li>
-    <% end %>
-  </ul>
-</p>
+<div class="grid_16">
+  <div class="box">
+    <h2>
+      <a href="#" id="toggle-paragraphs" class="visible"><%= @computer.name -%></a>
+    </h2>
+    <div class="block">
+      <h4><%= @computer.name -%></h4>
+      <ul>
+        <% @computer.attributes.sort.each do |a, v| %>
+          <li><strong><%=h a %>: </strong><%=h v %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

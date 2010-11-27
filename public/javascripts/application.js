@@ -42,8 +42,33 @@ function generateTextTooltips()
   });
 }
 
+function generateComputerTooltips()
+{
+  $j('td.fqdn-column').live("click", function()
+  {
+    var target = $j(this);
+    if (target.data('qtip')) { return false; }
+    target.qtip(
+    {
+      content: {text: 'Loading...',
+                url: target.children('a').attr('href'),
+                prerender: false},
+      position: {corner: {target: 'bottomLeft', tooltip: 'topLeft'},  adjust: {x: 35, screen: true}},
+      style: {name: 'light', 'width': '100%', 'font-size': 12, 'font-weight': 'normal', 'text-align': 'center'},
+      show: {ready: true, solo: true, delay: 75, effect: {length: 75}, when: {event: 'click' }},
+      hide: {when: {event: 'unfocus'}, effect: {length: 75}}
+    });
+    target.children('a').attr(
+      {
+        href: '#'
+      });
+  });
+}
+
+
 $j(document).ready(function()
 {
   generateHealthTooltips();
   generateTextTooltips();
+  generateComputerTooltips();
 });
