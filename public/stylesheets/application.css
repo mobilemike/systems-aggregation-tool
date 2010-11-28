@@ -77,3 +77,11 @@ input.search.button, a.search.link {
 	width:24%;
 	margin-left:2%;
 }
+
+.ui-tooltip-ajax {
+  max-width: 80%;
+}
+
+.ui-tooltip-text {
+  max-width: 50%;
+}
