@@ -24,20 +24,23 @@ end
 
 
 
+
+
+
 # == Schema Information
 #
 # Table name: computers
 #
-#  id                       :integer         not null, primary key
+#  id                       :integer         primary key
 #  fqdn                     :string(255)
-#  created_at               :datetime
-#  updated_at               :datetime
+#  created_at               :timestamp
+#  updated_at               :timestamp
 #  owner_id                 :integer
 #  disposition              :string(255)
 #  bios_date                :date
 #  bios_name                :string(255)
 #  bios_ver                 :string(255)
-#  boot_time                :datetime
+#  boot_time                :timestamp
 #  cpu_count                :integer
 #  cpu_name                 :string(255)
 #  cpu_ready                :float
@@ -49,7 +52,7 @@ end
 #  host_computer_id         :integer
 #  hp_mgmt_ver              :string(255)
 #  ilo_ip_int               :integer
-#  install_date             :datetime
+#  install_date             :timestamp
 #  ip_int                   :integer
 #  last_logged_on           :string(255)
 #  mac                      :string(255)
@@ -74,22 +77,22 @@ end
 #  vcpu_efficiency          :float
 #  vcpu_used                :float
 #  health_ak_cpu            :integer
-#  ak_cpu_last_modified     :datetime
+#  ak_cpu_last_modified     :timestamp
 #  health_ak_storage        :integer
-#  ak_storage_last_modified :datetime
+#  ak_storage_last_modified :timestamp
 #  health_ak_mem            :integer
-#  ak_mem_last_modified     :datetime
+#  ak_mem_last_modified     :timestamp
 #  health_sc_state          :integer
 #  sc_cpu_perf_id           :integer
 #  sc_mem_perf_id           :integer
-#  ep_last_update           :datetime
+#  ep_last_update           :timestamp
 #  ep_dat_version           :integer
 #  health_vm_vtools         :integer
 #  av_dataset               :string(255)
 #  av_retention             :string(255)
 #  av_schedule              :string(255)
-#  av_started_at            :datetime
-#  av_completed_at          :datetime
+#  av_started_at            :timestamp
+#  av_completed_at          :timestamp
 #  av_file_count            :integer
 #  av_scanned               :float
 #  av_new                   :float
@@ -99,7 +102,7 @@ end
 #  av_file_skipped_count    :integer
 #  av_status                :string(255)
 #  av_error                 :string(255)
-#  us_last_sync             :datetime
+#  us_last_sync             :timestamp
 #  us_unknown               :integer         default(0)
 #  us_not_installed         :integer         default(0)
 #  us_downloaded            :integer         default(0)
@@ -131,5 +134,11 @@ end
 #  exempt_wsus              :boolean         default(FALSE)
 #  mem_vm_host_used         :integer
 #  location                 :string(255)
+#  in_sccm                  :boolean
+#  exempt_sccm              :boolean
+#  dhcp                     :boolean
+#  default_gateway_int      :integer
+#  time_zone_offset         :integer
+#  service_category         :string(255)     default("Unknown")
 #
 

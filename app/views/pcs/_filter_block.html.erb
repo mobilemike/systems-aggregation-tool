@@ -1,0 +1,21 @@
+<ul class="nav main">
+  <li>
+    <%= link_to("Class", :controller => 'servers')%>
+    <ul>
+      <%= content_tag(:li, link_to("Servers", :controller => 'servers'))%>
+      <%= content_tag(:li, link_to("PCs", :controller => 'pcs')) %>
+    </ul>
+  </li>
+  <li class="secondary">
+    <%= link_to("Download CSV", :controller => :pcs, :owner_initials => params[:owner_initials],
+                 :status => params[:status], :format => :csv)%>
+    <ul>
+      <li>
+        <%= link_to("Download CSV (formatted)", :controller => :pcs, :format => :csv)%>
+      </li>
+      <li>
+        <%= link_to("Download CSV (all data)", :controller => :pcs, :view => 'all', :format => :csv)%>
+      </li>
+    </ul>
+  </li>
+</ul>

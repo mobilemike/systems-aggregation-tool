@@ -1,0 +1,4 @@
+<%= params[:view] == 'all' ? all_csv_header : csv_header %>
+<% @pcs.each do |c| -%>
+<%= params[:view] == 'all' ? all_csv_row(c) : csv_row(c) %>
+<% end -%>

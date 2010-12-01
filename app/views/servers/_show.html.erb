@@ -1,0 +1,8 @@
+<h3><%= "Details for " + @computer.name -%></h3>
+<p>
+  <ul>
+    <% @computer.attributes.sort.each do |a, v| %>
+      <li><strong><%=h a %>: </strong><%=h v %></li>
+    <% end %>
+  </ul>
+</p>

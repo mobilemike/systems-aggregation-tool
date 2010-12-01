@@ -1,14 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pcs, :active_scaffold => true
+
   map.resources :owners, :has_many => :computers, :active_scaffold => true
   map.resources :issues, :active_scaffold => true
 
-  map.resources :computers,
+  map.resources :servers,
                 :active_scaffold => true,
-                :member => { :health => :get, :chart => :get },
+                :member => { :health => :get },
                 :has_many => :issues
-  map.owner 'computers/owner/:owner_initials', :controller => 'computers', :action => 'index'
-  map.owner_status 'computers/owner/:owner_initials/status/:status', :controller => 'computers', :action => 'index'
-  map.status 'computers/status/:status', :controller => 'computers', :action => 'index'
+  map.owner 'servers/owner/:owner_initials', :controller => 'servers', :action => 'index'
+  map.owner_status 'servers/owner/:owner_initials/status/:status', :controller => 'servers', :action => 'index'
+  map.status 'servers/status/:status', :controller => 'servers', :action => 'index'
   
-  map.root :controller => "computers"
+  map.root :controller => "servers"
 end

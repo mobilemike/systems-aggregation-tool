@@ -1,4 +1,4 @@
-class ComputersController < ApplicationController
+class ServersController < ApplicationController
   before_filter :update_table_config
   
   ALL_COLUMNS = [:health, :fqdn, :owner_initials, :status, :company, :description,
@@ -34,7 +34,7 @@ class ComputersController < ApplicationController
     c.columns[:cpu_reservation].label                = 'CPU Reservation'
     c.columns[:description].inplace_edit             = true
     c.columns[:ep_dat_outdated].label                = 'DAT Outdated'
-    c.columns[:fqdn].label                           = 'Computer'
+    c.columns[:fqdn].label                           = 'Server'
     c.columns[:guest].description                    = "Virtual or Physical"
     c.columns[:guest].label                          = "<img src=\"#{ActionController::Base.relative_url_root}/images/vmware.gif\" />"
     c.columns[:health].description                   = HEALTH_DESCRIPTION
@@ -76,9 +76,6 @@ class ComputersController < ApplicationController
     c.actions.exclude :create, :delete, :nested
     
     c.update.link        = false
-    
-    c.show.link.label    = "Detail"
-    c.show.link.position = :after
 
     c.list.sorting       = [{:health => :desc}]
     c.list.per_page      = 20
@@ -87,22 +84,16 @@ class ComputersController < ApplicationController
     c.formats << :csv
   end
   
+  def show
+    @computer = Computer.find(params[:id])
+    render :partial => 'show'
+  end
+  
   def health
     @computer = Computer.find(params[:id])
     render :partial => 'health'
-    logger.info session.inspect
-end
-  
-  def chart
-    respond_to do |wants|
-      wants.html {
-        chart = chart_maker(:computer => Computer.find(params[:id]),
-                             :type => params[:type])
-        render :text => chart.render, :layout => false
-      }
-    end
   end
-  
+ 
   def list_respond_to_csv
     @computers = Computer.find_all_sorted_by_fqdn(conditions_for_collection)
   end
@@ -167,7 +158,7 @@ private
   end
 
   def update_page_display
-    custom_label = "Computers"
+    custom_label = "Servers"
     if params[:status]
       custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
     end
@@ -185,25 +176,4 @@ private
     @page_title = active_scaffold_config.label = custom_label
   end
 
-  def chart_maker(*args)
-    options = {
-      :title => "Performance"
-    }
-    options.update(args.extract_options!)
-    
-    values = case options[:type]
-    when "cpu" then options[:computer].scom_computer.scom_cpu_perf.data
-    when "memory" then options[:computer].scom_computer.scom_cpu_perf.data
-    end
-      
-    OFC::OpenFlashChart.new do |c|
-      c.elements = []
-      c.elements << OFC::ScatterLine.new(:dot_style => OFC::HollowDot.new(:dot_size => 3),
-                                         :color => "#DB1750",
-                                         :width => 3,
-                                         :values => values)
-      c.title = OFC::Title.new(:text => options[:title])
-    end
-  end
-  
 end
