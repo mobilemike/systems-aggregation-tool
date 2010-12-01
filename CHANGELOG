@@ -1,5 +1,18 @@
 == Changelog
 
+=== Release 3.1.0  (December 1, 2010)
+
+= FEATURES
+
+* PCs view is fully functional
+
+= FIXES / ENHANCEMENTS
+
+* Additional WSUS and EPO information available on the compliance view
+* SCCM Sync looks in additional OUs for Servers
+* PC Sync scripts production ready
+
+
 === Release 3.0.0  (June 14, 2010)
 
 = FEATURES
