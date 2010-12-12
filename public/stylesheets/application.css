@@ -1,11 +1,55 @@
+/* Basic Page Styles */
+
 body {
   background-color: #363F59;
 }
 
-.container_16 {
+.content_container {
   background:#fff;
   min-width: 875px;
 }
+
+input.search.text {
+	width:46%;
+}
+
+input.search.button, a.search.link {
+	width:24%;
+	margin-left:2%;
+}
+
+
+/* AS Overides and Customization */
+
+#as-content-box {
+  padding: 0;
+}
+
+.active-scaffold td img {
+  margin: auto;
+}
+
+.active-scaffold tr.record td, .active-scaffold th {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.2em;
+}
+
+.active-scaffold th img {
+  margin-top: 2px;
+}
+
+.active-scaffold th a {
+  padding: 2px 15px 2px 15px;
+}
+
+.active-scaffold tr.record td select {
+  font-size: 11px;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
+/* Specific Column Syling */
 
 span.health-error {
   background-color: #FCC;
@@ -37,45 +81,17 @@ td.av_overview-column, td.fqdn-column, td.av_scanned-column, td.av_new-column {
   white-space:nowrap;
 }
 
-#as-content-box {
-  padding: 0;
-}
-
-.active-scaffold td img {
-  margin: auto;
-}
-
-.active-scaffold tr.record td, .active-scaffold th {
-  text-align: center;
-  vertical-align: middle;
-  line-height: 1.2em;
-}
-
-.active-scaffold th img {
-  margin-top: 2px;
-}
-
-.active-scaffold th a {
-  padding: 2px 15px 2px 15px;
-}
-
-.active-scaffold tr.record td select {
-  font-size: 11px;
-  font-weight: normal;
-  letter-spacing: 0;
-}
-
 span.in_place_editor_field {
   cursor: pointer;
 }
 
-input.search.text {
-	width:46%;
-}
+/* Tooltip Styling */
 
-input.search.button, a.search.link {
-	width:24%;
-	margin-left:2%;
+h2.details-heading {
+	font-weight:normal;
+	padding:.5em;
+	margin:0 0 10px 0;
+	border-bottom:1px solid #ccc;
 }
 
 .ui-tooltip-ajax {
@@ -84,4 +100,8 @@ input.search.button, a.search.link {
 
 .ui-tooltip-text {
   max-width: 50%;
+}
+
+.ui-tooltip-details {
+  width: 60%;
 }

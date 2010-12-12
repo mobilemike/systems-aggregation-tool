@@ -91,12 +91,10 @@ function generateComputerTooltips() {
         }
       },
       position: {
-        my: 'top left',
-        at: 'center',
+        my: 'left center',
+        at: 'right center',
         adjust: {
-          x: -4,
-          y: 10,
-          screen: true
+          x: 5
         }
       },
       show: {
@@ -109,10 +107,7 @@ function generateComputerTooltips() {
         delay: 250
       },
       style: {
-        classes: 'ui-tooltip-shadow ui-tooltip-light ui-tooltip-ajax',
-        tip: {
-          mimic: 'top center'
-        }
+        classes: 'ui-tooltip-shadow ui-tooltip-light ui-tooltip-ajax ui-tooltip-details'
       }
     });
     target.children('a').attr({

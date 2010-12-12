@@ -1,15 +1,23 @@
-<div class="grid_16">
-  <div class="box">
-    <h2>
-      <a href="#" id="toggle-paragraphs" class="visible"><%= @computer.name -%></a>
-    </h2>
-    <div class="block">
-      <h4><%= @computer.name -%></h4>
-      <ul>
-        <% @computer.attributes.sort.each do |a, v| %>
-          <li><strong><%=h a %>: </strong><%=h v %></li>
-        <% end %>
-      </ul>
+<div class="container_16">
+  
+  <div class="grid_16">
+    <h2 class="details-heading"><%= @computer.name -%></h2>
+  </div>
+  <div class="clear"></div>
+  
+  <div class="grid_16">
+    <div class="box">
+      <h2>
+        <a href="#" id="toggle-paragraphs" class="visible"><%= @computer.name -%></a>
+      </h2>
+      <div class="block">
+        <h4><%= @computer.name -%></h4>
+        <ul>
+          <% @computer.attributes.sort.each do |a, v| %>
+            <li><strong><%=h a %>: </strong><%=h v %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
