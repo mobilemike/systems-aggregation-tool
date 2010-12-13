@@ -94,7 +94,8 @@ function generateComputerTooltips() {
         my: 'left center',
         at: 'right center',
         adjust: {
-          x: 5
+          x: 5,
+          screen: true
         }
       },
       show: {
@@ -110,9 +111,7 @@ function generateComputerTooltips() {
         classes: 'ui-tooltip-shadow ui-tooltip-light ui-tooltip-ajax ui-tooltip-details'
       }
     });
-    target.children('a').attr({
-      href: '#'
-    });
+    event.preventDefault();
   },
   event);
 }

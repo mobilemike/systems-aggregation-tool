@@ -1,23 +1,103 @@
-<div class="container_16">
+<div class="container_16 details_container">
   
   <div class="grid_16">
-    <h2 class="details-heading"><%= @computer.name -%></h2>
+    <h2 class="details-heading"><%= @computer.name -%> Details</h2>
   </div>
   <div class="clear"></div>
   
-  <div class="grid_16">
+  <div class="grid_8">
+    
     <div class="box">
       <h2>
-        <a href="#" id="toggle-paragraphs" class="visible"><%= @computer.name -%></a>
+        <a href="#" id="toggle-paragraphs" class="visible">Administrative</a>
       </h2>
       <div class="block">
-        <h4><%= @computer.name -%></h4>
-        <ul>
-          <% @computer.attributes.sort.each do |a, v| %>
-            <li><strong><%=h a %>: </strong><%=h v %></li>
-          <% end %>
-        </ul>
+        <table class="salad">
+          <tbody>
+            <tr><th>Name</th><td><%= @computer.name -%></td></tr>
+            <tr><th>Domain</th><td><%= @computer.domain -%></td></tr>
+            <tr><th>Company</th><td><%= @computer.company -%></td></tr>
+            <tr><th>Owner</th><td><%= @computer.owner.try(:name) -%></td></tr>
+            <tr><th>Description</th><td><%= @computer.description -%></td></tr>
+            <tr><th>Status</th><td><%= @computer.status -%></td></tr>
+            <tr><th>Category</th><td><%= @computer.service_category -%></td></tr>
+            <tr><th>Location</th><td><%= @computer.location -%></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
+    
   </div>
+  
+  <div class="grid_8">
+    
+    <div class="box">
+      <h2>
+        <a href="#" id="toggle-paragraphs" class="visible">System Info</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>Server</caption>
+          <tbody>
+            <tr><th>Type</th><td><%= @computer.guest ? 'Virtual' : 'Physical' -%></td></tr>
+            <tr><th>OS</th><td><%= @computer.os_long -%> <%= 'x64' if @computer.os_64 -%></td></tr>
+            <% if @computer.guest %>
+              <tr><th>Host</th><td><%= @computer.host_computer.try(:name) -%></td></tr>
+            <% else %>
+              <tr><th>Model</th><td><%= @computer.make -%> <%= @computer.model -%></td></tr>
+              <tr><th>BIOS</th><td><%= @computer.bios_date -%> - <%= @computer.bios_name -%> <%= @computer.bios_ver -%></td></tr>
+            <% end %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Network</caption>
+          <tbody>
+            <tr><th>IP</th><td><%= @computer.ip -%> <%= '(DHCP)' if @computer.dhcp -%></td></tr>
+            <tr><th>Subnet</th><td><%= @computer.subnet_mask -%></td></tr>
+            <tr><th>Gateway</th><td><%= @computer.default_gateway -%></td></tr>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+    
+    <div class="box">
+      <h2>
+        <a href="#" id="toggle-paragraphs" class="visible">Performance</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>Memory</caption>
+          <tbody>
+            <tr><th>Total</th><td><%= @computer.mem_total -%> MB</td></tr>
+            <tr><th>Used</th><td><%= @computer.mem_used -%> MB</td></tr>
+            <tr><th>Swap</th><td><%= @computer.mem_swap -%> MB</td></tr>
+            <% if @computer.guest %>
+              <tr><th>vReservation</th><td><%= @computer.mem_reservation -%> MB</td></tr>
+              <tr><th>vBaloon</th><td><%= @computer.mem_balloon -%> MB</td></tr>
+              <tr><th>vHost Usage</th><td><%= @computer.mem_vm_host_used -%> MB</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>CPU</caption>
+          <tbody>
+            <tr><th>Name</th><td><%= @computer.cpu_name -%></td></tr>
+            <tr><th>Speed</th><td><%= @computer.cpu_count -%> x <%= @computer.cpu_speed -%>Mhz</td></tr>
+            <% if @computer.guest %>
+              <tr><th>vReservation</th><td><%= @computer.cpu_reservation -%></td></tr>
+              <tr><th>vReady</th><td><%= @computer.cpu_ready -%>%</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+    
+    
+  </div>
+  <div class="clear"></div>
 </div>
