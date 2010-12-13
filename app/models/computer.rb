@@ -139,7 +139,8 @@ class Computer < ActiveRecord::Base
   end
   
   def os_long
-    [self.os_vendor, self.os_name, self.os_version, self.os_edition].join(' ')
+    x64 = 'x64' if self.os_64?
+    [self.os_vendor, self.os_name, self.os_version, self.os_edition, x64].join(' ')
   end
   
   def owner_initials
