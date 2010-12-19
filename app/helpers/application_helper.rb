@@ -41,7 +41,10 @@ module ApplicationHelper
     value = klass.send(attribute)
     if value
       description ||= attribute.to_s.titleize
-      formatted_output ||= h(value)
+      formatted_output = case formatted_output
+        when nil then h(value)
+        else eval('"' + formatted_output + '"') 
+      end
       content_tag(:tr, content_tag(:th, description) + content_tag(:td, formatted_output))
     else
       ""
