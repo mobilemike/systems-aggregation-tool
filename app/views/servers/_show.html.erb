@@ -14,13 +14,13 @@
       <div class="block">
         <table class="salad">
           <tbody>
-            <%= "<tr><th>Domain</th><td>#{@computer.domain}</td></tr>" if @computer.domain %>
-            <%= "<tr><th>Company</th><td>#{@computer.company}</td></tr>" if @computer.company %>
-            <%= "<tr><th>Owner</th><td>#{@computer.owner.name}</td></tr>" if @computer.owner %>
-            <%= "<tr><th>Description</th><td>#{@computer.description}</td></tr>" if @computer.description %>
-            <%= "<tr><th>Status</th><td>#{@computer.status}</td></tr>" if @computer.status %>
-            <%= "<tr><th>Category</th><td>#{@computer.service_category}</td></tr>" if @computer.service_category %>
-            <%= "<tr><th>Location</th><td>#{@computer.location}</td></tr>" if @computer.location %>
+            <%= formatted_row @computer, :domain %>
+            <%= formatted_row @computer, :company %>
+            <%= formatted_row @computer, :owner, "Owner", "#{@computer.owner.try(:name)}" %>
+            <%= formatted_row @computer, :description %>
+            <%= formatted_row @computer, :status %>
+            <%= formatted_row @computer, :service_category, "Category" %>
+            <%= formatted_row @computer, :location %>
           </tbody>
         </table>
       </div>
@@ -34,16 +34,19 @@
         <table class="salad">
           <caption>Server</caption>
           <tbody>
-            <tr><th>Type</th><td><%= @computer.guest ? 'Virtual' : 'Physical' -%></td></tr>
-            <%= "<tr><th>OS</th><td>#{@computer.os_long}</td></tr>" if @computer.os_long %>
+            <%= formatted_row @computer, :hardware_type, "Type" %>
+            <%= formatted_row @computer, :os_long, "OS" %>
             <% if @computer.guest -%>
-              <tr><th>Power</th><td><%= @computer.power.try(:false) ? 'Off' : 'On' -%></td></tr>
-              <%= "<tr><th>Host</th><td>#{@computer.host_computer.name}</td></tr>" if @computer.host_computer %>
+              <%= formatted_row @computer, :power, "Power", "#{@computer.power == false ? 'Off' : 'On'}" %>
+              <%= formatted_row @computer, :host_computer, "Host", "#{@computer.host_computer.try(:name)}" %>
             <% else -%>
-              <tr><th>iLO</th><td><a href="https://<%= @computer.ilo_ip -%>" onclick="window.open(this.href);return false;"><%= @computer.ilo_ip -%></a></td></tr>
-              <tr><th>Serial</th><td><%= @computer.serial_number -%></td></tr>
-              <tr><th>Model</th><td><%= @computer.make -%> <%= @computer.model -%></td></tr>
-              <tr><th>BIOS</th><td><%= @computer.bios_date -%> - <%= @computer.bios_name -%> <%= @computer.bios_ver -%></td></tr>
+              <%= formatted_row @computer, :ilo_ip, "iLO", 
+                "<a href=\"https://#{@computer.ilo_ip}\" onclick=\"window.open(this.href);return false;\">
+                  #{@computer.ilo_ip}
+                </a>"
+              %>
+              <%= formatted_row @computer, :model, "Model", "#{@computer.make} #{@computer.model}" %>
+              <%= formatted_row @computer, :bios_date, "BIOS", "#{@computer.bios_date} - #{@computer.bios_ver}" %>
             <% end -%>
           </tbody>
         </table>
@@ -51,10 +54,10 @@
         <table class="salad">
           <caption>Network</caption>
           <tbody>
-            <tr><th>IP</th><td><%= @computer.ip -%> <%= '(DHCP)' if @computer.dhcp -%></td></tr>
-            <tr><th>Subnet</th><td><%= @computer.subnet_mask -%></td></tr>
-            <tr><th>Gateway</th><td><%= @computer.default_gateway -%></td></tr>
-            <tr><th>MAC</th><td><%= @computer.mac -%></td></tr>
+            <%= formatted_row @computer, :ip, "IP", "#{@computer.ip} #{'(DHCP)' if @computer.dhcp}" %>
+            <%= formatted_row @computer, :subnet_mask %>
+            <%= formatted_row @computer, :default_gateway %>
+            <%= formatted_row @computer, :mac, "MAC" %>
           </tbody>
         </table>
         
@@ -74,13 +77,13 @@
         <table class="salad">
           <caption>Memory</caption>
           <tbody>
-            <tr><th>Total</th><td><%= number_to_human_size(@computer.mem_total * 1048576) if @computer.mem_total? -%></td></tr>
-            <tr><th>Used</th><td><%= number_to_human_size(@computer.mem_used * 1048576) if @computer.mem_used? -%></td></tr>
-            <tr><th>Swap</th><td><%= number_to_human_size(@computer.mem_swap * 1048576) if @computer.mem_swap? -%></td></tr>
+            <%= formatted_row @computer, :mem_total, "RAM", mb_to_human_size(@computer.mem_total) %>
+            <%= formatted_row @computer, :mem_used, "Used", mb_to_human_size(@computer.mem_used) %>
+            <%= formatted_row @computer, :mem_swap, "Swap", mb_to_human_size(@computer.mem_swap) %>
             <% if @computer.guest -%>
-              <tr><th>vReservation</th><td><%= number_to_human_size(@computer.mem_reservation * 1048576) if @computer.mem_reservation? -%></td></tr>
-              <tr><th>vBaloon</th><td><%= number_to_human_size(@computer.mem_balloon * 1048576) if @computer.mem_balloon? -%></td></tr>
-              <tr><th>vHost Usage</th><td><%= number_to_human_size(@computer.mem_vm_host_used * 1048576) if @computer.mem_vm_host_used? -%></td></tr>
+              <%= formatted_row @computer, :mem_swap, "vReservation", mb_to_human_size(@computer.mem_reservation) %>
+              <%= formatted_row @computer, :mem_swap, "vBaloon", mb_to_human_size(@computer.mem_balloon) %>
+              <%= formatted_row @computer, :mem_swap, "vHost Usage", mb_to_human_size(@computer.mem_vm_host_used) %>
             <% end -%>
           </tbody>
         </table>
@@ -88,13 +91,13 @@
         <table class="salad">
           <caption>CPU</caption>
           <tbody>
-            <tr><th>Name</th><td><%= @computer.cpu_name -%></td></tr>
-            <tr><th>Speed</th><td><%= @computer.cpu_count -%> x <%= @computer.cpu_speed -%>Mhz</td></tr>
+            <%= formatted_row @computer, :cpu_name, "Name" %>
+            <%= formatted_row @computer, :cpu_speed, "Speed", "#{@computer.cpu_count} x #{@computer.cpu_speed}Mhz" %>
             <% if @computer.guest -%>
-              <tr><th>vCPU Used</th><td><%= @computer.vcpu_used -%></td></tr>
-              <tr><th>vReservation</th><td><%= @computer.cpu_reservation -%></td></tr>
-              <tr><th>vCPU Efficiency</th><td><%= @computer.vcpu_efficiency -%></td></tr>
-              <tr><th>vReady</th><td><%= @computer.cpu_ready -%>%</td></tr>
+              <%= formatted_row @computer, :vcpu_used, "vUsed" %>
+              <%= formatted_row @computer, :cpu_reservation, "vReservation" %>
+              <%= formatted_row @computer, :vcpu_efficiency, "vEfficiency" %>
+              <%= formatted_row @computer, :cpu_ready, "vReady" %>
             <% end -%>
           </tbody>
         </table>
@@ -102,8 +105,8 @@
         <table class="salad">
           <caption>Disk</caption>
           <tbody>
-            <tr><th>Total</th><td><%= number_to_human_size(@computer.total_disk * 1048576) if @computer.total_disk? -%></td></tr>
-            <tr><th>Free</th><td><%= number_to_human_size(@computer.free_disk * 1048576) if @computer.free_disk? -%></td></tr>
+            <%= formatted_row @computer, :total_disk, "Total", mb_to_human_size(@computer.total_disk) %>
+            <%= formatted_row @computer, :free_disk, "Free", mb_to_human_size(@computer.free_disk) %>
           </tbody>
         </table>
       </div>
@@ -118,7 +121,7 @@
           <table class="salad">
             <caption>Patching</caption>
             <tbody>
-              <tr><th>Needed</th><td><%= @computer.us_outstanding -%></td></tr>
+              <%= formatted_row @computer, :us_outstanding, "Needed" %>
             </tbody>
           </table>
         </div>

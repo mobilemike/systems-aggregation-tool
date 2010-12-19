@@ -82,10 +82,10 @@ class Computer < ActiveRecord::Base
   end
 
   def us_outstanding
-    if self.us_approved == nil or self.us_pending_reboot == nil or self.us_failed == nil
-      -1
-    else
+    if self.in_wsus
       self.us_approved + self.us_pending_reboot + self.us_failed
+    else
+      -1
     end
   end
   
@@ -145,6 +145,10 @@ class Computer < ActiveRecord::Base
   
   def owner_initials
     self.owner.try(:initials)
+  end
+  
+  def hardware_type
+    self.guest ? 'Virtual' : 'Physical'
   end
   
   def owner_initials=(initials)
