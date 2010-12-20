@@ -78,6 +78,15 @@ class Computer < ActiveRecord::Base
     fqdn.split(".", 2)[1] if fqdn
   end
   
+  def ep_dat_description
+    if in_epo?
+      output = ep_dat_version.to_s
+      output += " (#{ep_dat_outdated} from current)" if ep_dat_outdated?
+      
+      return output
+    end
+  end
+  
   def hardware_type
     guest ? 'Virtual' : 'Physical'
   end
@@ -176,10 +185,23 @@ class Computer < ActiveRecord::Base
   end
   
   def us_outstanding
-    if in_wsus
+    if in_wsus?
       us_approved + us_pending_reboot + us_failed
     else
-      -1
+      0
+    end
+  end
+  
+  def us_outstanding_description
+    if in_wsus?
+      counts = []
+      counts << "#{us_approved} Approved" if us_approved?
+      counts << "#{us_pending_reboot} Pending Reboot" if us_pending_reboot?
+      counts << "#{us_failed} Failed" if us_failed?
+      output = us_outstanding.to_s
+      output += " (#{counts.to_sentence})" unless counts.empty?
+      
+      return output
     end
   end
 

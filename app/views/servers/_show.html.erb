@@ -81,7 +81,7 @@
             <%= formatted_row @computer, :mem_used, 'Used', '#{mb_to_human_size(@computer.mem_used)}' %>
             <%= formatted_row @computer, :mem_swap, 'Swap', '#{mb_to_human_size(@computer.mem_swap)}' %>
             <% if @computer.guest -%>
-              <%= formatted_row @computer, :mem_swap, 'vReservation', '#{mb_to_human_size(@computer.mem_reservation)}' %>
+              <%= formatted_row @computer, :mem_reservation, 'vReservation', '#{mb_to_human_size(@computer.mem_reservation)}' %>
               <%= formatted_row @computer, :mem_balloon, 'vBaloon', '#{mb_to_human_size(@computer.mem_balloon)}' %>
               <%= formatted_row @computer, :mem_vm_host_used, 'vHost Usage', '#{mb_to_human_size(@computer.mem_vm_host_used)}' %>
             <% end -%>
@@ -119,9 +119,9 @@
         </h2>
         <div class="block">
           <table class="salad">
-            <caption>Patching</caption>
             <tbody>
-              <%= formatted_row @computer, :us_outstanding, 'Needed' %>
+              <%= formatted_row @computer, :us_outstanding_description, 'Patches' %>
+              <%= formatted_row @computer, :ep_dat_description, 'DAT' %>
             </tbody>
           </table>
         </div>
