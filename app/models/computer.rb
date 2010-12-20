@@ -7,7 +7,7 @@ class Computer < ActiveRecord::Base
   belongs_to :owner
   belongs_to :host_computer, :class_name => "Computer"
   has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
-          :primary_key => "scom_cpu_perf_id"
+           :primary_key => "scom_cpu_perf_id"
   has_many :issues
 
   aasm_column :disposition
@@ -37,17 +37,17 @@ class Computer < ActiveRecord::Base
   end
   
   def self.find_all_sorted_by_fqdn(conditions=[])
-    computers = self.find(:all,
-                          :order => "computers.fqdn",
-                          :conditions => conditions)
+    computers = find(:all,
+                     :order => "computers.fqdn",
+                     :conditions => conditions)
   end
   
   def to_label
-    self.name
+    name
   end
   
   def status
-    self.disposition ? self.disposition.humanize : "-"
+    disposition ? disposition.humanize : "-"
   end
   
   def status=(disposition)
@@ -55,11 +55,11 @@ class Computer < ActiveRecord::Base
   end
   
   def self.states
-    self.aasm_states.map {|s| s.display_name}
+    aasm_states.map {|s| s.display_name}
   end
   
   def health_av_last
-    case self.av_status
+    case av_status
       when /failed/i then 3
       when /successfully/i then 0
       else 2
@@ -68,22 +68,22 @@ class Computer < ActiveRecord::Base
   
   def av_message
     if health_av_last > 0
-      self.av_error
+      av_error
     else
-      self.av_status
+      av_status
     end
   end
   
   def health_us_outstanding
-    case self.us_outstanding
+    case us_outstanding
       when 0 then 0
       when 1..(1.0/0) then 3
     end
   end
 
   def us_outstanding
-    if self.in_wsus
-      self.us_approved + self.us_pending_reboot + self.us_failed
+    if in_wsus
+      us_approved + us_pending_reboot + us_failed
     else
       -1
     end
@@ -99,11 +99,11 @@ class Computer < ActiveRecord::Base
   end
   
   def name
-    self.fqdn.split(".")[0].upcase if self.fqdn
+    fqdn.split(".")[0].upcase if fqdn
   end
   
   def domain
-    self.fqdn.split(".", 2)[1] if self.fqdn
+    fqdn.split(".", 2)[1] if fqdn
   end
   
   def ip=(ip_str)
@@ -111,7 +111,7 @@ class Computer < ActiveRecord::Base
   end
   
   def ip
-    i_to_ip(self.ip_int)
+    i_to_ip(ip_int)
   end
   
   def ilo_ip=(ip_str)
@@ -119,7 +119,7 @@ class Computer < ActiveRecord::Base
   end
 
   def ilo_ip
-    i_to_ip(self.ilo_ip_int)
+    i_to_ip(ilo_ip_int)
   end
   
   def subnet_mask=(ip_str)
@@ -127,7 +127,7 @@ class Computer < ActiveRecord::Base
   end
   
   def subnet_mask
-    i_to_ip(self.subnet_mask_int)
+    i_to_ip(subnet_mask_int)
   end
 
   def default_gateway=(ip_str)
@@ -135,20 +135,20 @@ class Computer < ActiveRecord::Base
   end
   
   def default_gateway
-    i_to_ip(self.default_gateway_int)
+    i_to_ip(default_gateway_int)
   end
   
   def os_long
-    x64 = 'x64' if self.os_64?
-    [self.os_vendor, self.os_name, self.os_version, self.os_edition, x64].join(' ')
+    x64 = 'x64' if os_64?
+    [os_vendor, os_name, os_version, os_edition, x64].join(' ')
   end
   
   def owner_initials
-    self.owner.try(:initials)
+    owner.try(:initials)
   end
   
   def hardware_type
-    self.guest ? 'Virtual' : 'Physical'
+    guest ? 'Virtual' : 'Physical'
   end
   
   def owner_initials=(initials)
@@ -156,11 +156,11 @@ class Computer < ActiveRecord::Base
   end
 
   def is_windows?
-    self.os_name == "Windows" ? true : false
+    os_name == "Windows" ? true : false
   end
   
   def is_esx?
-    self.os_name == "ESX" ? true : false
+    os_name == "ESX" ? true : false
   end
   
   def self.regenerate_health
