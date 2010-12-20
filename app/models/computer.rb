@@ -6,8 +6,6 @@ class Computer < ActiveRecord::Base
 
   belongs_to :owner
   belongs_to :host_computer, :class_name => "Computer"
-  has_many :scom_cpu_perf, :class_name => "ScomPerformance", :foreign_key => "PerformanceSourceInternalId",
-           :primary_key => "scom_cpu_perf_id"
   has_many :issues
 
   aasm_column :disposition
@@ -21,146 +19,10 @@ class Computer < ActiveRecord::Base
   aasm_state :unknown
   aasm_state :remove
   
-  def self.states_combined
-    [["Production", "production"]] + self.aasm_states_for_select - [["Production 1", "production_1"],
-                                                                    ["Production 2", "production_2"],
-                                                                    ["Production 3", "production_3"]]
-                                   
-  end
-  
-  def production?
-    production_3? || production_2? || production_1?
-  end
-  
-  def online?
-    production? || nonproduction?
-  end
-  
   def self.find_all_sorted_by_fqdn(conditions=[])
     computers = find(:all,
                      :order => "computers.fqdn",
                      :conditions => conditions)
-  end
-  
-  def to_label
-    name
-  end
-  
-  def status
-    disposition ? disposition.humanize : "-"
-  end
-  
-  def status=(disposition)
-    self.disposition = disposition.downcase.tr(" ", "_")
-  end
-  
-  def self.states
-    aasm_states.map {|s| s.display_name}
-  end
-  
-  def health_av_last
-    case av_status
-      when /failed/i then 3
-      when /successfully/i then 0
-      else 2
-    end
-  end
-  
-  def av_message
-    if health_av_last > 0
-      av_error
-    else
-      av_status
-    end
-  end
-  
-  def health_us_outstanding
-    case us_outstanding
-      when 0 then 0
-      when 1..(1.0/0) then 3
-    end
-  end
-
-  def us_outstanding
-    if in_wsus
-      us_approved + us_pending_reboot + us_failed
-    else
-      -1
-    end
-  end
-  
-  def health_ep_dat
-    case ep_dat_outdated
-      when -(1.0/0)..0 then 0
-      when 1 then 1
-      when 2..3 then 2
-      when 4..(1.0/0) then 3
-    end
-  end
-  
-  def name
-    fqdn.split(".")[0].upcase if fqdn
-  end
-  
-  def domain
-    fqdn.split(".", 2)[1] if fqdn
-  end
-  
-  def ip=(ip_str)
-    self.ip_int = ip_to_i(ip_str)
-  end
-  
-  def ip
-    i_to_ip(ip_int)
-  end
-  
-  def ilo_ip=(ip_str)
-    self.ilo_ip_int = ip_to_i(ip_str)
-  end
-
-  def ilo_ip
-    i_to_ip(ilo_ip_int)
-  end
-  
-  def subnet_mask=(ip_str)
-    self.subnet_mask_int = ip_to_i(ip_str)
-  end
-  
-  def subnet_mask
-    i_to_ip(subnet_mask_int)
-  end
-
-  def default_gateway=(ip_str)
-    self.default_gateway_int = ip_to_i(ip_str)
-  end
-  
-  def default_gateway
-    i_to_ip(default_gateway_int)
-  end
-  
-  def os_long
-    x64 = 'x64' if os_64?
-    [os_vendor, os_name, os_version, os_edition, x64].join(' ')
-  end
-  
-  def owner_initials
-    owner.try(:initials)
-  end
-  
-  def hardware_type
-    guest ? 'Virtual' : 'Physical'
-  end
-  
-  def owner_initials=(initials)
-    self.owner = Owner.find_by_initials(initials)
-  end
-
-  def is_windows?
-    os_name == "Windows" ? true : false
-  end
-  
-  def is_esx?
-    os_name == "ESX" ? true : false
   end
   
   def self.regenerate_health
@@ -185,7 +47,142 @@ class Computer < ActiveRecord::Base
       c.save
     end
   end
+
+  def self.states
+    aasm_states.map {|s| s.display_name}
+  end
   
+  def self.states_combined
+    [["Production", "production"]] + aasm_states_for_select - [["Production 1", "production_1"],
+                                                               ["Production 2", "production_2"],
+                                                               ["Production 3", "production_3"]]                 
+  end
+  
+  def av_message
+    if health_av_last > 0
+      av_error
+    else
+      av_status
+    end
+  end
+  
+  def default_gateway
+    i_to_ip(default_gateway_int)
+  end
+
+  def default_gateway=(ip_str)
+    self.default_gateway_int = ip_to_i(ip_str)
+  end
+  
+  def domain
+    fqdn.split(".", 2)[1] if fqdn
+  end
+  
+  def hardware_type
+    guest ? 'Virtual' : 'Physical'
+  end
+  
+  def health_av_last
+    case av_status
+      when /failed/i then 3
+      when /successfully/i then 0
+      else 2
+    end
+  end
+  
+  def health_ep_dat
+    case ep_dat_outdated
+      when -(1.0/0)..0 then 0
+      when 1 then 1
+      when 2..3 then 2
+      when 4..(1.0/0) then 3
+    end
+  end
+  
+  def health_us_outstanding
+    case us_outstanding
+      when 0 then 0
+      when 1..(1.0/0) then 3
+    end
+  end
+  
+  def ilo_ip
+    i_to_ip(ilo_ip_int)
+  end
+  
+  def ilo_ip=(ip_str)
+    self.ilo_ip_int = ip_to_i(ip_str)
+  end
+  
+  def ip
+    i_to_ip(ip_int)
+  end
+  
+  def ip=(ip_str)
+    self.ip_int = ip_to_i(ip_str)
+  end
+  
+  def is_windows?
+    os_name == "Windows" ? true : false
+  end
+  
+  def is_esx?
+    os_name == "ESX" ? true : false
+  end
+  
+  def name
+    fqdn.split(".")[0].upcase if fqdn
+  end
+  
+  def online?
+    production? || nonproduction?
+  end
+  
+  def os_long
+    x64 = 'x64' if os_64?
+    [os_vendor, os_name, os_version, os_edition, x64].join(' ')
+  end
+  
+  def owner_initials
+    owner.try(:initials)
+  end
+  
+  def owner_initials=(initials)
+    self.owner = Owner.find_by_initials(initials)
+  end
+  
+  def production?
+    production_3? || production_2? || production_1?
+  end
+  
+  def status
+    disposition ? disposition.humanize : "-"
+  end
+  
+  def status=(disposition)
+    self.disposition = disposition.downcase.tr(" ", "_")
+  end
+  
+  def subnet_mask
+    i_to_ip(subnet_mask_int)
+  end
+  
+  def subnet_mask=(ip_str)
+    self.subnet_mask_int = ip_to_i(ip_str)
+  end
+  
+  def to_label
+    name
+  end
+  
+  def us_outstanding
+    if in_wsus
+      us_approved + us_pending_reboot + us_failed
+    else
+      -1
+    end
+  end
+
 private
   
   def i_to_ip(int)
