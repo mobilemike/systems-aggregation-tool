@@ -1,5 +1,17 @@
 == Changelog
 
+
+=== Release 3.1.1  (January 24, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* WSUS patch collection queries all groups individually
+
+
 === Release 3.1.0  (December 1, 2010)
 
 = FEATURES
