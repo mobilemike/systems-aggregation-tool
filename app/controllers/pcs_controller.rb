@@ -20,7 +20,7 @@ class PcsController < ApplicationController
     c.columns[:in_sccm].label                  = "SCCM"
 
 
-    c.actions.exclude :create, :delete, :nested
+    c.actions.exclude :create, :delete, :nested, :show
     
     c.update.link        = false
 
@@ -28,6 +28,11 @@ class PcsController < ApplicationController
 
     
     c.formats << :csv
+  end
+  
+  def show
+    @pc = Pc.find(params[:id])
+    render :partial => 'show'
   end
   
   def list_respond_to_csv

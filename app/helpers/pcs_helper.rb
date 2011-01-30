@@ -15,9 +15,9 @@ module PcsHelper
     
     content_tag(:span, age, :class => span_class)
   end
-  
+
   def fqdn_column computer
-    computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+    link_to(computer.name, pc_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end
   
   def in_ldap_column pc
@@ -32,7 +32,7 @@ module PcsHelper
     updates = "?"
     span_class = "health-error"
     
-    if computer.us_last_sync
+    if computer.in_wsus?
       span_class = case computer.health_us_outstanding
       when 0 then "health-normal"
       when 3 then "health-error"

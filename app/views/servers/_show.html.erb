@@ -46,6 +46,7 @@
                 </a>'
               %>
               <%= formatted_row @computer, :model, 'Model', '#{@computer.make} #{@computer.model}' %>
+              <%= formatted_row @computer, :serial_number, 'Serial' %>
               <%= formatted_row @computer, :bios_date, 'BIOS', '#{@computer.bios_date} - #{@computer.bios_ver}' %>
             <% end -%>
           </tbody>
@@ -57,7 +58,7 @@
             <%= formatted_row @computer, :ip, 'IP', '#{@computer.ip} #{\'(DHCP)\' if @computer.dhcp}' %>
             <%= formatted_row @computer, :subnet_mask %>
             <%= formatted_row @computer, :default_gateway %>
-            <%= formatted_row @computer, :mac, 'MAC' %>
+            <%= formatted_row @computer, :mac, 'MAC', '#{formatted_mac(@computer.mac)}' %>
           </tbody>
         </table>
         
@@ -128,6 +129,7 @@
           <table class="salad">
             <tbody>
               <%= formatted_row @computer, :us_outstanding_description, 'Patches' %>
+              <%= formatted_row @computer, :us_group_name, 'Group' %>
               <%= formatted_row @computer, :ep_dat_description, 'DAT' %>
             </tbody>
           </table>

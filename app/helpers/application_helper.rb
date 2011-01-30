@@ -24,6 +24,11 @@ module ApplicationHelper
     image_tag(image_source, :alt => id, :class => 'health-icon')
   end
   
+  def formatted_mac mac
+    mac.scan(/.{2}|.+/).join(":").upcase
+  end
+    
+  
   def truncate_with_tip(text,length=30)
     if text.length > length
       content_tag(:span, truncate(text, length), :class => 'tip',

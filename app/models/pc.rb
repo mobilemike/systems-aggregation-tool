@@ -2,103 +2,147 @@ require 'ipaddr'
 
 class Pc < ActiveRecord::Base
     
-#   before_save :compute_most_recent_update
-    
-    IP_PAD = 2147483648
+  IP_PAD = 2147483648
 
-    def self.find_all_sorted_by_fqdn(conditions=[])
-      pc = self.find(:all,
-                     :order => "pcs.fqdn",
-                     :conditions => conditions)
+  def self.find_all_sorted_by_fqdn(conditions=[])
+    pc = find(:all,
+              :order => "pcs.fqdn",
+              :conditions => conditions)
+  end
+  
+  def self.regenerate_health
+    Pc.find_each do |pc|
+      pc.compute_most_recent_update
+      pc.save
     end
+  end
 
-    def to_label
-      self.name
-    end
+  def to_label
+    name
+  end
+  
+  def default_gateway=(ip_str)
+    default_gateway_int = ip_to_i(ip_str)
+  end
 
-    def health_us_outstanding
-      case self.us_outstanding
-        when 0 then 0
-        when 1..(1.0/0) then 3
-      end
-    end
-
-    def us_outstanding
-      if self.us_approved == nil or self.us_pending_reboot == nil or self.us_failed == nil
-        -1
+  def default_gateway
+    i_to_ip(default_gateway_int)
+  end
+  
+  def domain
+    fqdn.split(".", 2)[1] if fqdn
+  end
+  
+  def ep_dat_description
+    if in_epo?
+      output = ep_dat_version.to_s
+      
+      if ep_dat_version == 0
+        output += " (VS Not Installed)"
       else
-        self.us_approved + self.us_pending_reboot + self.us_failed
+        output += case ep_dat_outdated?
+          when true then " (#{ep_dat_outdated} from current)"
+          when false then " (Current)"
+        end
       end
+      
+      return output
     end
+  end
 
-    def health_ep_dat
-      case ep_dat_outdated
-        when -(1.0/0)..2 then 0
-        when 3..4 then 2
-        when 5..(1.0/0) then 3
-      end
+  def health_ep_dat
+    case ep_dat_outdated
+      when -(1.0/0)..2 then 0
+      when 3..4 then 2
+      when 5..(1.0/0) then 3
     end
+  end
 
-    def name
-      self.fqdn.split(".")[0].upcase if self.fqdn
+  def health_us_outstanding
+    case us_outstanding
+      when 0 then 0
+      when 1..(1.0/0) then 3
     end
+  end
+  
+  def ip=(ip_str)
+    ip_int = ip_to_i(ip_str)
+  end
 
-    def domain
-      self.fqdn.split(".", 2)[1] if self.fqdn
-    end
+  def ip
+    i_to_ip(ip_int)
+  end
 
-    def ip=(ip_str)
-      self.ip_int = ip_to_i(ip_str)
-    end
+  def name
+    fqdn.split(".")[0].upcase if fqdn
+  end
 
-    def ip
-      i_to_ip(self.ip_int)
-    end
-
-    def subnet_mask=(ip_str)
-      self.subnet_mask_int = ip_to_i(ip_str)
-    end
-
-    def subnet_mask
-      i_to_ip(self.subnet_mask_int)
-    end
-
-    def default_gateway=(ip_str)
-      self.default_gateway_int = ip_to_i(ip_str)
-    end
-
-    def default_gateway
-      i_to_ip(self.default_gateway_int)
-    end
-
-    def os_long
-      [self.os_version, "SP #{self.os_sp}"].join(' ')
-    end
+  def os_long
+    # x64 = 'x64' if os_64?
+    [os_version, os_edition, "SP #{self.os_sp}"].join(' ')
+  end
+  
+  def sources_description
+    sources = []
     
-    def compute_most_recent_update
-      updates = []
-      updates << ep_last_update if ep_last_update
-      updates << us_last_sync if us_last_sync
-      updates << cm_last_heartbeat if cm_last_heartbeat
-      self.most_recent_update = updates.max unless updates.empty?
-    end
+    sources << "ePO" if in_epo?
+    sources << "AD" if in_ldap?
+    sources << "SCCM" if in_sccm?
+    sources << "WSUS" if in_wsus?
     
-    def self.regenerate_health
-      Pc.find_each do |pc|
-        pc.compute_most_recent_update
-        pc.save
-      end
+    if sources.empty?
+      "None"
+    else
+      sources.to_sentence
     end
+  end
+  
+  def subnet_mask=(ip_str)
+    subnet_mask_int = ip_to_i(ip_str)
+  end
 
+  def subnet_mask
+    i_to_ip(subnet_mask_int)
+  end
+  
+  def us_outstanding
+    if in_wsus?
+      us_approved + us_pending_reboot + us_failed
+    else
+      0
+    end
+  end
+  
+  def us_outstanding_description
+    if in_wsus?
+      counts = []
+      counts << "#{us_approved} Approved" if us_approved?
+      counts << "#{us_pending_reboot} Pending Reboot" if us_pending_reboot?
+      counts << "#{us_failed} Failed" if us_failed?
+      output = us_outstanding.to_s
+      output += " (#{counts.to_sentence})" unless counts.empty?
+      
+      return output
+    end
+  end
+    
   private
+  
+  def compute_most_recent_update
+    updates = []
+    updates << ep_last_update if ep_last_update
+    updates << us_last_sync if us_last_sync
+    updates << cm_last_heartbeat if cm_last_heartbeat
+    most_recent_update = updates.max unless updates.empty?
+  end
 
-    def i_to_ip(int)
-      IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
-    end
+  def i_to_ip(int)
+    IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
+  end
 
-    def ip_to_i(str)
-      IPAddr.new(str).to_i - IP_PAD unless str.nil?
-    end
+  def ip_to_i(str)
+    IPAddr.new(str).to_i - IP_PAD unless str.nil?
+  end
 end
 
 
