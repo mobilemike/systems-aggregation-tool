@@ -88,22 +88,28 @@ function generateComputerTooltips() {
         text: 'Loading...',
         ajax: {
           url: target.children('a').attr('href')
+        },
+        title: {
+          button: true
         }
       },
       position: {
-        my: 'left center',
+        my: 'right center',
         at: 'right center',
+        target: $j('#as-content-box'),
         adjust: {
-          x: 5,
+          x: 0,
           screen: true
         }
       },
       show: {
         event: event.type,
+        solo: true,
         ready: true,
         delay: 250
       },
       hide: {
+        event: 'unfocus',
         fixed: true,
         delay: 250
       },
@@ -116,9 +122,18 @@ function generateComputerTooltips() {
   event);
 }
 
+function toggleBoxes() {
+  $j('h2 a.toggle').live('click', function(event) {
+    $j(this).parent().nextAll('div').slideToggle('fast','swing');
+    event.preventDefault();
+  },
+  event);
+}
+
 $j(document).ready(function()
 {
   generateHealthTooltips();
   generateTextTooltips();
   generateComputerTooltips();
+  toggleBoxes();
 });

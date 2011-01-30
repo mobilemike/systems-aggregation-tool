@@ -54,6 +54,10 @@ input.search.button, a.search.link {
 
 /* Specific Column Syling */
 
+td.fqdn-column {
+  cursor: pointer;
+}
+
 span.health-error {
   background-color: #FCC;
   border: solid 1px #C66;
@@ -117,4 +121,8 @@ h2.details-heading {
 
 table.salad caption {
   font-weight: bold;
+}
+
+.box h2 a.visible {
+  	background:#333 url("/images/switch_minus.gif") 97% 50% no-repeat;
 }
