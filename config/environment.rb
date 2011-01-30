@@ -26,7 +26,7 @@ Rails::Initializer.run do |config|
 #  config.gem 'dbd-odbc', :version => '0.2.4', :lib => 'dbd/ODBC'
   config.gem 'aasm', :version => '2.1.3'
   config.gem 'ruleby', :version => '0.6'
-
+  config.gem 'hoptoad_notifier', :version => '2.4.4'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
