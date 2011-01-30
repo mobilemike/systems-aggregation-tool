@@ -81,7 +81,15 @@ class Computer < ActiveRecord::Base
   def ep_dat_description
     if in_epo?
       output = ep_dat_version.to_s
-      output += " (#{ep_dat_outdated} from current)" if ep_dat_outdated?
+      
+      if ep_dat_version == 0
+        output += " (VS Not Installed)"
+      else
+        output += case ep_dat_outdated?
+          when true then " (#{ep_dat_outdated} from current)"
+          when false then " (Current)"
+        end
+      end
       
       return output
     end
@@ -162,6 +170,24 @@ class Computer < ActiveRecord::Base
   
   def production?
     production_3? || production_2? || production_1?
+  end
+  
+  def sources_description
+    sources = []
+    sources << "Akorri" if in_akorri?
+    sources << "Avamar" if in_avamar?
+    sources << "ePO" if in_epo?
+    sources << "vCenter" if in_esx?
+    sources << "AD" if in_ldap?
+    sources << "SCCM" if in_sccm?
+    sources << "SCOM" if in_scom?
+    sources << "WSUS" if in_wsus?
+    
+    if sources.empty?
+      "None"
+    else
+      sources.to_sentence
+    end
   end
   
   def status

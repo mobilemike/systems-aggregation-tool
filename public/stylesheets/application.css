@@ -112,3 +112,9 @@ h2.details-heading {
 .ui-tooltip-details .ui-tooltip-wrapper {
   background-color: #fff;
 }
+
+/* Details Styling */
+
+table.salad caption {
+  font-weight: bold;
+}
