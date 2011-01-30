@@ -37,6 +37,20 @@ module ApplicationHelper
     number_to_human_size(number * 1048576)
   end
   
+  def formatted_row(klass, attribute, description=nil, formatted_output=nil)
+    value = klass.send(attribute)
+    if value
+      description ||= attribute.to_s.titleize
+      formatted_output = case formatted_output
+        when nil then h(value)
+        else eval('"' + formatted_output + '"') 
+      end
+      content_tag(:tr, content_tag(:th, description) + content_tag(:td, formatted_output))
+    else
+      ""
+    end
+  end
+  
   
   def active_scaffold_inplace_edit(record, column, formatted_column)
     id_options = {:id => record.id.to_s, :action => 'update_column', :name => column.name.to_s}

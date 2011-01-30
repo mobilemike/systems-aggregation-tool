@@ -102,7 +102,7 @@ module ServersHelper
   end
   
   def fqdn_column computer
-    computer.name + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+    link_to(computer.name, server_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end
   
   def guest_column computer

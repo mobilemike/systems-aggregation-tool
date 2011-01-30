@@ -1,8 +1,140 @@
-<h3><%= "Details for " + @computer.name -%></h3>
-<p>
-  <ul>
-    <% @computer.attributes.sort.each do |a, v| %>
-      <li><strong><%=h a %>: </strong><%=h v %></li>
-    <% end %>
-  </ul>
-</p>
+<div class="container_16 details_container">
+  
+  <div class="grid_16">
+    <h2 class="details-heading"><%= @computer.name -%> Details</h2>
+  </div>
+  <div class="clear"></div>
+  
+  <div class="grid_8">
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">Administrative Information</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <tbody>
+            <%= formatted_row @computer, :domain %>
+            <%= formatted_row @computer, :company %>
+            <%= formatted_row @computer, :owner, 'Owner', '#{@computer.owner.try(:name)}' %>
+            <%= formatted_row @computer, :description %>
+            <%= formatted_row @computer, :status %>
+            <%= formatted_row @computer, :service_category, 'Category' %>
+            <%= formatted_row @computer, :location %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">System Information</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>Server</caption>
+          <tbody>
+            <%= formatted_row @computer, :hardware_type, 'Type' %>
+            <%= formatted_row @computer, :os_long, 'OS' %>
+            <% if @computer.guest -%>
+              <%= formatted_row @computer, :power, 'Power', '#{@computer.power == false ? "Off" : "On"}' %>
+              <%= formatted_row @computer, :host_computer, 'Host', '#{@computer.host_computer.name}' %>
+            <% else -%>
+              <%= formatted_row @computer, :ilo_ip, 'iLO', 
+                '<a href=\"https://#{@computer.ilo_ip}\" onclick=\"window.open(this.href);return false;\">
+                  #{@computer.ilo_ip}
+                </a>'
+              %>
+              <%= formatted_row @computer, :model, 'Model', '#{@computer.make} #{@computer.model}' %>
+              <%= formatted_row @computer, :bios_date, 'BIOS', '#{@computer.bios_date} - #{@computer.bios_ver}' %>
+            <% end -%>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Network</caption>
+          <tbody>
+            <%= formatted_row @computer, :ip, 'IP', '#{@computer.ip} #{\'(DHCP)\' if @computer.dhcp}' %>
+            <%= formatted_row @computer, :subnet_mask %>
+            <%= formatted_row @computer, :default_gateway %>
+            <%= formatted_row @computer, :mac, 'MAC' %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Data Sources</caption>
+          <tbody>
+            <tr><td><%= @computer.sources_description %></td></tr>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+    
+    
+  </div>
+  
+  <div class="grid_8">
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">Statistics</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>Memory</caption>
+          <tbody>
+            <%= formatted_row @computer, :mem_total, 'RAM', '#{mb_to_human_size(@computer.mem_total)}' %>
+            <%= formatted_row @computer, :mem_used, 'Used', '#{mb_to_human_size(@computer.mem_used)}' %>
+            <%= formatted_row @computer, :mem_swap, 'Swap', '#{mb_to_human_size(@computer.mem_swap)}' %>
+            <% if @computer.guest -%>
+              <%= formatted_row @computer, :mem_reservation, 'vReservation', '#{mb_to_human_size(@computer.mem_reservation)}' %>
+              <%= formatted_row @computer, :mem_balloon, 'vBaloon', '#{mb_to_human_size(@computer.mem_balloon)}' %>
+              <%= formatted_row @computer, :mem_vm_host_used, 'vHost Usage', '#{mb_to_human_size(@computer.mem_vm_host_used)}' %>
+            <% end -%>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>CPU</caption>
+          <tbody>
+            <%= formatted_row @computer, :cpu_name, 'Name' %>
+            <%= formatted_row @computer, :cpu_speed, 'Speed', '#{@computer.cpu_count} x #{@computer.cpu_speed}Mhz' %>
+            <% if @computer.guest -%>
+              <%= formatted_row @computer, :vcpu_used, 'vUsed' %>
+              <%= formatted_row @computer, :cpu_reservation, 'vReservation' %>
+              <%= formatted_row @computer, :vcpu_efficiency, 'vEfficiency' %>
+              <%= formatted_row @computer, :cpu_ready, 'vReady' %>
+            <% end -%>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Disk</caption>
+          <tbody>
+            <%= formatted_row @computer, :total_disk, 'Total', '#{mb_to_human_size(@computer.total_disk)}' %>
+            <%= formatted_row @computer, :free_disk, 'Free', '#{mb_to_human_size(@computer.free_disk)}' %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <% if @computer.is_windows? -%>
+      <div class="box">
+        <h2>
+          <a href="#" class="toggle visible">Compliance</a>
+        </h2>
+        <div class="block">
+          <table class="salad">
+            <tbody>
+              <%= formatted_row @computer, :us_outstanding_description, 'Patches' %>
+              <%= formatted_row @computer, :ep_dat_description, 'DAT' %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end -%>
+    
+  </div>
+  <div class="clear"></div>
+</div>
