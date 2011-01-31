@@ -16,9 +16,13 @@ class Pc < ActiveRecord::Base
       pc.save
     end
   end
-
-  def to_label
-    name
+  
+  def compute_most_recent_update
+    updates = []
+    updates << ep_last_update if ep_last_update
+    updates << us_last_sync if us_last_sync
+    updates << cm_last_heartbeat if cm_last_heartbeat
+    most_recent_update = updates.max unless updates.empty?
   end
   
   def default_gateway=(ip_str)
@@ -105,6 +109,11 @@ class Pc < ActiveRecord::Base
     i_to_ip(subnet_mask_int)
   end
   
+  def to_label
+    name
+  end
+  
+  
   def us_outstanding
     if in_wsus?
       us_approved + us_pending_reboot + us_failed
@@ -127,14 +136,6 @@ class Pc < ActiveRecord::Base
   end
     
   private
-  
-  def compute_most_recent_update
-    updates = []
-    updates << ep_last_update if ep_last_update
-    updates << us_last_sync if us_last_sync
-    updates << cm_last_heartbeat if cm_last_heartbeat
-    most_recent_update = updates.max unless updates.empty?
-  end
 
   def i_to_ip(int)
     IPAddr.new(int + IP_PAD, Socket::AF_INET).to_s unless int.nil?
