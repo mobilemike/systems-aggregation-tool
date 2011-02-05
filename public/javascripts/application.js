@@ -68,13 +68,13 @@ function generateTextTooltips() {
           delay: 250
         },
         style: {
-          classes: 'ui-tooltip-shadow ui-tooltip-dark ui-tooltip-text',
+          classes: 'ui-tooltip-shadow ui-tooltip-dark ui-tooltip-text'
         }
       });
       target.attr({
         title: ""
       });
-    };
+    }
   },
   event);
 }

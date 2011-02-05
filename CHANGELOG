@@ -1,6 +1,19 @@
 == Changelog
 
 
+=== Release 3.2.0  (February 2, 2011)
+
+= FEATURES
+
+* Fully redesigned Server and PC details display
+
+= FIXES / ENHANCEMENTS
+
+* Added NewRelic RPM monitoring
+* Updated Hoptoad exception monitoring
+
+
+
 === Release 3.1.1  (January 24, 2011)
 
 = FEATURES
