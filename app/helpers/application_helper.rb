@@ -24,6 +24,11 @@ module ApplicationHelper
     image_tag(image_source, :alt => id, :class => 'health-icon')
   end
   
+  def formatted_mac mac
+    mac.scan(/.{2}|.+/).join(":").upcase
+  end
+    
+  
   def truncate_with_tip(text,length=30)
     if text.length > length
       content_tag(:span, truncate(text, length), :class => 'tip',
@@ -35,6 +40,20 @@ module ApplicationHelper
   
   def mb_to_human_size number
     number_to_human_size(number * 1048576)
+  end
+  
+  def formatted_row(klass, attribute, description=nil, formatted_output=nil)
+    value = klass.send(attribute)
+    if value
+      description ||= attribute.to_s.titleize
+      formatted_output = case formatted_output
+        when nil then h(value)
+        else eval('"' + formatted_output + '"') 
+      end
+      content_tag(:tr, content_tag(:th, description) + content_tag(:td, formatted_output))
+    else
+      ""
+    end
   end
   
   

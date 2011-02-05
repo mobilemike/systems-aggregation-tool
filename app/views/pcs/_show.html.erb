@@ -1,12 +1,114 @@
-<h3><%= "Details for " + @record.name -%></h3>
-<p>
-  <ul>
-    <% @record.attributes.sort.each do |a, v| %>
-      <li><strong><%=h a %>: </strong><%=h v %></li>
-    <% end %>
-  </ul>
-</p>
-<p class="form-footer">
-  <%= link_to as_(:close), params_for(:controller => params[:parent_controller] ? params[:parent_controller] : params[:controller], :action => 'list'), :class => 'cancel' %>
-  <%= loading_indicator_tag(:action => :create, :id => params[:id]) %>
-</p>
+<div class="container_16 details_container">
+  
+  <div class="grid_16">
+    <h2 class="details-heading"><%= @pc.name -%> Details</h2>
+  </div>
+  <div class="clear"></div>
+  
+  <div class="grid_8">
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">Administrative Information</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <tbody>
+            <%= formatted_row @pc, :domain %>
+            <%= formatted_row @pc, :company %>
+            <%= formatted_row @pc, :last_logged_on, 'User' %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">System Information</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>PC</caption>
+          <tbody>
+            <%= formatted_row @pc, :os_long, 'OS' %>
+            <%= formatted_row @pc, :model, 'Model', '#{@pc.make} #{@pc.model}' %>
+            <%= formatted_row @pc, :serial_number, 'Serial' %>
+            <%= formatted_row @pc, :bios_date, 'BIOS', '#{@pc.bios_date} - #{@pc.bios_ver}' %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Network</caption>
+          <tbody>
+            <%= formatted_row @pc, :ip, 'IP' %>
+            <%= formatted_row @pc, :subnet_mask %>
+            <%= formatted_row @pc, :default_gateway %>
+            <%= formatted_row @pc, :mac, 'MAC', '#{formatted_mac(@pc.mac)}' %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Data Sources</caption>
+          <tbody>
+            <tr><td><%= @pc.sources_description %></td></tr>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+    
+    
+  </div>
+  
+  <div class="grid_8">
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">Statistics</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <caption>Memory</caption>
+          <tbody>
+            <%= formatted_row @pc, :mem_total, 'RAM', '#{mb_to_human_size(@pc.mem_total)}' %>
+            <%= formatted_row @pc, :mem_used, 'Used', '#{mb_to_human_size(@pc.mem_used)}' %>
+            <%= formatted_row @pc, :mem_swap, 'Swap', '#{mb_to_human_size(@pc.mem_swap)}' %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>CPU</caption>
+          <tbody>
+            <%= formatted_row @pc, :cpu_name, 'Name' %>
+            <%= formatted_row @pc, :cpu_speed, 'Speed', '#{@pc.cpu_count} x #{@pc.cpu_speed}Mhz' %>
+          </tbody>
+        </table>
+        
+        <table class="salad">
+          <caption>Disk</caption>
+          <tbody>
+            <%= formatted_row @pc, :disk_total, 'Total', '#{mb_to_human_size(@pc.disk_total)}' %>
+            <%= formatted_row @pc, :disk_free, 'Free', '#{mb_to_human_size(@pc.disk_free)}' %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="box">
+      <h2>
+        <a href="#" class="toggle visible">Compliance</a>
+      </h2>
+      <div class="block">
+        <table class="salad">
+          <tbody>
+            <%= formatted_row @pc, :us_outstanding_description, 'Patches' %>
+            <%= formatted_row @pc, :us_group_name, 'Group' %>
+            <%= formatted_row @pc, :ep_dat_description, 'DAT' %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <div class="clear"></div>
+</div>
