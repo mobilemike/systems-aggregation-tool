@@ -1,6 +1,18 @@
 == Changelog
 
 
+=== Release 3.2.1  (February 8, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* Fixed tooltip bug not keeping tips onscreen at all times
+* Fixed IE7 javascript issues preventing any tooltips from appearing
+
+
 === Release 3.2.0  (February 2, 2011)
 
 = FEATURES
@@ -11,7 +23,6 @@
 
 * Added NewRelic RPM monitoring
 * Updated Hoptoad exception monitoring
-
 
 
 === Release 3.1.1  (January 24, 2011)

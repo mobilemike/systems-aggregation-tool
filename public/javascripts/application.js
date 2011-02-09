@@ -15,10 +15,10 @@ function generateHealthTooltips() {
       position: {
         my: 'top left',
         at: 'center',
+        viewport: $j(window),
         adjust: {
           x: -4,
-          y: 10,
-          screen: true
+          y: 10
         }
       },
       show: {
@@ -37,12 +37,11 @@ function generateHealthTooltips() {
         }
       }
     });
-  },
-  event);
+  });
 }
 
 function generateTextTooltips() {
-  $j('.computers-view th, .issues-view th, span.tip').live("mouseover", function(event) {
+  $j('.servers-view th, .issues-view th, .pcs-view th, span.tip').live("mouseover", function(event) {
     var target = $j(this);
     if(target.attr('title')) {
       target.qtip({
@@ -53,9 +52,9 @@ function generateTextTooltips() {
         position: {
           my: 'bottom center',
           at: 'top center',
+          viewport: $j(window),
           adjust: {
-            y: -5,
-            screen: true
+            y: -5
           }
         },
         show: {
@@ -75,8 +74,7 @@ function generateTextTooltips() {
         title: ""
       });
     }
-  },
-  event);
+  });
 }
 
 function generateComputerTooltips() {
@@ -97,9 +95,9 @@ function generateComputerTooltips() {
         my: 'right center',
         at: 'right center',
         target: $j('#as-content-box'),
+        viewport: $j(window),
         adjust: {
-          x: 0,
-          screen: true
+          x: 0
         }
       },
       show: {
@@ -117,17 +115,15 @@ function generateComputerTooltips() {
         classes: 'ui-tooltip-shadow ui-tooltip-light ui-tooltip-ajax ui-tooltip-details'
       }
     });
-    event.preventDefault();
-  },
-  event);
+    return false;
+  });
 }
 
 function toggleBoxes() {
   $j('h2 a.toggle').live('click', function(event) {
     $j(this).parent().nextAll('div').slideToggle('fast','swing');
     event.preventDefault();
-  },
-  event);
+  });
 }
 
 $j(document).ready(function()
