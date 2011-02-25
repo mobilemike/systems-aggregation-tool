@@ -1,5 +1,11 @@
 module ServersHelper
   
+  def av_latest_description computer
+    computer.av_started_at.getlocal.strftime('%m/%e/%y %l:%M %p') +
+      ' (' + mb_to_human_size(computer.av_modified) + ' in ' +
+      distance_of_time_in_words(computer.av_completed_at, computer.av_started_at, true) +
+      ')'
+  end
   
   def av_overview_column computer
     span_class = "health-empty"
@@ -57,6 +63,12 @@ module ServersHelper
     end
     
     content_tag(:span, computer.av_message ? truncate_with_tip(computer.av_message) : "-", :class => span_class)
+  end
+  
+  def av_protected_description computer
+    if computer.av_scanned && computer.av_file_count
+      mb_to_human_size(computer.av_scanned) + ' (' + number_with_delimiter(computer.av_file_count) + ' files)'
+    end
   end
   
   def company_column computer

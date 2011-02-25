@@ -137,6 +137,24 @@
       </div>
     <% end -%>
     
+    <% if @computer.in_avamar? -%>
+      <div class="box">
+        <h2>
+          <a href="#" class="toggle visible">Avamar</a>
+        </h2>
+        <div class="block">
+          <table class="salad">
+            <tbody>
+              <%= formatted_row @computer, :av_dataset, 'Dataset', '#{@computer.av_dataset} / #{@computer.av_retention}' %>
+              <%= formatted_row @computer, :av_scanned, 'Protected', '#{av_protected_description @computer}' %>
+              <%= formatted_row @computer, :av_started_at, 'Latest', '#{av_latest_description @computer}' %>
+              <%= formatted_row @computer, :av_message, 'Status' %> 
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end -%>
+
   </div>
   <div class="clear"></div>
 </div>
