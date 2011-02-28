@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101126223820) do
+ActiveRecord::Schema.define(:version => 20110228155436) do
 
   create_table "computers", :force => true do |t|
     t.string    "fqdn"
@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(:version => 20101126223820) do
     t.integer   "default_gateway_int"
     t.integer   "time_zone_offset"
     t.string    "service_category",         :default => "Unknown"
+    t.string    "ou"
+    t.datetime  "ad_last_logon_timestamp"
   end
 
   add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
