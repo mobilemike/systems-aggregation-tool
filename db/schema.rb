@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110228155436) do
+ActiveRecord::Schema.define(:version => 20110301031238) do
 
   create_table "computers", :force => true do |t|
     t.string    "fqdn"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(:version => 20110228155436) do
     t.datetime "ep_last_update"
     t.integer  "ep_dat_version"
     t.integer  "ep_dat_outdated"
-    t.string   "company",             :default => "Unknown"
+    t.string   "company",                 :default => "Unknown"
     t.boolean  "in_epo"
     t.boolean  "in_wsus"
     t.boolean  "in_ldap"
@@ -179,13 +179,13 @@ ActiveRecord::Schema.define(:version => 20110228155436) do
     t.integer  "disk_total"
     t.integer  "disk_free"
     t.datetime "us_last_sync"
-    t.integer  "us_unknown",          :default => 0
-    t.integer  "us_not_installed",    :default => 0
-    t.integer  "us_downloaded",       :default => 0
-    t.integer  "us_installed",        :default => 0
-    t.integer  "us_failed",           :default => 0
-    t.integer  "us_pending_reboot",   :default => 0
-    t.integer  "us_approved",         :default => 0
+    t.integer  "us_unknown",              :default => 0
+    t.integer  "us_not_installed",        :default => 0
+    t.integer  "us_downloaded",           :default => 0
+    t.integer  "us_installed",            :default => 0
+    t.integer  "us_failed",               :default => 0
+    t.integer  "us_pending_reboot",       :default => 0
+    t.integer  "us_approved",             :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "dhcp"
@@ -197,6 +197,8 @@ ActiveRecord::Schema.define(:version => 20110228155436) do
     t.datetime "cm_last_heatbeat"
     t.datetime "cm_last_heartbeat"
     t.datetime "most_recent_update"
+    t.string   "ou"
+    t.date     "ad_last_logon_timestamp"
   end
 
   add_index "pcs", ["fqdn"], :name => "index_pcs_on_fqdn"
