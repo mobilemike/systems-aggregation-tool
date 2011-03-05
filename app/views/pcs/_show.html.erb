@@ -52,7 +52,7 @@
           <caption>Data Sources</caption>
           <tbody>
             <%= formatted_row @pc, :sources_description, 'Current' %></td></tr>
-            <%= formatted_row @pc, :most_recent_update, 'Last Seen At', '#{@pc.most_recent_update.getlocal.strftime(\'%m/%e/%y %l:%M %p\')}' %>
+            <%= formatted_row @pc, :most_recent_update, 'Last Seen At', '#{formatted_datetime(@pc.most_recent_update)}' %>
           </tbody>
         </table>
         

@@ -2,7 +2,7 @@ class PcsController < ApplicationController
   before_filter :update_table_config
   
   ALL_COLUMNS = [:fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
-                 :in_ldap, :in_sccm]
+                 :in_ldap, :in_sccm, :most_recent_update]
   
   active_scaffold :pc do |c|
     c.columns = ALL_COLUMNS
@@ -18,7 +18,8 @@ class PcsController < ApplicationController
     c.columns[:fqdn].label                     = "Compuer"
     c.columns[:in_ldap].label                  = "AD"
     c.columns[:in_sccm].label                  = "SCCM"
-
+    c.columns[:most_recent_update].label       = "<img src=\"#{ActionController::Base.relative_url_root}/images/clock_16.png\" />"
+    c.columns[:most_recent_update].description = "Last seen online"
 
     c.actions.exclude :create, :delete, :nested, :show
     
