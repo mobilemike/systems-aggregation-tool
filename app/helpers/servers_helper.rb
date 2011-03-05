@@ -1,7 +1,7 @@
 module ServersHelper
   
   def av_latest_description computer
-    computer.av_started_at.getlocal.strftime('%m/%e/%y %l:%M %p') +
+    computer.av_started_at.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3') +
       ' (' + mb_to_human_size(computer.av_modified) + ' in ' +
       distance_of_time_in_words(computer.av_completed_at, computer.av_started_at, true) +
       ')'
@@ -115,6 +115,10 @@ module ServersHelper
   
   def fqdn_column computer
     link_to(computer.name, server_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+  end
+  
+  def formatted_datetime utc_datetime
+    utc_datetime.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3')
   end
   
   def guest_column computer
