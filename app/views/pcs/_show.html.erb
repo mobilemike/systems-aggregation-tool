@@ -15,6 +15,7 @@
         <table class="salad">
           <tbody>
             <%= formatted_row @pc, :domain %>
+            <%= formatted_row @pc, :ou %>
             <%= formatted_row @pc, :company %>
             <%= formatted_row @pc, :last_logged_on, 'User' %>
           </tbody>
@@ -50,7 +51,8 @@
         <table class="salad">
           <caption>Data Sources</caption>
           <tbody>
-            <tr><td><%= @pc.sources_description %></td></tr>
+            <%= formatted_row @pc, :sources_description, 'Current' %></td></tr>
+            <%= formatted_row @pc, :most_recent_update, 'Last Seen At', '#{@pc.most_recent_update.getlocal.strftime(\'%m/%e/%y %l:%M %p\')}' %>
           </tbody>
         </table>
         
