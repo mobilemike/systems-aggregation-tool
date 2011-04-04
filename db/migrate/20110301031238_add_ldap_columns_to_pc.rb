@@ -1,7 +1,7 @@
 class AddLdapColumnsToPc < ActiveRecord::Migration
   def self.up
     add_column :pcs, :ou, :string
-    add_column :pcs, :ad_last_logon_timestamp, :datetiem
+    add_column :pcs, :ad_last_logon_timestamp, :datetime
   end
 
   def self.down
