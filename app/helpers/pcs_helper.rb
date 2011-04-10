@@ -53,15 +53,16 @@ module PcsHelper
   
   
   def csv_header
-    header = '"FQDN","Company","Patches",'
+    header = '"FQDN","Company","OU","Patches",'
     header += '"SUS Group","DAT Age","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"Disk Total","Disk Free","OS","Make",'
-    header += '"Model","ePO","AD","SCCM","WSUS"'
+    header += '"Model","ePO","AD","SCCM","WSUS","Last Seen At"'
   end
   
   def csv_row c
     results = "\"#{c.fqdn}\""
     results += ",\"#{c.company}\""
+    results += ",\"#{c.ou}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.ep_dat_outdated}\""
@@ -79,6 +80,7 @@ module PcsHelper
     results += ",\"#{c.in_ldap? ? "Yes" : ""}\""
     results += ",\"#{c.in_sccm? ? "Yes" : ""}\""
     results += ",\"#{c.in_wsus? ? "Yes" : ""}\""
+    results += ",\"#{c.most_recent_update ? c.most_recent_update.getlocal.strftime("%m/%d/%Y %I:%M %p") : "" }\""
     return results
   end
   

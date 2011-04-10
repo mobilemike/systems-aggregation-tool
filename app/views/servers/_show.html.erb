@@ -15,7 +15,7 @@
         <table class="salad">
           <tbody>
             <%= formatted_row @computer, :domain %>
-            <%= formatted_row @computer, :ou %>
+            <%= formatted_row @computer, :ou, 'OU' %>
             <%= formatted_row @computer, :company %>
             <%= formatted_row @computer, :owner, 'Owner', '#{@computer.owner.try(:name)}' %>
             <%= formatted_row @computer, :description %>

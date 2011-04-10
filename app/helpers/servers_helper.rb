@@ -223,9 +223,9 @@ module ServersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category","Health","Uptime","Patches",'
-    header += '"SUS Group","Virtual","Host","IP","Default Gateway","CPU 
-Speed","CPU Count","RAM Total","RAM Used",'
+    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category",'
+    header += '"Health","OU","Uptime","Patches","SUS Group","Virtual","Host","IP",'
+    header += '"Default Gateway","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
@@ -247,6 +247,7 @@ Speed","CPU Count","RAM Total","RAM Used",'
                  when 5 then ',"Severe State"'
                  else ',""'
                end
+    results += ",\"#{c.ou}\""
     results += ",\"#{c.sc_uptime_percentage.nil? ? "" : number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%"}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""

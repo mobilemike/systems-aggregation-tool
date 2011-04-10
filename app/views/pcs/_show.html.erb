@@ -15,7 +15,7 @@
         <table class="salad">
           <tbody>
             <%= formatted_row @pc, :domain %>
-            <%= formatted_row @pc, :ou %>
+            <%= formatted_row @pc, :ou, 'OU' %>
             <%= formatted_row @pc, :company %>
             <%= formatted_row @pc, :last_logged_on, 'User' %>
           </tbody>
