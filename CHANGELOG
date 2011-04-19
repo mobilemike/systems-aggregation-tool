@@ -1,6 +1,19 @@
 == Changelog
 
 
+=== Release 3.3  (April 18, 2011)
+
+= FEATURES
+
+* Avamar data added to Server details display
+* OU information collected and displayed
+
+= FIXES / ENHANCEMENTS
+
+* Added AD Last Logon Timestamp to PC updates collection
+* Corrected calculation for PC Most Recent Update
+
+
 === Release 3.2.1  (February 8, 2011)
 
 = FEATURES
