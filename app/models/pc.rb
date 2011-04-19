@@ -22,7 +22,8 @@ class Pc < ActiveRecord::Base
     updates << ep_last_update if ep_last_update
     updates << us_last_sync if us_last_sync
     updates << cm_last_heartbeat if cm_last_heartbeat
-    most_recent_update = updates.max unless updates.empty?
+    updates << ad_last_logon_timestamp if ad_last_logon_timestamp
+    self.most_recent_update = updates.max unless updates.empty?
   end
   
   def default_gateway=(ip_str)

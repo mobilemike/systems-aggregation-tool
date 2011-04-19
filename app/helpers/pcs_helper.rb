@@ -15,6 +15,10 @@ module PcsHelper
     
     content_tag(:span, age, :class => span_class)
   end
+  
+  def formatted_datetime utc_datetime
+    utc_datetime.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3')
+  end
 
   def fqdn_column computer
     link_to(computer.name, pc_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
@@ -26,6 +30,10 @@ module PcsHelper
   
   def in_sccm_column pc
     pc.in_sccm? ? food_icon(0) : food_icon(5)
+  end
+  
+  def most_recent_update_column pc
+    pc.most_recent_update ? formatted_datetime(pc.most_recent_update) : '-'
   end
   
   def us_outstanding_column computer
@@ -45,15 +53,16 @@ module PcsHelper
   
   
   def csv_header
-    header = '"FQDN","Company","Patches",'
+    header = '"FQDN","Company","OU","Patches",'
     header += '"SUS Group","DAT Age","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"Disk Total","Disk Free","OS","Make",'
-    header += '"Model","ePO","AD","SCCM","WSUS"'
+    header += '"Model","ePO","AD","SCCM","WSUS","Last Seen At"'
   end
   
   def csv_row c
     results = "\"#{c.fqdn}\""
     results += ",\"#{c.company}\""
+    results += ",\"#{c.ou}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
     results += ",\"#{c.ep_dat_outdated}\""
@@ -71,6 +80,7 @@ module PcsHelper
     results += ",\"#{c.in_ldap? ? "Yes" : ""}\""
     results += ",\"#{c.in_sccm? ? "Yes" : ""}\""
     results += ",\"#{c.in_wsus? ? "Yes" : ""}\""
+    results += ",\"#{c.most_recent_update ? c.most_recent_update.getlocal.strftime("%m/%d/%Y %I:%M %p") : "" }\""
     return results
   end
   

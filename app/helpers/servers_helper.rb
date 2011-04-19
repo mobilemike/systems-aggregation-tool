@@ -1,5 +1,11 @@
 module ServersHelper
   
+  def av_latest_description computer
+    computer.av_started_at.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3') +
+      ' (' + mb_to_human_size(computer.av_modified) + ' in ' +
+      distance_of_time_in_words(computer.av_completed_at, computer.av_started_at, true) +
+      ')'
+  end
   
   def av_overview_column computer
     span_class = "health-empty"
@@ -59,6 +65,12 @@ module ServersHelper
     content_tag(:span, computer.av_message ? truncate_with_tip(computer.av_message) : "-", :class => span_class)
   end
   
+  def av_protected_description computer
+    if computer.av_scanned && computer.av_file_count
+      mb_to_human_size(computer.av_scanned) + ' (' + number_with_delimiter(computer.av_file_count) + ' files)'
+    end
+  end
+  
   def company_column computer
     record = computer
     column = active_scaffold_config.columns[:company]
@@ -103,6 +115,10 @@ module ServersHelper
   
   def fqdn_column computer
     link_to(computer.name, server_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+  end
+  
+  def formatted_datetime utc_datetime
+    utc_datetime.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3')
   end
   
   def guest_column computer
@@ -207,9 +223,9 @@ module ServersHelper
   
   
   def csv_header
-    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category","Health","Uptime","Patches",'
-    header += '"SUS Group","Virtual","Host","IP","Default Gateway","CPU 
-Speed","CPU Count","RAM Total","RAM Used",'
+    header = '"FQDN","Owner","Status","Company","Description","Location","Service Category",'
+    header += '"Health","OU","Uptime","Patches","SUS Group","Virtual","Host","IP",'
+    header += '"Default Gateway","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"RAM Used (Host)","Disk Total","Disk Free","OS","Install Date","Serial Number","Make",'
     header += '"Model","Dataset","Schedule","Retention","MB Protected","MB New"'
   end
@@ -231,6 +247,7 @@ Speed","CPU Count","RAM Total","RAM Used",'
                  when 5 then ',"Severe State"'
                  else ',""'
                end
+    results += ",\"#{c.ou}\""
     results += ",\"#{c.sc_uptime_percentage.nil? ? "" : number_with_precision(c.sc_uptime_percentage, :precision => 2) + "%"}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
