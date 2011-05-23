@@ -1,7 +1,7 @@
 class PcsController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
+  ALL_COLUMNS = [:health, :fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
                  :in_ldap, :in_sccm, :most_recent_update]
   
   active_scaffold :pc do |c|

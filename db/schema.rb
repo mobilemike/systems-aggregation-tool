@@ -198,7 +198,8 @@ ActiveRecord::Schema.define(:version => 20110301031238) do
     t.datetime "cm_last_heartbeat"
     t.datetime "most_recent_update"
     t.string   "ou"
-    t.date     "ad_last_logon_timestamp"
+    t.datetime "ad_last_logon_timestamp"
+    t.string   "health"
   end
 
   add_index "pcs", ["fqdn"], :name => "index_pcs_on_fqdn"
