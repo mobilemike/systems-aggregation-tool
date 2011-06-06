@@ -24,12 +24,20 @@ module PcsHelper
     link_to(computer.name, pc_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
   end
   
+  def health_column pc
+    pc.health.capitalize
+  end
+  
   def in_ldap_column pc
     pc.in_ldap? ? food_icon(0) : food_icon(5)
   end
   
   def in_sccm_column pc
     pc.in_sccm? ? food_icon(0) : food_icon(5)
+  end
+  
+  def model_column pc
+    pc.model ? truncate_with_tip(pc.model,20) : "-"
   end
   
   def most_recent_update_column pc

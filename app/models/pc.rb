@@ -34,10 +34,10 @@ class Pc < ActiveRecord::Base
   
   def compute_disposition
     if !in_ldap && !in_epo && !in_sccm && !in_wsus
-      self.health = "decomissioned"
-    elsif !in_ldap || most_recent_update < 15.days.ago
+      self.health = "decommissioned"
+    elsif !in_ldap || most_recent_update < 32.days.ago
       self.health = "cleanup"
-    elsif !in_epo || !in_sccm || !in_wsus || health_ep_dat >= 2
+    elsif !in_epo || !in_sccm || !in_wsus || (health_ep_dat > 2 && ep_last_update < 2.days.ago)
       self.health = "unhealthy"
     elsif  us_pending_reboot > 0
       self.health = "reboot"
