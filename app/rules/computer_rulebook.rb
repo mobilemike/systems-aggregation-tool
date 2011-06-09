@@ -106,18 +106,18 @@ class ComputerRulebook < Ruleby::Rulebook
     end    
 
     # Online Windows computers should be in SCCM
-    rule [Computer, :c, m.online? == true,
-                        m.is_windows? == true,
-                        m.in_sccm? == false,
-                        m.exempt_sccm? == false] do |v|
-
-      severity    = 1
-      source      = 'Configuration'
-      identifier  = 'Not in SCCM'
-      description = "Online Windows computer is not in SCCM"
-
-      assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
-    end
+    # rule [Computer, :c, m.online? == true,
+    #                     m.is_windows? == true,
+    #                     m.in_sccm? == false,
+    #                     m.exempt_sccm? == false] do |v|
+    # 
+    #   severity    = 1
+    #   source      = 'Configuration'
+    #   identifier  = 'Not in SCCM'
+    #   description = "Online Windows computer is not in SCCM"
+    # 
+    #   assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
+    # end
     
     # Online Windows computers should be in WSUS
     rule [Computer, :c, m.online? == true,

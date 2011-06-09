@@ -1,7 +1,7 @@
 class PcsController < ApplicationController
   before_filter :update_table_config
   
-  ALL_COLUMNS = [:fqdn, :company, :last_logged_on, :ip, :make, :model, :us_outstanding, :ep_dat_outdated,
+  ALL_COLUMNS = [:health, :fqdn, :company, :last_logged_on, :ip, :model, :us_outstanding, :ep_dat_outdated,
                  :in_ldap, :in_sccm, :most_recent_update]
   
   active_scaffold :pc do |c|
@@ -25,6 +25,7 @@ class PcsController < ApplicationController
     
     c.update.link        = false
 
+    c.list.sorting       = [{:most_recent_update => :desc}]
     c.list.per_page      = 20
 
     
@@ -45,6 +46,13 @@ private
   def conditions_for_collection
     conditions = []
     conditions << @column_conditions
+    case params[:status]
+    when nil
+      conditions << ["pcs.health != 'decommissioned'"]
+    when 'all'
+    else
+      conditions << ["pcs.health = ?", params[:status]]
+    end
     Pc.merge_conditions(*conditions)
   end
 
@@ -76,6 +84,9 @@ private
 
   def update_page_display
     custom_label = "PCs"
+    if params[:status]
+      custom_label = "#{custom_label} in #{params[:status].capitalize} Status"
+    end
     if params[:search]
       custom_label = "#{custom_label} (#{params[:search]})"
     end

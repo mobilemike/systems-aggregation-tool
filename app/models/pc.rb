@@ -1,8 +1,18 @@
 require 'ipaddr'
 
 class Pc < ActiveRecord::Base
-    
+  include AASM
   IP_PAD = 2147483648
+  
+  aasm_column :health
+  aasm_initial_state :healthy
+  aasm_state :healthy
+  aasm_state :unhealthy
+  aasm_state :reboot
+  aasm_state :cleanup
+  aasm_state :decommissioned
+  aasm_state :remove
+  
 
   def self.find_all_sorted_by_fqdn(conditions=[])
     pc = find(:all,
@@ -13,7 +23,26 @@ class Pc < ActiveRecord::Base
   def self.regenerate_health
     Pc.find_each do |pc|
       pc.compute_most_recent_update
+      pc.compute_disposition
       pc.save
+    end
+  end
+  
+  def self.states
+    aasm_states.map {|s| s.display_name}
+  end
+  
+  def compute_disposition
+    if !in_ldap && !in_epo && !in_sccm && !in_wsus
+      self.health = "decommissioned"
+    elsif !in_ldap || most_recent_update < 32.days.ago
+      self.health = "cleanup"
+    elsif !in_epo || !in_sccm || !in_wsus || (health_ep_dat > 2 && ep_last_update < 2.days.ago)
+      self.health = "unhealthy"
+    elsif  us_pending_reboot > 0
+      self.health = "reboot"
+    else
+      self.health = "healthy"
     end
   end
   
