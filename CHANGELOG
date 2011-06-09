@@ -1,6 +1,20 @@
 == Changelog
 
 
+=== Release 3.4  (June 8, 2011)
+
+= FEATURES
+
+* PC Health - Evaluates each PC and assigns a Health status based on acquired data
+
+= FIXES / ENHANCEMENTS
+
+* Win 7 and Server 2008 OS detection
+* Properly functioning 64 bit Server OS detection
+* BalancePoint sync moved to PS-BalancePoint.mis.local
+* Removed SCCM Configuration Issue requirement from Rules
+
+
 === Release 3.3  (April 18, 2011)
 
 = FEATURES

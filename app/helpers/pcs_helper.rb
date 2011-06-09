@@ -61,7 +61,7 @@ module PcsHelper
   
   
   def csv_header
-    header = '"FQDN","Company","OU","Patches",'
+    header = '"FQDN","Company","Health","OU","Patches",'
     header += '"SUS Group","DAT Age","IP","CPU Speed","CPU Count","RAM Total","RAM Used",'
     header += '"Disk Total","Disk Free","OS","Make",'
     header += '"Model","ePO","AD","SCCM","WSUS","Last Seen At"'
@@ -70,6 +70,7 @@ module PcsHelper
   def csv_row c
     results = "\"#{c.fqdn}\""
     results += ",\"#{c.company}\""
+    results += ",\"#{c.health.capitalize}\""
     results += ",\"#{c.ou}\""
     results += ",#{c.us_outstanding}"
     results += ",\"#{c.us_group_name}\""
