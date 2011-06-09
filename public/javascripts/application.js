@@ -2,7 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 function generateHealthTooltips() {
-  $j('td.health-column').live("mouseover", function(event) {
+  $j('div.servers-view td.health-column').live("mouseover", function(event) {
     var target = $j(this);
     target.qtip({
       overwrite: false,
