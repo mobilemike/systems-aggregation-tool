@@ -1,6 +1,17 @@
 == Changelog
 
 
+=== Release 3.4.1 (June 19, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* The Salad now queries the FDC vCenter Database in addition to the existing IDC one
+
+
 === Release 3.4  (June 8, 2011)
 
 = FEATURES
