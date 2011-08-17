@@ -1,6 +1,17 @@
 == Changelog
 
 
+=== Release 3.4.1 (Aug 16, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* Modified the Server WSUS sync script to use the new WSUS server
+
+
 === Release 3.4.1 (June 19, 2011)
 
 = FEATURES
