@@ -1,7 +1,18 @@
 == Changelog
 
 
-=== Release 3.4.1 (Aug 16, 2011)
+=== Release 3.4.3 (Oct 15, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* Updated the NetApp OnCommand Balance (Akorri) SQL password
+
+
+=== Release 3.4.2 (Aug 16, 2011)
 
 = FEATURES
 
