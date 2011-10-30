@@ -1,6 +1,17 @@
 == Changelog
 
 
+=== Release 3.4.4 (Oct 30, 2011)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* Fixed an edge case where AD doesn't have a Timestamp for a computer
+
+
 === Release 3.4.3 (Oct 15, 2011)
 
 = FEATURES
