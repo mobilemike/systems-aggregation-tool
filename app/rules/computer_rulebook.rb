@@ -88,22 +88,22 @@ class ComputerRulebook < Ruleby::Rulebook
     end
     
     # SCOM health state should create an alert to that effect
-    rule [Computer, :c, m.in_scom? == true,
-                        m.exempt_scom? == false,
-                        m.health_sc_state > 1] do |v|
-
-      state_in_words = case v[:c].health_sc_state
-        when 2 then "warning"
-        when 3 then "critical"
-      end
-
-      severity    = v[:c].health_sc_state + 2
-      source      = 'SCOM'
-      identifier  = 'System State'
-      description = "The system is in a #{state_in_words} SCOM health state"
-      
-      assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
-    end    
+    # rule [Computer, :c, m.in_scom? == true,
+    #                     m.exempt_scom? == false,
+    #                     m.health_sc_state > 1] do |v|
+    # 
+    #   state_in_words = case v[:c].health_sc_state
+    #     when 2 then "warning"
+    #     when 3 then "critical"
+    #   end
+    # 
+    #   severity    = v[:c].health_sc_state + 2
+    #   source      = 'SCOM'
+    #   identifier  = 'System State'
+    #   description = "The system is in a #{state_in_words} SCOM health state"
+    #   
+    #   assert Issue.find_or_init(v[:c], severity, source, identifier, description)      
+    # end    
 
     # Online Windows computers should be in SCCM
     # rule [Computer, :c, m.online? == true,
