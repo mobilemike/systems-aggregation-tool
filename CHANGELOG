@@ -1,6 +1,18 @@
 == Changelog
 
 
+=== Release 3.5 (Dec 6, 2011)
+
+= FEATURES
+
+* The Salad no longer imports alerts from SCOM or displays SCOM health status as an Issue
+
+= FIXES / ENHANCEMENTS
+
+* Added the new RMR vCenter server to the data import sets
+* Began correcting WSUS SQL settings in preparation for the Support Services WSUS migration to new servers
+
+
 === Release 3.4.4 (Oct 30, 2011)
 
 = FEATURES
