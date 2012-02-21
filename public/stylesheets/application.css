@@ -32,6 +32,10 @@ input.search.button, a.search.link {
   margin: auto;
 }
 
+.active-scaffold td a, .active-scaffold td span, .active-scaffold td img {
+  vertical-align: middle;
+}
+
 .active-scaffold tr.record td, .active-scaffold th {
   text-align: center;
   vertical-align: middle;
@@ -83,6 +87,11 @@ span.health-empty {
 span.domain {
   color: #888;
 }
+
+span.credit-card {
+	float: right;
+}
+
 
 td.av_overview-column, td.fqdn-column, td.av_scanned-column, td.av_new-column {
   white-space:nowrap;

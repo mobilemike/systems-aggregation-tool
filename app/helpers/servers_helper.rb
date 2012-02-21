@@ -75,7 +75,7 @@ module ServersHelper
     record = computer
     column = active_scaffold_config.columns[:company]
     collection = [['Unknown', 'Unknown'], ['RMR', 'RMR'], ['Five Star', 'Five Star',],
-                  ['Shared', 'Shared'], ['ILC', 'ILC']].inspect
+                  ['Sonesta', 'Sonesta'],['Shared', 'Shared'], ['ILC', 'ILC']].inspect
     active_scaffold_inplace_collection_edit(record, column, collection, computer.company)
   end
   
@@ -114,7 +114,10 @@ module ServersHelper
   end
   
   def fqdn_column computer
-    link_to(computer.name, server_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+    html = link_to(computer.name, server_path(computer))
+    html += content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+    html += content_tag(:span, image_tag('credit_card.gif'), :class => 'credit-card') if computer.is_pci?
+    return html
   end
   
   def formatted_datetime utc_datetime
