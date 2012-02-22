@@ -1,13 +1,13 @@
 <ul class="nav main">
   <li>
-    <%= link_to("Class", :controller => 'servers')%>
+    <%= link_to("Class", '#')%>
     <ul>
       <%= content_tag(:li, link_to("Servers", :controller => 'servers'))%>
       <%= content_tag(:li, link_to("PCs", :controller => 'pcs')) %>
     </ul>
   </li>
   <li>
-    <%= link_to("Status", params.merge(:status => nil, :page => nil))%>
+    <%= link_to("Status", '#')%>
     <ul>
       <%= content_tag(:li, link_to("Default", params.merge(:status => nil, :page => nil)))%>
       <%= content_tag(:li, link_to("All", params.merge(:status => 'all', :page => nil))) %>
@@ -17,7 +17,7 @@
     </ul>
   </li>
   <li>
-    <%= link_to("Owner", params.merge(:owner_initials => nil, :page => nil))%>
+    <%= link_to("Owner", '#')%>
     <ul>
       <%= content_tag(:li, link_to("All", params.merge(:owner_initials => nil, :page => nil)))%>
       <% Owner.all_sorted_by_name.each do |owner| %>
@@ -26,7 +26,7 @@
     </ul>
   </li>
   <li>
-    <%= link_to("View", params.merge(:view => nil, :page => nil))%>
+    <%= link_to("View", '#')%>
     <ul>
       <%= content_tag(:li, link_to("Default", params.merge(:view => nil, :page => nil)))%>
       <%= content_tag(:li, link_to("Avamar", params.merge(:view => 'avamar', :page => nil)))%>
@@ -38,8 +38,7 @@
     </ul>
   </li>
   <li class="secondary">
-    <%= link_to("Download CSV", :controller => :servers, :owner_initials => params[:owner_initials],
-                 :status => params[:status], :format => :csv)%>
+    <%= link_to("Download CSV", '#')%>
     <ul>
       <li>
         <%= link_to("Download CSV (formatted)", :controller => :servers, :owner_initials => params[:owner_initials],
