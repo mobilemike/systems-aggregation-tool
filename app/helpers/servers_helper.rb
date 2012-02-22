@@ -162,15 +162,10 @@ module ServersHelper
   end
   
   def owner_initials_column computer
-    case computer.in_scom?
-    when true
-      computer.owner ? computer.owner_initials : "-"
-    else
-      record = computer
-      column = active_scaffold_config.columns[:owner_initials]
-      collection = Owner.find_all_for_select
-      active_scaffold_inplace_collection_edit(record, column, collection, computer.owner ? computer.owner_initials : "-")
-    end
+    record = computer
+    column = active_scaffold_config.columns[:owner_initials]
+    collection = Owner.find_all_for_select
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.owner ? computer.owner_initials : "-")
   end
   
   def service_category_column computer
@@ -183,15 +178,10 @@ module ServersHelper
   end
   
   def status_column computer
-    case computer.in_scom?
-    when true
-      computer.status
-    else
-      record = computer
-      column = active_scaffold_config.columns[:status]
-      collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
-      active_scaffold_inplace_collection_edit(record, column, collection, computer.status)
-    end
+    record = computer
+    column = active_scaffold_config.columns[:status]
+    collection = Computer.aasm_states_for_select.map {|k,v| [k, v.humanize]}.inspect
+    active_scaffold_inplace_collection_edit(record, column, collection, computer.status)
   end
   
   def sc_uptime_percentage_column computer
