@@ -19,9 +19,12 @@ module PcsHelper
   def formatted_datetime utc_datetime
     utc_datetime.getlocal.strftime('%m/%d/%y %l:%M %p').gsub(/0?(\d)\/0?(\d{1,2})\/(\d{2})/,'\1/\2/\3')
   end
-
-  def fqdn_column computer
-    link_to(computer.name, pc_path(computer)) + content_tag(:span, "<wbr />." + computer.domain, :class => 'domain')
+  
+  def fqdn_column pc
+    html = link_to(pc.name, pc_path(pc))
+    html += content_tag(:span, "<wbr />." + pc.domain, :class => 'domain')
+    html += content_tag(:span, image_tag('credit_card.gif'), :class => 'credit-card') if pc.is_pci?
+    return html
   end
   
   def health_column pc

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110301031238) do
+ActiveRecord::Schema.define(:version => 20120219050648) do
 
   create_table "computers", :force => true do |t|
     t.string    "fqdn"
@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(:version => 20110301031238) do
     t.integer   "time_zone_offset"
     t.string    "service_category",         :default => "Unknown"
     t.string    "ou"
-    t.datetime  "ad_last_logon_timestamp"
+    t.timestamp "ad_last_logon_timestamp"
+    t.boolean   "is_pci"
+    t.string    "notes"
   end
-
-  add_index "computers", ["fqdn"], :name => "index_computers_on_fqdn"
 
   create_table "issues", :force => true do |t|
     t.string    "identifier"
@@ -137,9 +137,6 @@ ActiveRecord::Schema.define(:version => 20110301031238) do
     t.timestamp "updated_at"
   end
 
-  add_index "issues", ["active"], :name => "issues_active_idx"
-  add_index "issues", ["computer_id"], :name => "issues_computer_id_idx"
-
   create_table "owners", :force => true do |t|
     t.string    "name"
     t.string    "initials"
@@ -148,61 +145,59 @@ ActiveRecord::Schema.define(:version => 20110301031238) do
   end
 
   create_table "pcs", :force => true do |t|
-    t.string   "fqdn"
-    t.integer  "cpu_speed"
-    t.integer  "cpu_count"
-    t.string   "cpu_name"
-    t.date     "bios_date"
-    t.string   "bios_name"
-    t.string   "bios_ver"
-    t.datetime "boot_time"
-    t.integer  "ip_int"
-    t.string   "last_logged_on"
-    t.string   "mac"
-    t.string   "make"
-    t.integer  "mem_total"
-    t.integer  "mem_used"
-    t.string   "model"
-    t.string   "os_sp"
-    t.string   "os_version"
-    t.string   "serial_number"
-    t.integer  "subnet_mask_int"
-    t.datetime "ep_last_update"
-    t.integer  "ep_dat_version"
-    t.integer  "ep_dat_outdated"
-    t.string   "company",                 :default => "Unknown"
-    t.boolean  "in_epo"
-    t.boolean  "in_wsus"
-    t.boolean  "in_ldap"
-    t.boolean  "in_sccm"
-    t.string   "us_group_name"
-    t.integer  "disk_total"
-    t.integer  "disk_free"
-    t.datetime "us_last_sync"
-    t.integer  "us_unknown",              :default => 0
-    t.integer  "us_not_installed",        :default => 0
-    t.integer  "us_downloaded",           :default => 0
-    t.integer  "us_installed",            :default => 0
-    t.integer  "us_failed",               :default => 0
-    t.integer  "us_pending_reboot",       :default => 0
-    t.integer  "us_approved",             :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "dhcp"
-    t.integer  "default_gateway_int"
-    t.integer  "time_zone_offset"
-    t.datetime "install_date"
-    t.integer  "mem_swap"
-    t.string   "os_edition"
-    t.datetime "cm_last_heatbeat"
-    t.datetime "cm_last_heartbeat"
-    t.datetime "most_recent_update"
-    t.string   "ou"
-    t.datetime "ad_last_logon_timestamp"
-    t.string   "health"
+    t.string    "fqdn"
+    t.integer   "cpu_speed"
+    t.integer   "cpu_count"
+    t.string    "cpu_name"
+    t.date      "bios_date"
+    t.string    "bios_name"
+    t.string    "bios_ver"
+    t.timestamp "boot_time"
+    t.integer   "ip_int"
+    t.string    "last_logged_on"
+    t.string    "mac"
+    t.string    "make"
+    t.integer   "mem_total"
+    t.integer   "mem_used"
+    t.string    "model"
+    t.string    "os_sp"
+    t.string    "os_version"
+    t.string    "serial_number"
+    t.integer   "subnet_mask_int"
+    t.timestamp "ep_last_update"
+    t.integer   "ep_dat_version"
+    t.integer   "ep_dat_outdated"
+    t.string    "company",                 :default => "Unknown"
+    t.boolean   "in_epo"
+    t.boolean   "in_wsus"
+    t.boolean   "in_ldap"
+    t.boolean   "in_sccm"
+    t.string    "us_group_name"
+    t.integer   "disk_total"
+    t.integer   "disk_free"
+    t.timestamp "us_last_sync"
+    t.integer   "us_unknown",              :default => 0
+    t.integer   "us_not_installed",        :default => 0
+    t.integer   "us_downloaded",           :default => 0
+    t.integer   "us_installed",            :default => 0
+    t.integer   "us_failed",               :default => 0
+    t.integer   "us_pending_reboot",       :default => 0
+    t.integer   "us_approved",             :default => 0
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.boolean   "dhcp"
+    t.integer   "default_gateway_int"
+    t.integer   "time_zone_offset"
+    t.timestamp "install_date"
+    t.integer   "mem_swap"
+    t.string    "os_edition"
+    t.timestamp "cm_last_heartbeat"
+    t.timestamp "most_recent_update"
+    t.string    "ou"
+    t.timestamp "ad_last_logon_timestamp"
+    t.string    "health"
+    t.boolean   "is_pci"
   end
-
-  add_index "pcs", ["fqdn"], :name => "index_pcs_on_fqdn"
 
   create_table "sessions", :force => true do |t|
     t.string    "session_id", :null => false
@@ -210,8 +205,5 @@ ActiveRecord::Schema.define(:version => 20110301031238) do
     t.timestamp "created_at"
     t.timestamp "updated_at"
   end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
 end
