@@ -1,6 +1,20 @@
 == Changelog
 
 
+=== Release 3.6 (Feb 22, 2012)
+
+= FEATURES
+
+* Import of servers and PCs in the sonesta.local domain
+* Identification of Sonesta systems in-scope for PCI compliance
+
+= FIXES / ENHANCEMENTS
+
+* WSUS syncing for PCs moved to Support Service's new WSUS servers
+* Disconnected server owners and status assignments from SCOM
+* Fixed navigation issue preventing proper use from iOS devices
+
+
 === Release 3.5 (Dec 6, 2011)
 
 = FEATURES
