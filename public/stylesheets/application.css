@@ -126,6 +126,10 @@ h2.details-heading {
   background-color: #fff;
 }
 
+.active-scaffold span.tip {
+	vertical-align: baseline;
+}
+
 /* Details Styling */
 
 table.salad caption {
