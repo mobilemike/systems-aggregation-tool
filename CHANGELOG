@@ -1,6 +1,17 @@
 == Changelog
 
 
+=== Release 3.7 (Apr 23, 2012)
+
+= FEATURES
+
+* None
+
+= FIXES / ENHANCEMENTS
+
+* Basic server WSUS syncing for Sonesta added
+
+
 === Release 3.6 (Feb 22, 2012)
 
 = FEATURES
