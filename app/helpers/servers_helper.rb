@@ -74,8 +74,8 @@ module ServersHelper
   def company_column computer
     record = computer
     column = active_scaffold_config.columns[:company]
-    collection = [['Unknown', 'Unknown'], ['RMR', 'RMR'], ['Five Star', 'Five Star',],
-                  ['Sonesta', 'Sonesta'],['Shared', 'Shared'], ['ILC', 'ILC']].inspect
+    collection = [['Unknown', 'Unknown'], ['INT', 'INT'], ['GoldMine', 'GoldMine',],
+                  ['Shared', 'Shared']].inspect
     active_scaffold_inplace_collection_edit(record, column, collection, computer.company)
   end
   
